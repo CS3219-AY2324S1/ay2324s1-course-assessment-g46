@@ -8,11 +8,17 @@ import {
 } from "@chakra-ui/react";
 import { MdAccountCircle } from "react-icons/md";
 import Profile from "./Profile";
+import { useAuth } from "../../context/AuthProvider";
 
 export default function LoginOptions(props) {
-  function logout(e) {
-    props.logout();
-    localStorage.setItem("loggedIn", "false");
+  const { logout } = useAuth(); 
+
+  async function submitLogout(e) {
+    e.preventDefault();
+    const { error } = await logout();
+    if (error) {
+        console.log(error);
+    }
   }
 
   return (
@@ -21,7 +27,7 @@ export default function LoginOptions(props) {
         <MenuButton as={IconButton} icon={<MdAccountCircle />} />
         <MenuList>
           <Profile />
-          <MenuItem onClick={logout}>Logout</MenuItem>
+          <MenuItem onClick={submitLogout}>Logout</MenuItem>
         </MenuList>
       </Menu>
     </>

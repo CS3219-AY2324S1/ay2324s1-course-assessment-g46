@@ -1,13 +1,15 @@
+import { Box, Flex } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import { getQuestions } from "./api/questionClient";
 import Navbar from "./feature/navigation/Navbar";
 import Home from "./feature/page/Home";
 import Work from "./feature/page/Work";
-import { Box, Flex } from "@chakra-ui/react";
 
 function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [question, setQuestion] = useState(-1);
+  const [questions, setQuestions] = useState([]);
 
   useEffect(() => {
     const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
@@ -16,6 +18,17 @@ function App() {
     } else {
       setLoggedIn(false);
     }
+  }, []);
+
+  useEffect(() => {
+    console.log("Getting questions");
+    getQuestions()
+      .then((data) => {
+        setQuestions(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }, []);
 
   function isHomePage() {
@@ -39,7 +52,7 @@ function App() {
       />
       <Box flex="1">
         {isHomePage() ? (
-          <Home questions={tempQuestions} attemptQuestion={setQuestion} />
+          <Home questions={questions} attemptQuestion={setQuestion} />
         ) : (
           <Work question={getQuestion()} />
         )}

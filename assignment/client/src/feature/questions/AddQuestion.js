@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Button,
   FormControl,
@@ -13,16 +12,37 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { addQuestion, getLastQuestionId } from "../../api/questionClient";
 
 export default function AddQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [id, setId] = useState(null);
   const [title, setTitle] = useState("");
-  const [question, setQuestion] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [complexity, setComplexity] = useState("");
 
-  function submit() {
+  useEffect(() => {
+    setId(null);
+    setTitle("");
+    setDescription("");
+    setCategory("");
+    setComplexity("");
+    getLastQuestionId().then((id) => setId(id + 1));
+  }, []);
+
+  async function submit() {
+    const categories = category.split(",");
+    const question = {
+      id: id,
+      title: title,
+      description: description,
+      category: categories,
+      complexity: complexity,
+    };
+    console.log(question);
+    await addQuestion(question);
     onClose();
   }
 
@@ -36,47 +56,58 @@ export default function AddQuestion(props) {
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Id</FormLabel>
               <Input
-                placeholder="First name"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Id"
+                value={id}
+                onChange={(e) => setId(e.target.id)}
+                isReadOnly={true}
               />
             </FormControl>
 
             <FormControl>
-              <FormLabel>Question</FormLabel>
+              <FormLabel>Title</FormLabel>
               <Input
-                placeholder="Last name"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
+                placeholder="Title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                isRequired={true}
               />
             </FormControl>
 
             <FormControl>
               <FormLabel>Description</FormLabel>
               <Input
-                placeholder="Last name"
+                placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                isRequired={true}
               />
             </FormControl>
 
             <FormControl>
               <FormLabel>Category</FormLabel>
               <Input
-                placeholder="Last name"
+                placeholder="Category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                isRequired={true}
               />
             </FormControl>
 
             <FormControl>
               <FormLabel>Complexity</FormLabel>
               <Input
-                placeholder="Last name"
+                placeholder="Complexity"
                 value={complexity}
                 onChange={(e) => setComplexity(e.target.value)}
+                isRequired={true}
+                isInvalid={
+                  complexity !== "" &&
+                  complexity.toLowerCase() !== "easy" &&
+                  complexity.toLowerCase() !== "medium" &&
+                  complexity.toLowerCase() !== "hard"
+                }
               />
             </FormControl>
           </ModalBody>

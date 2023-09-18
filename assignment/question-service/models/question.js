@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema({
-  qid: {
+  id: {
     type: Number,
     required: true,
     unique: true,
@@ -24,5 +24,7 @@ const questionSchema = new mongoose.Schema({
     enum: ["Easy", "Medium", "Hard"],
   },
 });
+
+questionSchema.index({ id: 1 }, { unique: true });
 
 module.exports = mongoose.model("Question", questionSchema);

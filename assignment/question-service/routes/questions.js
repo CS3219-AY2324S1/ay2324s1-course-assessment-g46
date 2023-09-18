@@ -20,7 +20,7 @@ router.get("/:id", getQuestion, (req, res) => {
 // CREATE ONE
 router.post("/", async (req, res) => {
   const question = new Question({
-    qid: req.body.qid,
+    id: req.body.id,
     title: req.body.title,
     description: req.body.description,
     category: req.body.category,
@@ -37,8 +37,8 @@ router.post("/", async (req, res) => {
 
 // UPDATE ONE
 router.patch("/:id", getQuestion, async (req, res) => {
-  if (req.body.qid != null) {
-    res.question.qid = req.body.qid;
+  if (req.body.id != null) {
+    res.question.id = req.body.id;
   }
   if (req.body.title != null) {
     res.question.title = req.body.title;

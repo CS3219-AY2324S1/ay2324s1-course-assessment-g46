@@ -18,10 +18,19 @@ db.once("open", () => console.log("Connected to Database"));
 // app.use(bodyParser.json())
 
 app.use(express.json());
+// Add Access Control Allow Origin headers
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 const questionsRouter = require("./routes/questions");
 app.use("/questions", questionsRouter);
 
-app.listen(3000, () => {
-  console.log("Server is listening on port 3000");
+app.listen(8888, () => {
+  console.log("Server is listening on port 8888");
 });

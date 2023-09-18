@@ -17,18 +17,15 @@ const signup = (email, password, fullName) => supabase.auth.signUp({
 }})
 
 
-
 const AuthProvider = ({ children }) => {
   const [session, setSession] = useState(null);
   const [auth, setAuth] = useState(false);
 
   useEffect(() => {
     const getSession = async () => {
-        const { data } = await supabase.auth.getSession();
-
+      const { data } = await supabase.auth.getSession();
       setSession(data.session != null ? data.session : null);
       setAuth(data.session != null ? true : false);
-
     }
     getSession();
 

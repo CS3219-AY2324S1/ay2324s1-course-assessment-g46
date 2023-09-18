@@ -32,16 +32,18 @@ export default function Profile(props) {
     .from('profiles')
     .select('*')
     .eq('id', session.user.id);
-    
-    setFullName(data[0].full_name)
-    setGoal(data[0].goal)
-}
+
+    if (data.length != 0) {
+      setFullName(data[0].full_name)
+      setGoal(data[0].goal)
+    }
+  }
 
   useEffect(() => {
     getPersonalInfo();
   }, [])
 
-async function updateProfile(e) {
+  async function updateProfile(e) {
     e.preventDefault();
 
     const { data, error } = await supabase

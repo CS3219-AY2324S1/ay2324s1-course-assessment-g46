@@ -23,15 +23,13 @@ export default function Profile(props) {
   const { isOpen: isOpenFirstModal, onOpen: onOpenFirstModal, onClose: onCloseFirstModal } = useDisclosure();
   const { isOpen: isOpenSecondModal, onOpen: onOpenSecondModal, onClose: onCloseSecondModal } = useDisclosure();
 
-  const { session } = useAuth();
+  const { token } = useAuth();
   const [fullName, setFullName] = useState("");
   const [goal, setGoal] = useState("");
 
   const getPersonalInfo = async () => {
-    const { data } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', session.user.id);
+    // Fetch user here 
+
 
     if (data.length != 0) {
       setFullName(data[0].full_name)
@@ -46,19 +44,7 @@ export default function Profile(props) {
   async function updateProfile(e) {
     e.preventDefault();
 
-    const { data, error } = await supabase
-    .from('profiles')
-    .update({ 
-        full_name: fullName, 
-        goal: goal 
-    })
-    .eq('id', session.user.id)
-    .select();
-
-    if (error) {
-        alert(INVALID_GOAL_LENGTH);
-        getPersonalInfo(); 
-    } 
+    // Update profile here
   }
 
   return (

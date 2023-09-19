@@ -22,7 +22,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { supabase } from "../../supabaseClient";
 
 export default function LoginOptions(props) {
-  const { session, logout } = useAuth(); 
+  const { token, logout } = useAuth(); 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   async function submitLogout(e) {
@@ -36,10 +36,7 @@ export default function LoginOptions(props) {
   async function deleteAccount(e) {
     e.preventDefault();
 
-    const { error } = await supabase
-    .from('profiles')
-    .delete()
-    .eq('id', session.user.id);
+    // Fetch api to delete account below 
 
     onClose(e);
     submitLogout(e);

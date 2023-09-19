@@ -4,40 +4,11 @@ import Navbar from "./feature/navigation/Navbar";
 import Home from "./feature/page/Home";
 import Work from "./feature/page/Work";
 import { Box, Flex } from "@chakra-ui/react";
-import { supabase } from "./supabaseClient";
 import { useAuth } from './context/AuthProvider'
 
 function App() {
-//   const [isLoggedIn, setLoggedIn] = useState(false);
-//   const [isLoggedIn, setLoggedIn] = useState(false);
-    const { auth } = useAuth(); 
+  const { auth } = useAuth(); 
   const [question, setQuestion] = useState(-1);
-//   const [session, setSession] = useState(null);
-
-//   useEffect(() => {
-    // const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
-
-    // if (loggedIn) {
-    //   setLoggedIn(true);
-    // } else {
-    //   setLoggedIn(false);
-    // }
-
-//     supabase.auth.getSession().then(({ data: {session} }) => {
-//         localStorage.setItem("session", JSON.stringify(session))
-//     })
-
-//     supabase.auth.onAuthStateChange((event, session) => {
-//         if (event === "SIGNED_IN") {
-//             localStorage.setItem("session", JSON.stringify(session))
-//             localStorage.setItem("loggedIn", JSON.stringify(true))
-//         } else if (event === "SIGNED_OUT") {
-//             localStorage.setItem("session", JSON.stringify(null))
-//             localStorage.setItem("loggedIn", JSON.stringify(false))
-//         }
-
-//     })
-//   }, []);
 
   function isHomePage() {
     return question === -1;

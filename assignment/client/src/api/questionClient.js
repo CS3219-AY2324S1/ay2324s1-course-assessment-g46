@@ -55,3 +55,19 @@ export const deleteQuestion = async (id) => {
     console.log(error);
   }
 };
+
+export const questionCategories = [
+  "Array",
+  "Binary Search",
+  "Binary Tree",
+  "Dynamic Programming",
+  "Graph",
+  "Hash Table",
+  "Heap",
+  "Linked List",
+  "Matrix",
+  "Recursion",
+  "Stack",
+  "String",
+  "Trie",
+];

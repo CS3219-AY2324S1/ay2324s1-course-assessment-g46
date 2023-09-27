@@ -16,8 +16,13 @@ import {
   Tag,
   useDisclosure,
 } from "@chakra-ui/react";
+import { Select as TagSelect } from "chakra-react-select";
 import React, { useEffect, useState } from "react";
-import { addQuestion, getLastQuestionId } from "../../api/questionClient";
+import {
+  addQuestion,
+  getLastQuestionId,
+  questionCategories,
+} from "../../api/questionClient";
 
 export default function AddQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,26 +39,6 @@ export default function AddQuestion(props) {
   const [repeatTitle, setRepeatTitle] = useState(false);
   const [repeatDesc, setRepeatDesc] = useState(false);
 
-  const categories = [
-    "Array",
-    "Binary Search",
-    "Binary Tree",
-    "Dynamic Programming",
-    "Graph",
-    "Hash Table",
-    "Heap",
-    "Linked List",
-    "Matrix",
-    "Recursion",
-    "Stack",
-    "String",
-    "Trie",
-  ];
-
-  function addCategory(c) {
-    setCategory((current) => [...current, c]);
-  }
-
   useEffect(() => {
     resetForm();
     resetValidation();
@@ -64,7 +49,7 @@ export default function AddQuestion(props) {
       e.preventDefault();
       return;
     }
-    const categories = category.split(",");
+    const categories = category.map((c) => c.value);
     const question = {
       id: id,
       title: title,
@@ -168,27 +153,14 @@ export default function AddQuestion(props) {
 
             <FormControl isInvalid={missingCategory}>
               <FormLabel>Category</FormLabel>
-              {/* <Input
-                placeholder="Category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                isRequired={true}
-              /> */}
-              <Box>
-                {category.map((c) => (
-                  <Tag>{c}</Tag>
-                ))}
-              </Box>
-              <Select
-                value={category.join(",")}
-                onChange={(e) => addCategory(e.target.value)}
-              >
-                {categories.map((c) => (
-                  <option value={c} key={c}>
-                    {c}
-                  </option>
-                ))}
-              </Select>
+              <TagSelect
+                isMulti
+                options={questionCategories.map((c) => ({
+                  value: c,
+                  label: c,
+                }))}
+                onChange={setCategory}
+              />
               {missingCategory && (
                 <FormErrorMessage>
                   At least 1 category is required.

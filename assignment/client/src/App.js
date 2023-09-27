@@ -1,13 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import "./App.css";
-import { getQuestions } from "./api/questionClient";
 import Navbar from "./feature/navigation/Navbar";
 import Home from "./feature/page/Home";
 import Work from "./feature/page/Work";
 import { Box, Flex } from "@chakra-ui/react";
 import { supabase } from "./supabaseClient";
 import { useAuth } from "./context/AuthProvider";
+import "./App.css";
 
 function App() {
   //   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -48,13 +47,6 @@ function App() {
     return questionId === -1;
   }
 
-  // function getQuestion() {
-  //   if (question !== -1) {
-  //     return tempQuestions[question - 1];
-  //   }
-  //   return {};
-  // }
-
   return (
     <Flex height="$100vh" flexDirection="column">
       <Navbar
@@ -75,27 +67,3 @@ function App() {
 }
 
 export default App;
-
-const tempQuestions = [
-  {
-    id: 1,
-    title: "Reverse a String",
-    description: "reverse string question",
-    category: ["String, Algorithms"],
-    complexity: "Easy",
-  },
-  {
-    id: 2,
-    title: "Linked List Cycle Detection",
-    description: "ll cycle question",
-    category: ["Data Structures", "Algorithms"],
-    complexity: "Easy",
-  },
-  {
-    id: 3,
-    title: "Roman to Integer",
-    description: "Roman to Integer question",
-    category: ["Data Structures"],
-    complexity: "Easy",
-  },
-];

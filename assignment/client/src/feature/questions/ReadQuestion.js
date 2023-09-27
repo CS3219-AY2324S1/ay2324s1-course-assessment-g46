@@ -10,6 +10,11 @@ import {
   useDisclosure,
   Button,
   Text,
+  HStack,
+  Tag,
+  Divider,
+  Stack,
+  Center,
 } from "@chakra-ui/react";
 
 export default function ReadQuestion(props) {
@@ -21,30 +26,62 @@ export default function ReadQuestion(props) {
     props.attemptQuestion(_id);
   }
 
+  function getComplexity() {
+    if (complexity === "Easy") {
+      return "green";
+    }
+    if (complexity === "Medium") {
+      return "tomato";
+    }
+    if (complexity === "Hard") {
+      return "red";
+    }
+  }
+
   return (
     <>
       <Text
         onClick={onOpen}
-        _hover={{ textDecoration: "underline", cursor: "pointer " }}
+        _hover={{
+          textDecoration: "underline",
+          cursor: "pointer ",
+          color: "blue",
+        }}
       >
         {title}
       </Text>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{title}</ModalHeader>
+          <ModalHeader>
+            {id}. {title}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <p>{category}</p>
-            <p>{complexity}</p>
-            <p>{description}</p>
+            <Stack spacing={4}>
+              <HStack spacing={4}>
+                {props.category.length <= 3 ? (
+                  props.category.map((c) => <Tag>{c}</Tag>)
+                ) : (
+                  <>
+                    <Tag>{props.category[0]}</Tag>
+                    <Tag>{props.category[1]}</Tag>
+                    <Tag>{props.category.length - 2}+</Tag>
+                  </>
+                )}
+              </HStack>
+              <Text color={getComplexity()}>{complexity}</Text>
+              <Text>{description}</Text>
+            </Stack>
           </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={attemptQuestion}>
-              attempt
-            </Button>
-          </ModalFooter>
+          <Center>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={attemptQuestion}>
+                Attempt
+              </Button>
+            </ModalFooter>
+          </Center>
         </ModalContent>
       </Modal>
     </>

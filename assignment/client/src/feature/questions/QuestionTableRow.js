@@ -18,7 +18,7 @@ export default function QuestionTableRow(props) {
         <EditQuestion {...props} />
       </Td>
       <Td>
-        <DeleteQuestion />
+        <DeleteQuestion {...props} />
       </Td>
     </Tr>
   );

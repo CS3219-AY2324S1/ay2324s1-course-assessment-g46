@@ -16,6 +16,8 @@ function App() {
   const [question, setQuestion] = useState(-1);
   const [questions, setQuestions] = useState([]);
   //   const [session, setSession] = useState(null);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [questionId, setQuestionId] = useState(-1);
 
   //   useEffect(() => {
   // const loggedIn = JSON.parse(localStorage.getItem("loggedIn"));
@@ -42,27 +44,16 @@ function App() {
   //     })
   //   }, []);
 
-  useEffect(() => {
-    console.log("Getting questions");
-    getQuestions()
-      .then((data) => {
-        setQuestions(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
-
   function isHomePage() {
-    return question === -1;
+    return questionId === -1;
   }
 
-  function getQuestion() {
-    if (question !== -1) {
-      return tempQuestions[question - 1];
-    }
-    return {};
-  }
+  // function getQuestion() {
+  //   if (question !== -1) {
+  //     return tempQuestions[question - 1];
+  //   }
+  //   return {};
+  // }
 
   return (
     <Flex height="$100vh" flexDirection="column">
@@ -70,13 +61,13 @@ function App() {
         auth={auth}
         // setLoggedIn={setLoggedIn}
         isHomePage={isHomePage()}
-        goHome={() => setQuestion(-1)}
+        goHome={() => setQuestionId(-1)}
       />
       <Box flex="1">
         {isHomePage() ? (
-          <Home questions={questions} attemptQuestion={setQuestion} />
+          <Home attemptQuestion={setQuestionId} />
         ) : (
-          <Work question={getQuestion()} />
+          <Work questionId={questionId} />
         )}
       </Box>
     </Flex>

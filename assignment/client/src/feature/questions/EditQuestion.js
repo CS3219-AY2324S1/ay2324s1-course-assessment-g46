@@ -15,16 +15,27 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { MdOutlineEdit } from "react-icons/md";
+import { updateQuestion } from "../../api/questionClient";
 
 export default function EditQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [title, setTitle] = useState(props.title);
-  const [question, setQuestion] = useState(props.question);
   const [description, setDescription] = useState(props.description);
   const [category, setCategory] = useState(props.category);
   const [complexity, setComplexity] = useState(props.complexity);
 
-  function submit() {}
+  async function submit() {
+    const categories = category.split(",");
+    const question = {
+      title: title,
+      description: description,
+      category: categories,
+      complexity: complexity,
+    };
+    await updateQuestion(props._id, question);
+    onClose();
+    props.updateQuestionsList();
+  }
 
   return (
     <>
@@ -38,14 +49,6 @@ export default function EditQuestion(props) {
             <FormControl>
               <FormLabel>Title</FormLabel>
               <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-            </FormControl>
-
-            <FormControl>
-              <FormLabel>Question</FormLabel>
-              <Input
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-              />
             </FormControl>
 
             <FormControl>
@@ -73,7 +76,7 @@ export default function EditQuestion(props) {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={submit}>
+            <Button colorScheme="blue" mr={3} onClick={submit} type="submit">
               Save
             </Button>
             <Button onClick={onClose}>Cancel</Button>

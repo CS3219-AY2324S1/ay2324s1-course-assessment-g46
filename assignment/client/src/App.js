@@ -6,7 +6,6 @@ import Navbar from "./feature/navigation/Navbar";
 import Home from "./feature/page/Home";
 import Work from "./feature/page/Work";
 import { Box, Flex } from "@chakra-ui/react";
-<<<<<<< HEAD
 import { supabase } from "./supabaseClient";
 import { useAuth } from "./context/AuthProvider";
 
@@ -53,13 +52,6 @@ function App() {
         console.error(err);
       });
   }, []);
-=======
-import { useAuth } from './context/AuthProvider'
-
-function App() {
-  const { auth } = useAuth(); 
-  const [question, setQuestion] = useState(-1);
->>>>>>> 845410f (Update user service component)
 
   function isHomePage() {
     return question === -1;

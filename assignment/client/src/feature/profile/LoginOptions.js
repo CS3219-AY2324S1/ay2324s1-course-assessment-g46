@@ -5,15 +5,47 @@ import {
   MenuList,
   MenuItem,
   IconButton,
+  Button,
+  useDisclosure,  
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text
 } from "@chakra-ui/react";
 import { MdAccountCircle } from "react-icons/md";
 import Profile from "./Profile";
+import { useAuth } from "../../context/AuthProvider";
+import { supabase } from "../../supabaseClient";
 
 export default function LoginOptions(props) {
-  function logout(e) {
-    props.logout();
-    localStorage.setItem("loggedIn", "false");
+  const { token, logout } = useAuth(); 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  async function submitLogout(e) {
+    e.preventDefault();
+    const { error } = await logout();
+    if (error) {
+      alert(error.message);
+    }
   }
+
+  async function deleteAccount(e) {
+    e.preventDefault();
+
+    // Fetch api to delete account below 
+
+    onClose(e);
+    submitLogout(e);
+
+    if (error) {
+      alert(error.message);
+    } 
+  }
+
 
   return (
     <>
@@ -21,7 +53,29 @@ export default function LoginOptions(props) {
         <MenuButton as={IconButton} icon={<MdAccountCircle />} />
         <MenuList>
           <Profile />
-          <MenuItem onClick={logout}>Logout</MenuItem>
+          <MenuItem onClick={submitLogout}>Logout</MenuItem>
+          <MenuItem onClick={onOpen}>Delete account</MenuItem>
+          <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader> Delete your account </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text>
+                  This action will permanently delete your account and is irreversible. 
+                  Do you still want to do it?
+                </Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  colorScheme="red"
+                  mr={3}
+                  onClick={deleteAccount}>
+                  Confirm
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </MenuList>
       </Menu>
     </>

@@ -112,7 +112,9 @@ export default function AddQuestion(props) {
 
   return (
     <>
-      <Button onClick={onOpen}>Add Question</Button>
+      <Button onClick={onOpen} colorScheme="twitter">
+        Add Question
+      </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

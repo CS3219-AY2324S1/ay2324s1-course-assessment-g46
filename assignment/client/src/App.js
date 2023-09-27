@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./feature/navigation/Navbar";
 import Home from "./feature/page/Home";
 import Work from "./feature/page/Work";
-import { Box, Flex } from "@chakra-ui/react";
 import { supabase } from "./supabaseClient";
 import { useAuth } from "./context/AuthProvider";
 import "./App.css";
+import Workbar from "./feature/navigation/Workbar";
 
 function App() {
   //   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -49,19 +49,19 @@ function App() {
 
   return (
     <Flex height="$100vh" flexDirection="column">
-      <Navbar
-        auth={auth}
-        // setLoggedIn={setLoggedIn}
-        isHomePage={isHomePage()}
-        goHome={() => setQuestionId(-1)}
-      />
-      <Box flex="1">
-        {isHomePage() ? (
-          <Home attemptQuestion={setQuestionId} />
-        ) : (
+      {isHomePage() ? (
+        <>
+          <Navbar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
+          <Box flex="1">
+            <Home attemptQuestion={setQuestionId} />
+          </Box>
+        </>
+      ) : (
+        <>
+          <Workbar goHome={() => setQuestionId(-1)} />
           <Work questionId={questionId} />
-        )}
-      </Box>
+        </>
+      )}
     </Flex>
   );
 }

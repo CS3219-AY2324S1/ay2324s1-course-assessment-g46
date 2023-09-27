@@ -15,6 +15,7 @@ import {
   Divider,
   Stack,
   Center,
+  Wrap,
 } from "@chakra-ui/react";
 
 export default function ReadQuestion(props) {
@@ -59,17 +60,11 @@ export default function ReadQuestion(props) {
           <ModalCloseButton />
           <ModalBody>
             <Stack spacing={4}>
-              <HStack spacing={4}>
-                {props.category.length <= 3 ? (
-                  props.category.map((c) => <Tag>{c}</Tag>)
-                ) : (
-                  <>
-                    <Tag>{props.category[0]}</Tag>
-                    <Tag>{props.category[1]}</Tag>
-                    <Tag>{props.category.length - 2}+</Tag>
-                  </>
-                )}
-              </HStack>
+              <Wrap spacing={4}>
+                {category.map((c) => (
+                  <Tag>{c}</Tag>
+                ))}
+              </Wrap>
               <Text color={getComplexity()}>{complexity}</Text>
               <Text>{description}</Text>
             </Stack>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { supabase } from "../../supabaseClient";
 import {
   Button,
   FormControl,
@@ -13,28 +14,72 @@ import {
   ModalOverlay,
   useDisclosure,
   MenuItem,
+  Textarea,
 } from "@chakra-ui/react";
+import { useAuth } from "../../context/AuthProvider";
 
 export default function Profile(props) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [username, setUsername] = useState("");
+  const INVALID_GOAL_LENGTH = "Please make sure your goal has no more than 100 characters";
+  const { isOpen: isOpenFirstModal, onOpen: onOpenFirstModal, onClose: onCloseFirstModal } = useDisclosure();
+  const { isOpen: isOpenSecondModal, onOpen: onOpenSecondModal, onClose: onCloseSecondModal } = useDisclosure();
 
-  function updateProfile() {}
+  const { session } = useAuth();
+  const [fullName, setFullName] = useState("");
+  const [goal, setGoal] = useState("");
+
+  const getPersonalInfo = async () => {
+    const { data } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', session.user.id);
+    
+    setFullName(data[0].full_name)
+    setGoal(data[0].goal)
+}
+
+  useEffect(() => {
+    getPersonalInfo();
+  }, [])
+
+async function updateProfile(e) {
+    e.preventDefault();
+
+    const { data, error } = await supabase
+    .from('profiles')
+    .update({ 
+        full_name: fullName, 
+        goal: goal 
+    })
+    .eq('id', session.user.id)
+    .select();
+
+    if (error) {
+        alert(INVALID_GOAL_LENGTH);
+        getPersonalInfo(); 
+    } 
+  }
 
   return (
     <>
-      <MenuItem onClick={onOpen}>Profile</MenuItem>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <MenuItem onClick={onOpenFirstModal}>Profile</MenuItem>
+      <Modal isOpen={isOpenFirstModal} onClose={onCloseFirstModal}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <FormControl>
-              <FormLabel>User Name</FormLabel>
+              <FormLabel>Full Name</FormLabel>
               <Input
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder={fullName}
+                isReadOnly={true}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Goal</FormLabel>
+              <Textarea
+                placeholder={goal}
+                isReadOnly={true}
               />
             </FormControl>
           </ModalBody>
@@ -42,7 +87,43 @@ export default function Profile(props) {
             <Button
               colorScheme="blue"
               mr={3}
-              onClick={updateProfile}
+              onClick={onOpenSecondModal}
+            >
+              Edit
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenSecondModal} onClose={onCloseSecondModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Profile</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <FormControl>
+              <FormLabel>Full Name</FormLabel>
+              <Input
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Goal</FormLabel>
+              <Textarea
+                value={goal}
+                onChange={(e) => setGoal(e.target.value)}
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={(e) => {
+                updateProfile(e); 
+                onCloseSecondModal();
+            }}
               type="submit"
             >
               Save

@@ -19,7 +19,7 @@ export default function QuestionTableRow(props) {
       <Td>
         <HStack spacing={4}>
           {props.category.length <= 3 ? (
-            props.category.map((c) => <Tag>{c}</Tag>)
+            props.category.map((c, i) => <Tag key={i}>{c}</Tag>)
           ) : (
             <>
               <Tag>{props.category[0]}</Tag>

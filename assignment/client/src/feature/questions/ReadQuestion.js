@@ -61,8 +61,8 @@ export default function ReadQuestion(props) {
           <ModalBody>
             <Stack spacing={4}>
               <Wrap spacing={4}>
-                {category.map((c) => (
-                  <Tag>{c}</Tag>
+                {category.map((c, i) => (
+                  <Tag key={i}>{c}</Tag>
                 ))}
               </Wrap>
               <Text color={getComplexity()}>{complexity}</Text>

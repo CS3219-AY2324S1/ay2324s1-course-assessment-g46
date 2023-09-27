@@ -77,12 +77,13 @@ export default function EditQuestion(props) {
       setMissingCategory(true);
       valid = false;
     }
-    if (props.questions.filter((q) => q.title === title) > 1) {
+    let filtered = props.questions.filter((q) => q._id !== props._id);
+    if (filtered.some((q) => q.title === title)) {
       setMissingTitle(false);
       setRepeatTitle(true);
       valid = false;
     }
-    if (props.questions.filter((q) => q.description === description) > 1) {
+    if (filtered.some((q) => q.description === description)) {
       setMissingDesc(false);
       setRepeatDesc(true);
       valid = false;

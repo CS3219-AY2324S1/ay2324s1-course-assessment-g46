@@ -19,12 +19,12 @@ export default function Navbar(props) {
         </Box>
         <Spacer />
         <Box>
-          {props.auth ? (
-            <LoginOptions />
+          {props.loggedIn ? (
+            <LoginOptions setLoggedIn={props.setLoggedIn}/>
           ) : (
             <>
-              <Login />
-              <Signup />
+              <Login setLoggedIn={props.setLoggedIn}/>
+              <Signup setLoggedIn={props.setLoggedIn}/>
             </>
           )}
         </Box>

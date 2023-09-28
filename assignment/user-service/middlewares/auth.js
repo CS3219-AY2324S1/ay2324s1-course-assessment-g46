@@ -3,8 +3,10 @@ const jwt_decode = require('jwt-decode');
 
 // Check if input token is valid 
 exports.auth = async (req, res, next) => {
-    // var token = req.headers.authorization.split(" ")[1]; 
-    var token = req.headers.authorization; 
+    if (!req.headers.authorization) {
+      return res.status(401).json({message: "No token is present"}); 
+    }
+    var token = req.headers.authorization.split(" ")[1]; 
     if (!token) {
       return res.status(401).json({message: "No token is present"}); 
     }

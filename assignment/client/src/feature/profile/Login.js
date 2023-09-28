@@ -13,20 +13,22 @@ import {
     ModalOverlay,
     useDisclosure,
 } from "@chakra-ui/react";
-import { useAuth } from "../../context/AuthProvider";
+import { signIn } from "../../api/userClient"
 
 export default function Login(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
 
   async function submitLogin(e) {
     e.preventDefault();
-    const { error } = await login(email, password);
-    if (error) {
-        alert(error.message);
-    } 
+    const res = await signIn({email: email, password: password});
+    if (res.hasOwnProperty("error")) {
+      alert(res.error.message);
+    } else {
+      localStorage.setItem("token", res.data.access_token);
+      props.setLoggedIn(true);
+    }
   }
     
   return (

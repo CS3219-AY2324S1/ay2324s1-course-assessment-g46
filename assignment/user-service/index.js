@@ -2,6 +2,8 @@ const express = require('express');
 const {createClient} = require('@supabase/supabase-js');
 const morgan = require('morgan')
 const bodyParser = require("body-parser");
+const cors = require('cors');
+
 
 const supabaseUrl = "https://iwxacjmydxiforzrvurs.supabase.co"
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3eGFjam15ZHhpZm9yenJ2dXJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NTAwMTksImV4cCI6MjAxMDQyNjAxOX0.KkiYYTJUNTD3K7OkHASV3_ZEv5NIFN-Farw9lT7QIfk"
@@ -13,6 +15,8 @@ const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(cors());
+
 
 const user = require('./routes/user')
 app.use('/user', user)

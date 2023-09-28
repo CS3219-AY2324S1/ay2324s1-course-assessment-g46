@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   FormControl,
   FormErrorMessage,
@@ -13,7 +12,6 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
-  Tag,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Select as TagSelect } from "chakra-react-select";
@@ -39,6 +37,8 @@ export default function AddQuestion(props) {
   const [repeatTitle, setRepeatTitle] = useState(false);
   const [repeatDesc, setRepeatDesc] = useState(false);
 
+  const [apiError, setApiError] = useState(false);
+
   useEffect(() => {
     resetForm();
     resetValidation();
@@ -49,18 +49,23 @@ export default function AddQuestion(props) {
       e.preventDefault();
       return;
     }
+
     const categories = category.map((c) => c.value);
-    const question = {
-      id: id,
-      title: title,
-      description: description,
-      category: categories,
-      complexity: complexity,
-    };
-    console.log(question);
-    await addQuestion(question);
-    onClose();
-    props.updateQuestionsList();
+    // const question = {
+    //   id: id,
+    //   title: title,
+    //   description: description,
+    //   category: categories,
+    //   complexity: complexity,
+    // };
+    try {
+      await addQuestion(id, title, description, categories, complexity);
+      onClose();
+      props.updateQuestionsList();
+    } catch (error) {
+      console.log(error);
+      setApiError(true);
+    }
   }
 
   function validate() {
@@ -99,6 +104,7 @@ export default function AddQuestion(props) {
     setMissingDesc(false);
     setRepeatDesc(false);
     setMissingCategory(false);
+    setApiError(false);
   }
 
   function resetForm() {
@@ -180,6 +186,14 @@ export default function AddQuestion(props) {
                 <option value="Medium">Medium</option>
                 <option value="Hard">Hard</option>
               </Select>
+            </FormControl>
+
+            <FormControl isInvalid={apiError}>
+              {apiError && (
+                <FormErrorMessage>
+                  Server encountered error adding question
+                </FormErrorMessage>
+              )}
             </FormControl>
           </ModalBody>
           <ModalFooter>

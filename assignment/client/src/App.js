@@ -8,8 +8,6 @@ import { Box, Flex } from "@chakra-ui/react";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [question, setQuestion] = useState(-1);
-  const [questions, setQuestions] = useState([]);
   const [questionId, setQuestionId] = useState(-1);
 
   useEffect(() => {

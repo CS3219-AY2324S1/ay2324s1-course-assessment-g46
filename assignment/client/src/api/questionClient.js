@@ -4,12 +4,8 @@ const questionsApi =
   process.env.QUESTIONS_API_URL || "http://localhost:8888/questions";
 
 export const getQuestions = async () => {
-  try {
-    let { data } = await axios.get(questionsApi);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  let { data } = await axios.get(questionsApi);
+  return data;
 };
 
 export const getQuestion = async (id) => {
@@ -30,13 +26,16 @@ export const getLastQuestionId = async () => {
   }
 };
 
-export const addQuestion = async (question) => {
-  try {
-    let { data } = await axios.post(questionsApi, question);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+export const addQuestion = async (id, title, desc, categories, complexity) => {
+  const question = {
+    id: id,
+    title: title,
+    description: desc,
+    category: categories,
+    complexity: complexity,
+  };
+  let { data } = await axios.post(questionsApi, question);
+  return data;
 };
 
 export const updateQuestion = async (id, question) => {

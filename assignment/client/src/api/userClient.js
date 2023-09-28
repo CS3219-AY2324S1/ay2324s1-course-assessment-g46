@@ -1,10 +1,10 @@
 import axios from "axios";
 
+const userApi = process.env.USER_API_URL || "http://localhost:5000/user";
+
 export const signIn = async (userDetails) => {
   try {
-    let { data } = await axios.post("http://localhost:3000/user/login", 
-      userDetails
-    );
+    let { data } = await axios.post(`${userApi}/login`, userDetails);
     return { data };
   } catch (error) {
     return { error: error.response.data };
@@ -13,9 +13,7 @@ export const signIn = async (userDetails) => {
 
 export const signUp = async (userDetails) => {
   try {
-    let { data } = await axios.post("http://localhost:3000/user/signup", 
-      userDetails
-    );
+    let { data } = await axios.post(`${userApi}/signup`, userDetails);
     return { data };
   } catch (error) {
     return { error: error.response.data };
@@ -24,7 +22,7 @@ export const signUp = async (userDetails) => {
 
 export const signOut = async () => {
   try {
-    let { data } = await axios.post("http://localhost:3000/user/logout");
+    let { data } = await axios.post(`${userApi}/logout`);
     return { data };
   } catch (error) {
     return { error: error.response.data };
@@ -33,14 +31,9 @@ export const signOut = async () => {
 
 export const updateProfile = async (userDetails, token) => {
   try {
-    let { data } = await axios.put(
-      "http://localhost:3000/user/updateProfile", 
-      userDetails, 
-      {
-        headers: 
-        { Authorization: `Bearer ${token}` }
-      }
-    );
+    let { data } = await axios.put(`${userApi}/updateProfile`, userDetails, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     return { data };
   } catch (error) {
@@ -50,13 +43,9 @@ export const updateProfile = async (userDetails, token) => {
 
 export const getProfile = async (token) => {
   try {
-    let { data } = await axios.get(
-      "http://localhost:3000/user/me", 
-      {
-        headers: 
-        { Authorization: `Bearer ${token}` }
-      }
-    );
+    let { data } = await axios.get(`${userApi}/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     return { data };
   } catch (error) {
@@ -66,18 +55,12 @@ export const getProfile = async (token) => {
 
 export const deleteAccount = async (token) => {
   try {
-    let { data } = await axios.delete(
-      "http://localhost:3000/user/deleteAccount", 
-      {
-        headers: 
-        { Authorization: `Bearer ${token}` }
-      }
-    );
+    let { data } = await axios.delete(`${userApi}/deleteAccount`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     return { data };
   } catch (error) {
     return { error: error.response.data };
   }
 };
-
-

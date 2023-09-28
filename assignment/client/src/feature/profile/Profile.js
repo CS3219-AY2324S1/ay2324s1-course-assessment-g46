@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { supabase } from "../../supabaseClient";
 import {
   Button,
   FormControl,
@@ -16,24 +15,26 @@ import {
   MenuItem,
   Textarea,
 } from "@chakra-ui/react";
-import { useAuth } from "../../context/AuthProvider";
+import { getProfile, updateProfile } from "../../api/userClient";
 
 export default function Profile(props) {
   const INVALID_GOAL_LENGTH = "Please make sure your goal has no more than 100 characters";
   const { isOpen: isOpenFirstModal, onOpen: onOpenFirstModal, onClose: onCloseFirstModal } = useDisclosure();
   const { isOpen: isOpenSecondModal, onOpen: onOpenSecondModal, onClose: onCloseSecondModal } = useDisclosure();
 
-  const { token } = useAuth();
+  // const { token } = useAuth();
+  const token = localStorage.getItem("token")
   const [fullName, setFullName] = useState("");
   const [goal, setGoal] = useState("");
 
   const getPersonalInfo = async () => {
     // Fetch user here 
-
-
-    if (data.length != 0) {
-      setFullName(data[0].full_name)
-      setGoal(data[0].goal)
+    const res = await getProfile(token)
+    if (res.hasOwnProperty("error")) {
+      alert(res.error.message)
+    } else {
+      setFullName(res.data.fullName)
+      setGoal(res.data.goal)
     }
   }
 
@@ -41,9 +42,15 @@ export default function Profile(props) {
     getPersonalInfo();
   }, [])
 
-  async function updateProfile(e) {
+  async function updateUser(e) {
     e.preventDefault();
-
+    const res = await updateProfile({fullName: fullName, goal: goal}, token)
+    if (res.hasOwnProperty("error")) {
+      alert(res.error.message)
+    } else {
+      getPersonalInfo();
+    }
+    
     // Update profile here
   }
 
@@ -109,7 +116,7 @@ export default function Profile(props) {
               colorScheme="blue"
               mr={3}
               onClick={(e) => {
-                updateProfile(e); 
+                updateUser(e); 
                 onCloseSecondModal();
             }}
               type="submit"

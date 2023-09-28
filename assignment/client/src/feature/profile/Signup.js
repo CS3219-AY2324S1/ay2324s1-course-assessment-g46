@@ -13,7 +13,8 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useAuth } from "../../context/AuthProvider";
+import { signUp } from "../../api/userClient"
+
 
 export default function Signup(props) {
   const EMPTY_EMAIL = "Email field is left empty"
@@ -25,29 +26,20 @@ export default function Signup(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
-  const { signup } = useAuth(); 
 
   async function submitSignup(e) {
     e.preventDefault();
 
-    // Check if email address and password are valid 
-    if (email.length == 0) {
-      alert(EMPTY_EMAIL);
-    }
-    if (password.length == 0) {
-      alert(EMPTY_PASSWORD);
-    }
-    if (fullName.length == 0) {
-      alert(EMPTY_NAME);
-    }
     if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
       alert(INVALID_EMAIL);
     }
 
-    const { error } = await signup(email, password, fullName);
-    if (error) {
-      alert(error.message)
-    } 
+    const res = await signUp({email: email, password: password, fullName: fullName});
+    if (res.hasOwnProperty("error")) {
+      alert(res.error.message);
+    } else {
+      onClose();
+    }
 }
 
   return (

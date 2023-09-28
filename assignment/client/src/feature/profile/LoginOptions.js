@@ -18,32 +18,34 @@ import {
 } from "@chakra-ui/react";
 import { MdAccountCircle } from "react-icons/md";
 import Profile from "./Profile";
-import { useAuth } from "../../context/AuthProvider";
-import { supabase } from "../../supabaseClient";
+import { signOut, deleteAccount } from "../../api/userClient"
+
 
 export default function LoginOptions(props) {
-  const { token, logout } = useAuth(); 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const token = localStorage.getItem("token");
 
   async function submitLogout(e) {
     e.preventDefault();
-    const { error } = await logout();
-    if (error) {
-      alert(error.message);
+    const res = await signOut();
+    if (res.hasOwnProperty("error")) {
+      alert(res.error.message);
+    } else {
+      localStorage.removeItem("token");
+      props.setLoggedIn(false);
     }
   }
 
-  async function deleteAccount(e) {
+  async function submitDelete(e) {
     e.preventDefault();
 
-    // Fetch api to delete account below 
-
-    onClose(e);
-    submitLogout(e);
-
-    if (error) {
-      alert(error.message);
-    } 
+    const res = await deleteAccount(token);
+    if (res.hasOwnProperty("error")) {
+      alert(res.error.message)
+    } else {
+      onClose(e);
+      submitLogout(e);
+    }
   }
 
 
@@ -70,7 +72,7 @@ export default function LoginOptions(props) {
                 <Button
                   colorScheme="red"
                   mr={3}
-                  onClick={deleteAccount}>
+                  onClick={submitDelete}>
                   Confirm
                 </Button>
               </ModalFooter>

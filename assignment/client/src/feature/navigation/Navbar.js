@@ -1,7 +1,7 @@
 import React from "react";
 import Login from "../profile/Login";
 import LoginOptions from "../profile/LoginOptions";
-import { Box, Flex, Icon, Spacer } from "@chakra-ui/react";
+import { Box, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
 import Signup from "../profile/Signup";
 import { MdHome } from "react-icons/md";
 
@@ -10,12 +10,9 @@ export default function Navbar(props) {
     <>
       <Flex direction={"row"} spacing={4} mx={10} py={2} alignItems="center">
         <Box>
-          <Icon
-            as={MdHome}
-            boxSize={6}
-            onClick={props.goHome}
-            _hover={{ cursor: "pointer" }}
-          />
+          <Text fontSize="lg" as="b" color="#006AFF">
+            Peerprep
+          </Text>
         </Box>
         <Spacer />
         <Box>

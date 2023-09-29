@@ -11,13 +11,16 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import { MdDelete } from "react-icons/md";
+import { deleteQuestion } from "../../api/questionClient";
 
 export default function DeleteQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
 
-  function deleteQuestion() {
+  async function submit() {
+    await deleteQuestion(props._id);
     onClose();
+    props.updateQuestionsList();
   }
 
   return (
@@ -43,7 +46,7 @@ export default function DeleteQuestion(props) {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={deleteQuestion} ml={3}>
+              <Button colorScheme="red" onClick={submit} ml={3} type="submit">
                 Delete
               </Button>
             </AlertDialogFooter>

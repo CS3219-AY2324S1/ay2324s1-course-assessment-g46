@@ -21,6 +21,8 @@ export default function QuestionTable(props) {
               <QuestionTableRow
                 {...data}
                 attemptQuestion={props.attemptQuestion}
+                updateQuestionsList={props.updateQuestionsList}
+                questions={props.questions}
               />
             </Fragment>
           ))}

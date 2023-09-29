@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    environment:
+      - QUESTIONS_API_URL=http://question:8888/questions
+      - USER_API_URL=http://user:5000/user
+    depends_on:
+      - question
+      - user
+
+  question:
+    build:
+      context: ./question-service
+    ports:
+      - "8888:8888"
+    environment:
+      - MONGODB_URL=mongodb://mongo
+    depends_on:
+      - mongo
+
+  user:
+    build:
+      context: ./user-service
+    ports:
+      - "5000:5000"
+
+  mongo:
+    image: mongo:6
+    ports:
+      - 27017:27017

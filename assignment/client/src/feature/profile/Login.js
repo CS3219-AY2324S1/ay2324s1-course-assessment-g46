@@ -1,28 +1,31 @@
 import React, { useState } from "react";
 import {
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    useDisclosure,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { signIn } from "../../api/userClient"
+import { signIn } from "../../api/userClient";
 
 export default function Login(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
 
   async function submitLogin(e) {
     e.preventDefault();
-    const res = await signIn({email: email, password: password});
+    const res = await signIn({ email: email, password: password });
     if (res.hasOwnProperty("error")) {
       alert(res.error.message);
     } else {
@@ -30,7 +33,7 @@ export default function Login(props) {
       props.setLoggedIn(true);
     }
   }
-    
+
   return (
     <>
       <Button onClick={onOpen} colorScheme="messenger">
@@ -45,19 +48,27 @@ export default function Login(props) {
             <FormControl>
               <FormLabel>Email</FormLabel>
               <Input
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>
 
             <FormControl>
               <FormLabel>Password</FormLabel>
-              <Input
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              />
+              <InputGroup>
+                <Input
+                  placeholder="Password"
+                  value={password}
+                  type={show ? "text" : "password"}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputRightElement width="4.5rem">
+                  <Button h="1.75rem" size="sm" onClick={() => setShow(!show)}>
+                    {show ? "Hide" : "Show"}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
           </ModalBody>
           <ModalFooter>

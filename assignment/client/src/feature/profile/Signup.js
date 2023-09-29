@@ -4,6 +4,8 @@ import {
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,19 +15,19 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { signUp } from "../../api/userClient"
-
+import { signUp } from "../../api/userClient";
 
 export default function Signup(props) {
-  const EMPTY_EMAIL = "Email field is left empty"
-  const EMPTY_PASSWORD = "Password field is left empty"
-  const EMPTY_NAME = "Fullname field is left empty"
-  const INVALID_EMAIL = "Email address is invalid"
+  const EMPTY_EMAIL = "Email field is left empty";
+  const EMPTY_PASSWORD = "Password field is left empty";
+  const EMPTY_NAME = "Fullname field is left empty";
+  const INVALID_EMAIL = "Email address is invalid";
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+  const [show, setShow] = useState(false);
 
   async function submitSignup(e) {
     e.preventDefault();
@@ -34,13 +36,17 @@ export default function Signup(props) {
       alert(INVALID_EMAIL);
     }
 
-    const res = await signUp({email: email, password: password, fullName: fullName});
+    const res = await signUp({
+      email: email,
+      password: password,
+      fullName: fullName,
+    });
     if (res.hasOwnProperty("error")) {
       alert(res.error.message);
     } else {
       onClose();
     }
-}
+  }
 
   return (
     <>
@@ -73,11 +79,19 @@ export default function Signup(props) {
 
             <FormControl>
               <FormLabel>Password</FormLabel>
-              <Input
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <InputGroup>
+                <Input
+                  placeholder="Password"
+                  value={password}
+                  type={show ? "text" : "password"}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputRightElement width="4.5rem">
+                  <Button h="1.75rem" size="sm" onClick={() => setShow(!show)}>
+                    {show ? "Hide" : "Show"}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
           </ModalBody>
           <ModalFooter>

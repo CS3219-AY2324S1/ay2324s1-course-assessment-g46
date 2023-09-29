@@ -24,7 +24,7 @@ export default function WorkTools(props) {
   function renderTool() {
     switch (curTool) {
       case "question":
-        return <Question {...props} />;
+        return <Question question={props.question} />;
       case "chat":
         return <Chat />;
       case "list":

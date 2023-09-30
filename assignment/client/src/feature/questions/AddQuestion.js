@@ -18,6 +18,7 @@ import { Select as TagSelect } from "chakra-react-select";
 import React, { useEffect, useState } from "react";
 import {
   addQuestion,
+  getFirstMissingQuestionId,
   getLastQuestionId,
   questionCategories,
 } from "../../api/questionClient";
@@ -113,7 +114,7 @@ export default function AddQuestion(props) {
     setDescription("");
     setCategory([]);
     setComplexity("Easy");
-    getLastQuestionId().then((id) => setId(id + 1));
+    getFirstMissingQuestionId().then((id) => setId(id));
   }
 
   return (

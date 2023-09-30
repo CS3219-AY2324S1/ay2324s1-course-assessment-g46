@@ -24,7 +24,27 @@ export const getQuestion = async (id) => {
 export const getLastQuestionId = async () => {
   try {
     let { data } = await axios.get(questionsApi, getHeader());
+    console.log(data)
     return data.length;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFirstMissingQuestionId = async () => {
+  try {
+    let { data } = await axios.get(questionsApi, getHeader());
+    let idSet = new Set();
+    for (let i in data) {
+      idSet.add(data[i].id);
+    }
+    let value = 1
+    while (true) {
+      if (!idSet.has(value)) {
+        return value;
+      }
+      value++;
+    }
   } catch (error) {
     console.log(error);
   }

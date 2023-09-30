@@ -9,7 +9,6 @@ function authorize(req, res, next) {
     res.status(401).json({message: "No token is present"});
   }
   role = jwt_decode(req.headers.authorization)?.role;
-  console.log("authorization check: " + role);
   if (role != "admin" && role != "authenticated") {
     res.status(403).json({message: "No authorization to view questions"});
   } else {
@@ -22,7 +21,6 @@ function authorizeAdmin(req, res, next) {
     res.status(401).json({message: "No token is present"});
   }
   role = jwt_decode(req.headers.authorization)?.role;
-  console.log("admin check: " + role);
   if (role != "admin") {
     res.status(403).json({message: "No authorization to modify questions"});
   } else {
@@ -59,6 +57,7 @@ router.post("/", authorizeAdmin, async (req, res) => {
     const newQuestion = await question.save();
     res.status(201).json(newQuestion);
   } catch (err) {
+    console.log(err.message);
     res.status(400).json({ message: err.message });
   }
 });

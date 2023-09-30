@@ -1,9 +1,37 @@
 const express = require("express");
 const router = express.Router();
 const Question = require("../models/question");
+const jwt_decode = require('jwt-decode');
+
+// I tried using middlewares but end up with CORS error that I have no idea how to fix
+function authorize(req, res, next) {
+  if (!req.headers.authorization) {
+    res.status(401).json({message: "No token is present"});
+  }
+  role = jwt_decode(req.headers.authorization)?.role;
+  console.log("authorization check: " + role);
+  if (role != "admin" && role != "authenticated") {
+    res.status(403).json({message: "No authorization to view questions"});
+  } else {
+    next();
+  }
+}
+
+function authorizeAdmin(req, res, next) {
+  if (!req.headers.authorization) {
+    res.status(401).json({message: "No token is present"});
+  }
+  role = jwt_decode(req.headers.authorization)?.role;
+  console.log("admin check: " + role);
+  if (role != "admin") {
+    res.status(403).json({message: "No authorization to modify questions"});
+  } else {
+    next();
+  }
+}
 
 // READ ALL
-router.get("/", async (req, res) => {
+router.get("/", authorize, async (req, res) => {
   try {
     const questions = await Question.find();
     res.status(200).json(questions);
@@ -18,7 +46,7 @@ router.get("/:id", getQuestion, (req, res) => {
 });
 
 // CREATE ONE
-router.post("/", async (req, res) => {
+router.post("/", authorizeAdmin, async (req, res) => {
   const question = new Question({
     id: req.body.id,
     title: req.body.title,
@@ -36,7 +64,7 @@ router.post("/", async (req, res) => {
 });
 
 // UPDATE ONE
-router.patch("/:id", getQuestion, async (req, res) => {
+router.patch("/:id", [authorizeAdmin, getQuestion], async (req, res) => {
   if (req.body.id != null) {
     res.question.id = req.body.id;
   }
@@ -61,7 +89,7 @@ router.patch("/:id", getQuestion, async (req, res) => {
 });
 
 // DELETE ONE
-router.delete("/:id", getQuestion, async (req, res) => {
+router.delete("/:id", [authorizeAdmin, getQuestion], async (req, res) => {
   try {
     await res.question.deleteOne();
     res.json({ message: "Deleted question" });

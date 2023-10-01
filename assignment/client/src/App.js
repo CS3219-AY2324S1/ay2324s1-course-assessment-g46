@@ -10,6 +10,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [questionId, setQuestionId] = useState(-1);
+  const [roomName, setRoomName] = useState("");
 
   useEffect(() => {
     const admin = localStorage.getItem("admin");
@@ -42,13 +43,14 @@ function App() {
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               isAdmin={isAdmin}
+              setRoomName={setRoomName}
             />
           </Box>
         </>
       ) : (
         <>
           <Workbar goHome={() => setQuestionId(-1)} />
-          <Work questionId={questionId} />
+          <Work questionId={questionId} roomName={roomName} />
         </>
       )}
     </Flex>

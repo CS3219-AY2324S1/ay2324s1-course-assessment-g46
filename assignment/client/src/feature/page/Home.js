@@ -20,7 +20,7 @@ export default function Home(props) {
 
   useEffect(() => {
     updateQuestionsList();
-  }, []);
+  }, [props]);
 
   return (
     props.loggedIn ? (

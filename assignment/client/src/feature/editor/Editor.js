@@ -12,25 +12,21 @@ export default function Editor(props) {
   const [codeContent, setCodeContent] = useState("");
 
   let roomName = props.roomName;
+
+  function onUpdateCode(code) {
+    setCodeContent(code);
+  }
   
   useEffect( () => {
-    function onConnect() {
-      socket.emit("joinRoom", roomName);
-    }
-
-    function onUpdateCode(code) {
-      setCodeContent(code);
-    }
     socket.connect();
-    socket.on("connect", onConnect);
     socket.on("updateCode", onUpdateCode);
+    socket.emit("joinRoom", roomName);
 
     return () => {
-      socket.off("connect", onConnect);
       socket.off("updateCode", onUpdateCode);
       socket.disconnect();
     };
-  });
+  }, []);
 
   function update(e) {
     setCodeContent(e.target.value);

@@ -30,12 +30,16 @@ export default function QuestionTableRow(props) {
         </HStack>
       </Td>
       <Td>{props.complexity}</Td>
-      <Td>
-        <EditQuestion {...props} questions={props.questions} />
-      </Td>
-      <Td>
-        <DeleteQuestion {...props} />
-      </Td>
+      {props.isAdmin && (
+        <>
+          <Td>
+            <EditQuestion {...props} questions={props.questions} />
+          </Td>
+          <Td>
+            <DeleteQuestion {...props} />
+          </Td>
+        </>
+      )}
     </Tr>
   );
 }

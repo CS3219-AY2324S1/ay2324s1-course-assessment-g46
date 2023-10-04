@@ -3,21 +3,13 @@ import axios from "axios";
 const userApi = process.env.USER_API_URL || "http://localhost:5000/user";
 
 export const signIn = async (userDetails) => {
-  try {
-    let { data } = await axios.post(`${userApi}/login`, userDetails);
-    return { data };
-  } catch (error) {
-    return { error: error.response.data };
-  }
+  let { data } = await axios.post(`${userApi}/login`, userDetails);
+  return { data };
 };
 
 export const signUp = async (userDetails) => {
-  try {
-    let { data } = await axios.post(`${userApi}/signup`, userDetails);
-    return { data };
-  } catch (error) {
-    return { error: error.response.data };
-  }
+  let { data } = await axios.post(`${userApi}/signup`, userDetails);
+  return { data };
 };
 
 export const signOut = async () => {

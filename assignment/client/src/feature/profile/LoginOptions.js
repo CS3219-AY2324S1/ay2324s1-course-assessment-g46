@@ -6,7 +6,7 @@ import {
   MenuItem,
   IconButton,
   Button,
-  useDisclosure,  
+  useDisclosure,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,12 +14,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { MdAccountCircle } from "react-icons/md";
 import Profile from "./Profile";
-import { signOut, deleteAccount } from "../../api/userClient"
-
+import { signOut, deleteAccount } from "../../api/userClient";
 
 export default function LoginOptions(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -32,6 +31,7 @@ export default function LoginOptions(props) {
       alert(res.error.message);
     } else {
       localStorage.removeItem("token");
+      localStorage.removeItem("admin");
       props.setLoggedIn(false);
     }
   }
@@ -41,13 +41,12 @@ export default function LoginOptions(props) {
 
     const res = await deleteAccount(token);
     if (res.hasOwnProperty("error")) {
-      alert(res.error.message)
+      alert(res.error.message);
     } else {
       onClose(e);
       submitLogout(e);
     }
   }
-
 
   return (
     <>
@@ -64,15 +63,12 @@ export default function LoginOptions(props) {
               <ModalCloseButton />
               <ModalBody>
                 <Text>
-                  This action will permanently delete your account and is irreversible. 
-                  Do you still want to do it?
+                  This action will permanently delete your account and is
+                  irreversible. Do you still want to do it?
                 </Text>
               </ModalBody>
               <ModalFooter>
-                <Button
-                  colorScheme="red"
-                  mr={3}
-                  onClick={submitDelete}>
+                <Button colorScheme="red" mr={3} onClick={submitDelete}>
                   Confirm
                 </Button>
               </ModalFooter>

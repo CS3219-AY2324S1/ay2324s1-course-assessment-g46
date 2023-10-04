@@ -20,9 +20,10 @@ export default function Home(props) {
 
   useEffect(() => {
     updateQuestionsList();
-  }, []);
+  }, [props]);
 
   return (
+    props.loggedIn ? (
     <>
       <Flex justifyContent="space-between" alignItems="center" mx={10} my={3}>
         <Text as="b">Questions</Text>
@@ -38,5 +39,11 @@ export default function Home(props) {
         attemptQuestion={props.attemptQuestion}
       />
     </>
+    ) : (
+      <div style={{display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100%"}}>Please login to begin</div>
+    )
   );
 }

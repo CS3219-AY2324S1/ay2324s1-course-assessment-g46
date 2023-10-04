@@ -29,7 +29,7 @@ function App() {
         <>
           <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
           <Box flex="1">
-            <Home attemptQuestion={setQuestionId} />
+            <Home attemptQuestion={setQuestionId} loggedIn={loggedIn} />
           </Box>
         </>
       ) : (

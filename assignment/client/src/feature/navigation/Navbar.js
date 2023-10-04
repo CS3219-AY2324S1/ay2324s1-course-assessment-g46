@@ -1,9 +1,8 @@
 import React from "react";
 import Login from "../profile/Login";
 import LoginOptions from "../profile/LoginOptions";
-import { Box, Flex, Icon, Spacer, Text } from "@chakra-ui/react";
+import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
 import Signup from "../profile/Signup";
-import { MdHome } from "react-icons/md";
 
 export default function Navbar(props) {
   return (
@@ -16,14 +15,15 @@ export default function Navbar(props) {
         </Box>
         <Spacer />
         <Box>
-          {props.loggedIn ? (
+          {props.loggedIn && <LoginOptions setLoggedIn={props.setLoggedIn} />}
+          {/* {props.loggedIn ? (
             <LoginOptions setLoggedIn={props.setLoggedIn}/>
           ) : (
             <>
               <Login setLoggedIn={props.setLoggedIn}/>
               <Signup setLoggedIn={props.setLoggedIn}/>
             </>
-          )}
+          )} */}
         </Box>
       </Flex>
     </>

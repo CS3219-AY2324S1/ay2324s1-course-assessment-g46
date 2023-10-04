@@ -28,6 +28,10 @@ export default function Login(props) {
     try {
       const res = await signIn({ email: email, password: password });
       localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem(
+        "admin",
+        email === "admin@admin.com" ? "admin" : "user"
+      );
       props.setLoggedIn(true);
     } catch (error) {
       setInvalidUser(true);
@@ -57,6 +61,9 @@ export default function Login(props) {
 
   return (
     <>
+      <Text align="center" fontSize="lg" as="b">
+        Login
+      </Text>
       <FormControl isInvalid={missingEmail}>
         <FormLabel>Email</FormLabel>
         <Input

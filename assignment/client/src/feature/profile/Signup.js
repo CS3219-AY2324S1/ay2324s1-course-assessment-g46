@@ -72,6 +72,9 @@ export default function Signup(props) {
 
   return (
     <>
+      <Text align="center" fontSize="lg" as="b">
+        Sign Up
+      </Text>
       <FormControl isInvalid={missingName}>
         <FormLabel>Full Name</FormLabel>
         <Input

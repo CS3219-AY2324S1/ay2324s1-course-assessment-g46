@@ -8,9 +8,12 @@ import { Box, Flex } from "@chakra-ui/react";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [questionId, setQuestionId] = useState(-1);
 
   useEffect(() => {
+    const admin = localStorage.getItem("admin");
+    setIsAdmin(admin === "admin");
     const token = localStorage.getItem("token");
     if (token) {
       setLoggedIn(true);
@@ -18,6 +21,11 @@ function App() {
       setLoggedIn(false);
     }
   }, []);
+
+  useEffect(() => {
+    const admin = localStorage.getItem("admin");
+    setIsAdmin(admin === "admin");
+  }, [loggedIn]);
 
   function isHomePage() {
     return questionId === -1;
@@ -33,6 +41,7 @@ function App() {
               attemptQuestion={setQuestionId}
               loggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
+              isAdmin={isAdmin}
             />
           </Box>
         </>

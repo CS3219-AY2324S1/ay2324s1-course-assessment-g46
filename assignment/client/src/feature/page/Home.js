@@ -44,15 +44,20 @@ export default function Home(props) {
       <Flex justifyContent="space-between" alignItems="center" mx={10} my={3}>
         <Text as="b">Questions</Text>
         <Match />
-        <AddQuestion
-          updateQuestionsList={updateQuestionsList}
-          questions={questions}
-        />
+        {props.isAdmin ? (
+          <AddQuestion
+            updateQuestionsList={updateQuestionsList}
+            questions={questions}
+          />
+        ) : (
+          <Box />
+        )}
       </Flex>
       <QuestionTable
         questions={questions}
         updateQuestionsList={updateQuestionsList}
         attemptQuestion={props.attemptQuestion}
+        isAdmin={props.isAdmin}
       />
     </>
   ) : (

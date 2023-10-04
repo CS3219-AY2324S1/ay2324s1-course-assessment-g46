@@ -43,7 +43,10 @@ export default function Home(props) {
     <>
       <Flex justifyContent="space-between" alignItems="center" mx={10} my={3}>
         <Text as="b">Questions</Text>
-        <Match />
+        <Match
+          setQuestionId={props.attemptQuestion}
+          setRoomName={props.setRoomName}
+        />
         {props.isAdmin ? (
           <AddQuestion
             updateQuestionsList={updateQuestionsList}

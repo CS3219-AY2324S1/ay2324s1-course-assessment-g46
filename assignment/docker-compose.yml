@@ -33,3 +33,16 @@ services:
     image: mongo:6
     ports:
       - 27017:27017
+
+  matching:
+    build:
+      context: ./matching-service
+    ports:
+      - "8080:8080"
+
+  collaboration:
+    build:
+      context: ./collaboration-service
+    ports:
+      - "8081:8081"
+    

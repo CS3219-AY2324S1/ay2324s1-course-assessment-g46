@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   Button,
   FormControl,
@@ -11,18 +12,49 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
   Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
+
+import { io } from "socket.io-client";
+
+const matchApi =
+  process.env.MATCHING_API_URL || "http://localhost:8080";
 
 export default function Match(props) {
   const [isFindingMatch, setFindingMatch] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [category, setCategory] = useState("");
-  const [complexity, setComplexity] = useState("");
+  const [complexity, setComplexity] = useState("Easy");
 
   function find() {
     setFindingMatch(true);
+    const socket = io(matchApi);
+
+    let timeout = setTimeout(() => {
+      console.log("timedout");
+      socket.emit("timeout", socket.id);
+      socket.disconnect();
+      cancelFind();
+    }, 30000);
+
+    socket.on("connect", () => {
+      socket.emit("findMatch", {
+        socketId: socket.id,
+        complexity: complexity,
+        time: new Date().getTime()
+      });
+      console.log("emitted");
+    });
+
+    socket.on("matchFound", (match) => {
+      clearTimeout(timeout);
+      props.setRoomName(match);
+      props.setQuestionId(1);
+      socket.disconnect();
+      cancelFind();
+    });
   }
 
   function cancelFind() {
@@ -56,11 +88,14 @@ export default function Match(props) {
 
                 <FormControl>
                   <FormLabel>Complexity</FormLabel>
-                  <Input
-                    placeholder="Last name"
+                  <Select
                     value={complexity}
                     onChange={(e) => setComplexity(e.target.value)}
-                  />
+                  >
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                  </Select>
                 </FormControl>
               </>
             )}

@@ -25,7 +25,7 @@ export default function Work(props) {
     <Flex height="100%" py={0.5} background="#e0e3eb">
       <WorkTools question={question} />
       <Box flex="1" background="white" m={0.5} borderRadius={5}>
-        <Editor />
+        <Editor roomName={props.roomName} />
       </Box>
     </Flex>
   );

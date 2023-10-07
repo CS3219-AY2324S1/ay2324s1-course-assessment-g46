@@ -1,13 +1,19 @@
+const axios = require('axios').default;
 const express = require('express');
 const { createServer } = require('node:http');
-const { join } = require('node:path');
 const { Server } = require('socket.io');
+
+const clientUrl =
+  process.env.CLIENT_URL || "http://localhost:3000";
+
+const questionsApi = 
+  process.env.QUESTIONS_API_URL || "http://localhost:8888/questions"
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: clientUrl,
     methods: ["GET", "POST"]
   }
 });
@@ -18,20 +24,35 @@ let matchingDict = {
   "Hard": null
 };
 
+function getQuestionId(complexity) {
+  let questionId = 1
+  axios.get(`${questionsApi}/complexity/${complexity}`)
+  .then((response) => {
+    const { data } = response;
+    questionId = data[Math.floor(Math.random()*data.length)].id;
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+  return questionId;
+}
+
 io.on("connection", (socket) => {
   socket.on("findMatch", (match) => {
     complexity = match.complexity;
     if (matchingDict[complexity] == null || matchingDict[complexity].time <= new Date().getTime() - 30000) {
       matchingDict[complexity] = match;
     } else {
-      const roomName = Math.random().toString();
-      io.to(matchingDict[complexity].socketId).emit("matchFound", roomName);
-      io.to(match.socketId).emit("matchFound", roomName);
+      const roomName = Math.random().toString(); // ~56 bits of entropy
+      let questionId = getQuestionId(complexity);
+      let message = {roomName: roomName, questionId: questionId};
+      io.to(matchingDict[complexity].socketId).emit("matchFound", message);
+      io.to(match.socketId).emit("matchFound", message);
       matchingDict[complexity] = null;
     }
   });
 
-  socket.on("timeout", (id) => {
+  socket.on("cancel", (id) => {
     for (let property in matchingDict) {
       if (matchingDict[property]?.socketId == id) {
         matchingDict[property] = null;

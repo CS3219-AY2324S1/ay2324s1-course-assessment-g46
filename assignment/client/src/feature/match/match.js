@@ -22,6 +22,9 @@ import { io } from "socket.io-client";
 const matchApi =
   process.env.MATCHING_API_URL || "http://localhost:8080";
 
+const socket = io(matchApi);
+let timeout;
+
 export default function Match(props) {
   const [isFindingMatch, setFindingMatch] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -30,34 +33,32 @@ export default function Match(props) {
 
   function find() {
     setFindingMatch(true);
-    const socket = io(matchApi);
 
-    let timeout = setTimeout(() => {
-      console.log("timedout");
-      socket.emit("timeout", socket.id);
-      socket.disconnect();
+    timeout = setTimeout(() => {
       cancelFind();
     }, 30000);
 
-    socket.on("connect", () => {
-      socket.emit("findMatch", {
-        socketId: socket.id,
-        complexity: complexity,
-        time: new Date().getTime()
-      });
-      console.log("emitted");
-    });
-
     socket.on("matchFound", (match) => {
       clearTimeout(timeout);
-      props.setRoomName(match);
-      props.setQuestionId(1);
+      props.setRoomName(match.roomName);
+      props.setQuestionId(match.questionId);
       socket.disconnect();
-      cancelFind();
+      setFindingMatch(false);
+    });
+
+    socket.connect();
+
+    socket.emit("findMatch", {
+      socketId: socket.id,
+      complexity: complexity,
+      time: new Date().getTime()
     });
   }
 
   function cancelFind() {
+    clearTimeout(timeout);
+    socket.emit("cancel", socket.id);
+    socket.disconnect();
     setFindingMatch(false);
   }
 

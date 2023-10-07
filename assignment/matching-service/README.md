@@ -10,9 +10,9 @@
 
 Signals to the server that the client trying to find a match. `socketId` is the id of the client's socket, `complexity` is the user's selected complexity and `time` is the timestamp of finding a match.
 
-### timeout
+### cancel
 
-Format: `socket.emit("timeout", socketId)`
+Format: `socket.emit("cancel", socketId)`
 
 Signals to the server that the client has cancelled finding a match. `socketId` is the id of the client's socket.
 

@@ -24,7 +24,6 @@ export const getQuestion = async (id) => {
 export const getLastQuestionId = async () => {
   try {
     let { data } = await axios.get(questionsApi, getHeader());
-    console.log(data)
     return data.length;
   } catch (error) {
     console.log(error);

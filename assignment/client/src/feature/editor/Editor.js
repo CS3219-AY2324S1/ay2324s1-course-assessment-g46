@@ -18,8 +18,9 @@ export default function Editor(props) {
   }
   
   useEffect( () => {
-    socket.connect();
     socket.on("updateCode", onUpdateCode);
+    
+    socket.connect();
     socket.emit("joinRoom", roomName);
 
     return () => {

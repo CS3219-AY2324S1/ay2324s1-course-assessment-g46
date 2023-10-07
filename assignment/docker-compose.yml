@@ -12,6 +12,8 @@ services:
     depends_on:
       - question
       - user
+      - matching
+      - collaboration
 
   question:
     build:
@@ -20,6 +22,8 @@ services:
       - "8888:8888"
     environment:
       - MONGODB_URL=mongodb://mongo
+      - CLIENT_URL=http://localhost:3000
+      - MATCHING_URL=http://localhost:8080
     depends_on:
       - mongo
 
@@ -39,10 +43,15 @@ services:
       context: ./matching-service
     ports:
       - "8080:8080"
+    environment:
+      - CLIENT_URL=http://localhost:3000
+      - QUESTIONS_API_URL=http://question:8888/questions
 
   collaboration:
     build:
       context: ./collaboration-service
     ports:
       - "8081:8081"
+    environment:
+      - CLIENT_URL=http://localhost:3000
     

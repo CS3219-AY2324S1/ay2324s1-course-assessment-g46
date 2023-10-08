@@ -3,33 +3,38 @@ const router = express.Router();
 const Question = require("../models/question");
 const jwt_decode = require('jwt-decode');
 
-// I tried using middlewares but end up with CORS error that I have no idea how to fix
-function authorize(req, res, next) {
-  if (!req.headers.authorization) {
-    res.status(401).json({message: "No token is present"});
-  }
-  role = jwt_decode(req.headers.authorization)?.role;
-  if (role != "admin" && role != "authenticated") {
-    res.status(403).json({message: "No authorization to view questions"});
-  } else {
-    next();
-  }
-}
+const clientUrl =
+  process.env.CLIENT_URL || "http://localhost:3000";
 
-function authorizeAdmin(req, res, next) {
-  if (!req.headers.authorization) {
-    res.status(401).json({message: "No token is present"});
+const matchingUrl =
+  process.env.MATCHING_URL || "http://localhost:8080";
+
+function createAuthorize(isAdmin) {
+  function authorize(req, res, next) {
+    if (req.headers.origin != clientUrl) {
+      res.status(401).json({message: "Unallowed origin"});
+    }
+    if (!req.headers.authorization) {
+      res.status(401).json({message: "No token is present"});
+    }
+    role = jwt_decode(req.headers.authorization)?.role;
+    if (role == "admin" || (role == "authenticated" && !isAdmin)) {
+      next();
+    } else {
+      let errMsg;
+      if (isAdmin) {
+        errMsg = "No authorization to modify questions";
+      } else {
+        errMsg = "No authorization to view questions";
+      }
+      res.status(403).json({message: errMsg});
+    }
   }
-  role = jwt_decode(req.headers.authorization)?.role;
-  if (role != "admin") {
-    res.status(403).json({message: "No authorization to modify questions"});
-  } else {
-    next();
-  }
+  return authorize;
 }
 
 // READ ALL
-router.get("/", authorize, async (req, res) => {
+router.get("/", createAuthorize(false), async (req, res) => {
   try {
     const questions = await Question.find();
     questions.sort((a, b) => {
@@ -47,7 +52,7 @@ router.get("/:id", getQuestion, (req, res) => {
 });
 
 // CREATE ONE
-router.post("/", authorizeAdmin, async (req, res) => {
+router.post("/", createAuthorize(true), async (req, res) => {
   const question = new Question({
     id: req.body.id,
     title: req.body.title,
@@ -66,7 +71,7 @@ router.post("/", authorizeAdmin, async (req, res) => {
 });
 
 // UPDATE ONE
-router.patch("/:id", [authorizeAdmin, getQuestion], async (req, res) => {
+router.patch("/:id", [createAuthorize(true), getQuestion], async (req, res) => {
   if (req.body.id != null) {
     res.question.id = req.body.id;
   }
@@ -91,7 +96,7 @@ router.patch("/:id", [authorizeAdmin, getQuestion], async (req, res) => {
 });
 
 // DELETE ONE
-router.delete("/:id", [authorizeAdmin, getQuestion], async (req, res) => {
+router.delete("/:id", [createAuthorize(true), getQuestion], async (req, res) => {
   try {
     await res.question.deleteOne();
     res.json({ message: "Deleted question" });
@@ -100,10 +105,20 @@ router.delete("/:id", [authorizeAdmin, getQuestion], async (req, res) => {
   }
 });
 
+// GET QUESTIONS BY COMPLEXITY
+router.get("/complexity/:complexity", async (req, res) => {
+  try {
+    const questions = await Question.find({ complexity: req.params.complexity }, 'id');
+    res.status(200).json(questions);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 async function getQuestion(req, res, next) {
   let question;
   try {
-    question = await Question.findById(req.params.id);
+    question = await Question.find({ id: req.params.id });
     if (question == null) {
       return res.status(404).json({ message: "Cannot find question" });
     }
@@ -111,7 +126,7 @@ async function getQuestion(req, res, next) {
     return res.status(500).json({ message: err.message });
   }
 
-  res.question = question;
+  res.question = question[0];
   next();
 }
 

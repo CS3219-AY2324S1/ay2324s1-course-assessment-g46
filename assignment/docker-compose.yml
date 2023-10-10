@@ -8,7 +8,7 @@ services:
       - "3000:3000"
     environment:
       - QUESTIONS_API_URL=http://question:8888/questions
-      - USER_API_URL=http://user:5000/user
+      - USER_API_URL=http://user:5100/user
     depends_on:
       - question
       - user
@@ -31,7 +31,7 @@ services:
     build:
       context: ./user-service
     ports:
-      - "5000:5000"
+      - "5100:5100"
 
   mongo:
     image: mongo:6
@@ -54,4 +54,3 @@ services:
       - "8081:8081"
     environment:
       - CLIENT_URL=http://localhost:3000
-    

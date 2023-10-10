@@ -24,9 +24,9 @@ app.get("/", (req, res) => {
   res.send("Hello I am working my friend Supabase <3");
 });
 
-app.listen(5000, (err) => {
+app.listen(5100, (err) => {
   if (!err) {
-    console.log(`> Ready on http://localhost:5000`);
+    console.log(`> Ready on http://localhost:5100`);
   } else {
     console.log("Error: " + err);
   }

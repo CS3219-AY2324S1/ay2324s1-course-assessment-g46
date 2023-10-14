@@ -24,7 +24,12 @@ io.on("connection", (socket) => {
       io.to(roomName).emit("warnDisconnect");
     }
     socket.broadcast.to(roomName).emit("updateCode", code);
-  })
+  });
+
+  socket.on("sendMessage", (roomName, message) => {
+    console.log(message);
+    socket.broadcast.to(roomName).emit("receiveMessage", message);
+  });
 });
 
 server.listen(8081, () => {

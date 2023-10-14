@@ -12,6 +12,7 @@ import {
 
 export default function WorkTools(props) {
   const [curTool, setTool] = useState("");
+  const [messages, setMessages] = useState([]);
 
   function toggleTool(tool) {
     if (tool === curTool) {
@@ -26,7 +27,7 @@ export default function WorkTools(props) {
       case "question":
         return <Question question={props.question} />;
       case "chat":
-        return <Chat />;
+        return <Chat roomName={props.roomName} socket={props.socket} messages={messages} setMessages={setMessages}/>;
       case "list":
         return <QuestionList />;
       case "ai":

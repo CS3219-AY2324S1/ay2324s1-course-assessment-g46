@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Button,
   FormControl,
@@ -9,6 +8,7 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { signIn } from "../../api/userClient";
 
 export default function Login(props) {
@@ -59,6 +59,12 @@ export default function Login(props) {
     setInvalidUser(false);
   }
 
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      submitLogin(e);
+    }
+  }
+
   return (
     <>
       <Text align="center" fontSize="lg" as="b">
@@ -70,6 +76,7 @@ export default function Login(props) {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={handleKeyDown} // add event listener to email input
         />
         {missingEmail && <FormErrorMessage>Invalid Email.</FormErrorMessage>}
       </FormControl>
@@ -82,6 +89,7 @@ export default function Login(props) {
             value={password}
             type={show ? "text" : "password"}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={handleKeyDown} // add event listener to password input
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={() => setShow(!show)}>

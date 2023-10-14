@@ -1,4 +1,5 @@
-import { Box, Textarea } from "@chakra-ui/react";
+import { Stack, Textarea } from "@chakra-ui/react";
+import { Alert, AlertIcon } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
 import { io } from "socket.io-client";
@@ -10,21 +11,28 @@ const socket = io(collabApi);
 
 export default function Editor(props) {
   const [codeContent, setCodeContent] = useState("");
+  const [isDisconnected, setIsDisconnected] = useState(false);
 
   let roomName = props.roomName;
 
   function onUpdateCode(code) {
     setCodeContent(code);
   }
+
+  function updateDisconnect() {
+    setIsDisconnected(true);
+  }
   
   useEffect( () => {
     socket.on("updateCode", onUpdateCode);
+    socket.on("warnDisconnect", updateDisconnect)
     
     socket.connect();
     socket.emit("joinRoom", roomName);
 
     return () => {
       socket.off("updateCode", onUpdateCode);
+      socket.off("warnDisconnect", updateDisconnect)
       socket.disconnect();
     };
   }, []);
@@ -35,13 +43,16 @@ export default function Editor(props) {
   }
 
   return (
-    <Box p={3} height="100%">
+    <Stack spacing={0} height="100%">
+      {isDisconnected ? (<Alert status='error'>
+        <AlertIcon /> The other collaborator has disconnected.
+      </Alert>) : null}
       <Textarea 
         placeholder="Write code here" 
         value={codeContent} 
         onChange={update} 
         height="100%" 
       />
-    </Box>
+    </Stack>
   );
 }

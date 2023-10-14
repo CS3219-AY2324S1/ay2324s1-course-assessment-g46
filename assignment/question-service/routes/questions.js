@@ -118,7 +118,7 @@ router.get("/complexity/:complexity", async (req, res) => {
 async function getQuestion(req, res, next) {
   let question;
   try {
-    question = await Question.find({ id: req.params.id });
+    question = await Question.findById(req.params.id);
     if (question == null) {
       return res.status(404).json({ message: "Cannot find question" });
     }
@@ -126,7 +126,7 @@ async function getQuestion(req, res, next) {
     return res.status(500).json({ message: err.message });
   }
 
-  res.question = question[0];
+  res.question = question;
   next();
 }
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Button,
@@ -22,7 +22,7 @@ import { io } from "socket.io-client";
 const matchApi =
   process.env.MATCHING_API_URL || "http://localhost:8080";
 
-const socket = io(matchApi);
+let socket;
 let timeout;
 
 export default function Match(props) {
@@ -31,6 +31,23 @@ export default function Match(props) {
   const [category, setCategory] = useState("");
   const [complexity, setComplexity] = useState("Easy");
 
+  function cleanUpSocket() {
+    clearTimeout(timeout);
+    socket.off("matchFound", matchFound);
+    socket.disconnect();
+    setFindingMatch(false);
+  }
+
+  useEffect(() => {
+    socket = io(matchApi);
+  })
+
+  function matchFound(match) {
+    props.setRoomName(match.roomName);
+    props.setQuestionId(match.questionId);
+    cleanUpSocket();
+  }
+
   function find() {
     setFindingMatch(true);
 
@@ -38,13 +55,7 @@ export default function Match(props) {
       cancelFind();
     }, 30000);
 
-    socket.on("matchFound", (match) => {
-      clearTimeout(timeout);
-      props.setRoomName(match.roomName);
-      props.setQuestionId(match.questionId);
-      socket.disconnect();
-      setFindingMatch(false);
-    });
+    socket.on("matchFound", matchFound);
 
     socket.connect();
 
@@ -56,10 +67,8 @@ export default function Match(props) {
   }
 
   function cancelFind() {
-    clearTimeout(timeout);
     socket.emit("cancel", socket.id);
-    socket.disconnect();
-    setFindingMatch(false);
+    cleanUpSocket();
   }
 
   return (

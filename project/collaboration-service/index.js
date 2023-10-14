@@ -20,7 +20,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendCode", (roomName, code) => {
-    io.to(roomName).emit("updateCode", code);
+    if (io.sockets.adapter.rooms.get(roomName).size == 1) {
+      io.to(roomName).emit("warnDisconnect");
+    }
+    socket.broadcast.to(roomName).emit("updateCode", code);
   })
 });
 

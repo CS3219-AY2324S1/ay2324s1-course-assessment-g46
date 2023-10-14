@@ -19,6 +19,7 @@ import {
   Select,
   SimpleGrid,
   Text,
+  Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Select as TagSelect } from "chakra-react-select";
@@ -139,11 +140,12 @@ export default function EditQuestion(props) {
 
                   <FormControl isInvalid={missingDesc || repeatDesc}>
                     <FormLabel>Description</FormLabel>
-                    <Input
+                    <Textarea
                       placeholder="Description"
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
                       isRequired={true}
+                      h={"300px"}
                     />
                     {missingDesc && (
                       <FormErrorMessage>

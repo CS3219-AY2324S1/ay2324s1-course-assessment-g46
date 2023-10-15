@@ -12,12 +12,12 @@ function App() {
   const [questionId, setQuestionId] = useState(-1);
   const [roomName, setRoomName] = useState("");
 
-  useEffect(() => {
+   useEffect(() => {
     const admin = localStorage.getItem("admin");
     setIsAdmin(admin === "admin");
     const token = localStorage.getItem("token");
     if (token) {
-      setLoggedIn(true);
+        setLoggedIn(true);
     } else {
       setLoggedIn(false);
     }

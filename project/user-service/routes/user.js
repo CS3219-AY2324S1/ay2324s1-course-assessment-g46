@@ -16,12 +16,18 @@ router.post('/logout', userController.logout);
 router.use(authMiddleware.auth)
 
 // Get profile 
-router.get('/me', userController.getProfile); 
+router.get('/profile', userController.getProfile); 
+
+// Get question attempts  
+router.get('/attempts', userController.getQuestionAttempts); 
+
+// Insert question attempt
+router.post('/attempts', userController.insertAttempt); 
 
 // Update profile 
-router.put('/updateProfile', userController.updateProfile); 
+router.put('/profile', userController.updateProfile); 
 
 // Delete account
-router.delete('/deleteAccount', userController.deleteAccount);
+router.delete('/profile', userController.deleteAccount);
 
 module.exports = router; 

@@ -1,4 +1,12 @@
-import { Stack, Select, HStack, AlertTitle } from "@chakra-ui/react";
+import {
+  Stack,
+  Select,
+  HStack,
+  AlertTitle,
+  Button,
+  Box,
+  Flex,
+} from "@chakra-ui/react";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
@@ -19,6 +27,28 @@ export default function Editor(props) {
     setIsDisconnected(true);
   }
 
+  async function runCode(e) {
+    e.preventDefault();
+    try {
+      let languageId = getId(language);
+      let submission = await postSubmission(languageId, codeContent, "");
+      // let result = await getSubmission(submission.token);
+      parseExecution(submission);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  function parseExecution(output) {
+    if (output.stderr) {
+      props.setOutput(output.stderr);
+      props.setHasOutputErr(true);
+    } else {
+      props.setOutput(output.stdout);
+      props.setHasOutputErr(false);
+    }
+  }
+
   useEffect(() => {
     socket.on("updateCode", onUpdateCode);
     socket.on("warnDisconnect", updateDisconnect);
@@ -29,10 +59,6 @@ export default function Editor(props) {
       socket.disconnect();
     };
   }, []);
-
-  useEffect(() => {
-    console.log("ree");
-  }, [props.toggle]);
 
   function update(value) {
     setCodeContent(value);
@@ -48,48 +74,25 @@ export default function Editor(props) {
           width="10%"
         >
           {languageOptions.map((language) => (
-            <option value={language.value}>{language.label}</option>
+            <option value={language.value} key={language.id}>
+              {language.label}
+            </option>
           ))}
         </Select>
-        {isDisconnected ? (
-          <Alert status="error" justifyContent="center">
-            <AlertIcon />
-            The other collaborator has disconnected.
-          </Alert>
-        ) : null}
+        <Button onClick={(e) => runCode(e)}>Run Code</Button>
+        <Flex flex="1" justifyContent="center">
+          {isDisconnected ? (
+            <Button
+              leftIcon={<MdOutlineError color="red" />}
+              colorScheme="red"
+              variant="outline"
+            >
+              The other collaborator has disconnected.
+            </Button>
+          ) : null}
+        </Flex>
       </HStack>
       <MonacoEditor language={language} value={codeContent} onChange={update} />
     </Stack>
   );
 }
-
-const languageOptions = [
-  {
-    label: "C++",
-    value: "cpp",
-  },
-  {
-    label: "C",
-    value: "c",
-  },
-  {
-    label: "C#",
-    value: "csharp",
-  },
-  {
-    label: "Java",
-    value: "java",
-  },
-  {
-    label: "JavaScript",
-    value: "javascript",
-  },
-  {
-    label: "Python",
-    value: "python",
-  },
-  {
-    label: "Go",
-    value: "go",
-  },
-];

@@ -12,6 +12,8 @@ const socket = io(collabApi);
 
 export default function Work(props) {
   const [question, setQuestion] = useState({});
+  const [output, setOutput] = useState("");
+  const [hasOutputErr, setHasOutputErr] = useState(false);
 
   useEffect(() => {
     if (props.questionId === -1) {

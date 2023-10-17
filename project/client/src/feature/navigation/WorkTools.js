@@ -9,7 +9,7 @@ import {
   MdPsychology,
   MdQuestionMark,
 } from "react-icons/md";
-import Editor from "../editor/Editor";
+import Console from "../tools/Console";
 
 export default function WorkTools(props) {
   const [curTool, setTool] = useState("");
@@ -41,8 +41,10 @@ export default function WorkTools(props) {
         return <Chat roomName={props.roomName} socket={props.socket} messages={messages} setMessages={setMessages}/>;
       case "list":
         return <QuestionList />;
-      case "ai":
-        return <p>ai</p>;
+      case "console":
+        return (
+          <Console output={props.output} hasOutputErr={props.hasOutputErr} />
+        );
       default:
         return null;
     }
@@ -60,11 +62,14 @@ export default function WorkTools(props) {
           onClick={() => toggleTool("chat")}
         />
         <IconButton icon={<MdList />} onClick={() => toggleTool("list")} />
-        <IconButton icon={<MdPsychology />} onClick={() => toggleTool("ai")} />
+        <IconButton
+          icon={<MdPsychology />}
+          onClick={() => toggleTool("console")}
+        />
       </VStack>
 
       {curTool === "" ? null : (
-        <Box width="25vw" p={2} m={0.5} background="white" borderRadius={5}>
+        <Box width="25vw" p={3} m={0.5} background="white" borderRadius={5}>
           {renderTool()}
         </Box>
       )}

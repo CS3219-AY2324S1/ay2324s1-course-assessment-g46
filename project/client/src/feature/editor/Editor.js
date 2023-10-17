@@ -86,34 +86,3 @@ export default function Editor(props) {
     </Stack>
   );
 }
-
-// const languageOptions = [
-//   {
-//     label: "C++",
-//     value: "cpp",
-//   },
-//   {
-//     label: "C",
-//     value: "c",
-//   },
-//   {
-//     label: "C#",
-//     value: "csharp",
-//   },
-//   {
-//     label: "Java",
-//     value: "java",
-//   },
-//   {
-//     label: "JavaScript",
-//     value: "javascript",
-//   },
-//   {
-//     label: "Python",
-//     value: "python",
-//   },
-//   {
-//     label: "Go",
-//     value: "go",
-//   },
-// ];

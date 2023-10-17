@@ -1,10 +1,22 @@
-import { Stack, Textarea } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  Stack,
+  Textarea,
+  Select,
+  HStack,
+  Text,
+  Flex,
+  Box,
+} from "@chakra-ui/react";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import { Editor as MonacoEditor } from "@monaco-editor/react";
 
 export default function Editor(props) {
   const [codeContent, setCodeContent] = useState("");
   const [isDisconnected, setIsDisconnected] = useState(false);
+  const [language, setLanguage] = useState("cpp");
 
   let roomName = props.roomName;
   let socket = props.socket;
@@ -16,8 +28,8 @@ export default function Editor(props) {
   function updateDisconnect() {
     setIsDisconnected(true);
   }
-  
-  useEffect( () => {
+
+  useEffect(() => {
     socket.on("updateCode", onUpdateCode);
     socket.on("warnDisconnect", updateDisconnect);
 
@@ -28,21 +40,40 @@ export default function Editor(props) {
     };
   }, []);
 
-  function update(e) {
-    setCodeContent(e.target.value);
-    socket.emit("sendCode", roomName, e.target.value);
+  useEffect(() => {
+    console.log("ree");
+  }, [props.toggle]);
+
+  function update(value) {
+    setCodeContent(value);
+    socket.emit("sendCode", roomName, value);
   }
 
   return (
     <Stack spacing={0} height="100%">
-      {isDisconnected ? (<Alert status='error'>
-        <AlertIcon /> The other collaborator has disconnected.
-      </Alert>) : null}
-      <Textarea 
-        placeholder="Write code here" 
-        value={codeContent} 
-        onChange={update} 
-        height="100%" 
+      {isDisconnected ? (
+        <Alert status="error">
+          <AlertIcon /> The other collaborator has disconnected.
+        </Alert>
+      ) : null}
+      <HStack p={2}>
+        <Select
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+          width="10%"
+          size="sm"
+        >
+          <option value="cpp">C++</option>
+          <option value="java">Java</option>
+          <option value="javascript">Javascript</option>
+          <option value="python">Python</option>
+        </Select>
+      </HStack>
+      <MonacoEditor
+        language={language}
+        value={codeContent}
+        onChange={update}
+        // options={{ automaticLayout: true }}
       />
     </Stack>
   );

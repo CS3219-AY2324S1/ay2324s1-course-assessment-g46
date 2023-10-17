@@ -9,6 +9,7 @@ import {
   MdPsychology,
   MdQuestionMark,
 } from "react-icons/md";
+import Editor from "../editor/Editor";
 
 export default function WorkTools(props) {
   const [curTool, setTool] = useState("");
@@ -63,7 +64,7 @@ export default function WorkTools(props) {
       </VStack>
 
       {curTool === "" ? null : (
-        <Box w="25vw" p={2} m={0.5} background="white" borderRadius={5}>
+        <Box width="25vw" p={2} m={0.5} background="white" borderRadius={5}>
           {renderTool()}
         </Box>
       )}

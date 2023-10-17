@@ -3,7 +3,6 @@ import WorkTools from "../navigation/WorkTools";
 import Editor from "../editor/Editor";
 import { Box, Flex } from "@chakra-ui/react";
 import { getQuestion } from "../../api/questionClient";
-import QuestionList from "../tools/QuestionList";
 
 import { io } from "socket.io-client";
 
@@ -13,7 +12,6 @@ const socket = io(collabApi);
 
 export default function Work(props) {
   const [question, setQuestion] = useState({});
-  const [toggle, setToggle] = useState(true);
 
   useEffect(() => {
     if (props.questionId === -1) {

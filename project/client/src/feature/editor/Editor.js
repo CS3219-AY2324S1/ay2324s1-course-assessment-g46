@@ -1,14 +1,4 @@
-import {
-  FormControl,
-  FormLabel,
-  Stack,
-  Textarea,
-  Select,
-  HStack,
-  Text,
-  Flex,
-  Box,
-} from "@chakra-ui/react";
+import { Stack, Select, HStack, AlertTitle } from "@chakra-ui/react";
 import { Alert, AlertIcon } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
@@ -51,30 +41,55 @@ export default function Editor(props) {
 
   return (
     <Stack spacing={0} height="100%">
-      {isDisconnected ? (
-        <Alert status="error">
-          <AlertIcon /> The other collaborator has disconnected.
-        </Alert>
-      ) : null}
       <HStack p={2}>
         <Select
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
           width="10%"
-          size="sm"
         >
-          <option value="cpp">C++</option>
-          <option value="java">Java</option>
-          <option value="javascript">Javascript</option>
-          <option value="python">Python</option>
+          {languageOptions.map((language) => (
+            <option value={language.value}>{language.label}</option>
+          ))}
         </Select>
+        {isDisconnected ? (
+          <Alert status="error" justifyContent="center">
+            <AlertIcon />
+            The other collaborator has disconnected.
+          </Alert>
+        ) : null}
       </HStack>
-      <MonacoEditor
-        language={language}
-        value={codeContent}
-        onChange={update}
-        // options={{ automaticLayout: true }}
-      />
+      <MonacoEditor language={language} value={codeContent} onChange={update} />
     </Stack>
   );
 }
+
+const languageOptions = [
+  {
+    label: "C++",
+    value: "cpp",
+  },
+  {
+    label: "C",
+    value: "c",
+  },
+  {
+    label: "C#",
+    value: "csharp",
+  },
+  {
+    label: "Java",
+    value: "java",
+  },
+  {
+    label: "JavaScript",
+    value: "javascript",
+  },
+  {
+    label: "Python",
+    value: "python",
+  },
+  {
+    label: "Go",
+    value: "go",
+  },
+];

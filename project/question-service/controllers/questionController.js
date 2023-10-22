@@ -80,3 +80,29 @@ exports.deleteOneQuestion = async (req, res) => {
 
   res.status(200).json({ message: "Question deleted" });
 };
+
+exports.getQuestionsByComplexity = async (req, res) => {
+  let { data, error } = await supabase
+    .from("questions")
+    .select()
+    .eq("complexity", req.params.complexity);
+
+  if (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+  res.status(200).json({ questions: data });
+};
+
+exports.getQuestionByCategory = async (req, res) => {
+  let { data, error } = await supabase
+    .from("questions")
+    .select()
+    .eq("category", req.params.category);
+
+  if (error) {
+    res.status(500).json({ message: error.message });
+  }
+
+  res.status(200).json({ questions: data });
+};

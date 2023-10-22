@@ -41,16 +41,11 @@ router.delete(
   questionController.deleteOneQuestion
 );
 
-router.get("/complexity/:complexity", async (req, res) => {
-  try {
-    const questions = await Question.find(
-      { complexity: req.params.complexity },
-      "id"
-    );
-    res.status(200).json(questions);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+router.get(
+  "/complexity/:complexity",
+  questionController.getQuestionsByComplexity
+);
+
+router.get("/category/:category", questionController.getQuestionsByCategory);
 
 module.exports = router;

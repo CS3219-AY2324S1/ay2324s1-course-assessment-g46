@@ -1,13 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const Question = require("../models/question");
-const jwt_decode = require("jwt-decode");
 
 const questionController = require("../controllers/questionController");
 const middlewareController = require("../controllers/middlewareController");
-
-const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
-const matchingUrl = process.env.MATCHING_URL || "http://localhost:8080";
 
 router.get(
   "/",
@@ -46,6 +41,6 @@ router.get(
   questionController.getQuestionsByComplexity
 );
 
-router.get("/category/:category", questionController.getQuestionsByCategory);
+router.get("/category/:category", questionController.getQuestionByCategory);
 
 module.exports = router;

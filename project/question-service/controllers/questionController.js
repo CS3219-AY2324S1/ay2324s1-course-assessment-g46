@@ -98,7 +98,7 @@ exports.getQuestionByCategory = async (req, res) => {
   let { data, error } = await supabase
     .from("questions")
     .select()
-    .eq("category", req.params.category);
+    .contains("category", [req.params.category]);
 
   if (error) {
     res.status(500).json({ message: error.message });

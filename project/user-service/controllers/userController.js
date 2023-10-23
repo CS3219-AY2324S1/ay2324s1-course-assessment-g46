@@ -1,4 +1,4 @@
-const { supabase } = require("../index.js");
+const { supabase } = require("../config/supabaseClient");
 
 exports.signup = async (req, res) => {
   const { email, password, fullName } = req.body; 

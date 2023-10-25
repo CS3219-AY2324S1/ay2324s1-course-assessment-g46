@@ -10,9 +10,7 @@ import {
   useDisclosure,
   Button,
   Text,
-  HStack,
   Tag,
-  Divider,
   Stack,
   Center,
   Wrap,
@@ -61,7 +59,9 @@ export default function ReadQuestion(props) {
           <ModalBody>
             <Stack spacing={4}>
               <Wrap spacing={4}>
-                {category.map((c, i) => (
+                {category == null ?
+                <></>
+                : category.map((c, i) => (
                   <Tag key={i}>{c}</Tag>
                 ))}
               </Wrap>

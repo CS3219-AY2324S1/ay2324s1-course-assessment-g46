@@ -24,7 +24,7 @@ export default function Home(props) {
   const updateQuestionsList = async () => {
     try {
       let data = await getQuestions();
-      setQuestions(data);
+      setQuestions(data.questions);
     } catch (error) {
       setQuestions([]);
       console.log(error);

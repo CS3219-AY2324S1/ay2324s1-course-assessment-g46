@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Button, Flex, Input } from "@chakra-ui/react";
 
@@ -20,14 +20,6 @@ export default function Chat(props) {
     setMessages((old) => [...old, { fromSelf: true, text: sendMessage }]);
     setSendMessage("");
   }
-
-  function onReceiveMessage(message) {
-    setMessages((old) => [...old, { fromSelf: false, text: message }]);
-  }
-
-  useEffect( () => {
-    socket.on("receiveMessage", onReceiveMessage);
-  }, []);
 
   return (
     <Flex flexDir="column" h="100%">

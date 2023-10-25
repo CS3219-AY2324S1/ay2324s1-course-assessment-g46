@@ -27,7 +27,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", (roomName, message) => {
-    console.log(message);
     socket.broadcast.to(roomName).emit("receiveMessage", message);
   });
 });

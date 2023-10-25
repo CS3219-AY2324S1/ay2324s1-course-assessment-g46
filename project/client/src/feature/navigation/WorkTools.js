@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Question from "../tools/Question";
 import Chat from "../tools/Chat";
 import { VStack, Flex, Box, IconButton } from "@chakra-ui/react";
@@ -13,6 +13,16 @@ import {
 export default function WorkTools(props) {
   const [curTool, setTool] = useState("");
   const [messages, setMessages] = useState([]);
+
+  const socket = props.socket
+
+  function onReceiveMessage(message) {
+    setMessages((old) => [...old, { fromSelf: false, text: message }]);
+  }
+
+  useEffect( () => {
+    socket.on("receiveMessage", onReceiveMessage);
+  }, []);
 
   function toggleTool(tool) {
     if (tool === curTool) {

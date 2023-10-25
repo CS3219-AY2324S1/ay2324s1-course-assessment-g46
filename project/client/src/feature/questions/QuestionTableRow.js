@@ -6,6 +6,7 @@ import { HStack, Tag, Td, Tr } from "@chakra-ui/react";
 
 export default function QuestionTableRow(props) {
   function truncate(str) {
+    if (str == null) return "";
     return str.length > 50 ? str.substring(0, 50) + "..." : str;
   }
 
@@ -18,7 +19,9 @@ export default function QuestionTableRow(props) {
       <Td>{truncate(props.description)}</Td>
       <Td>
         <HStack spacing={4}>
-          {props.category.length <= 3 ? (
+          { props.category == null 
+          ? <> </>
+          : props.category.length <= 3 ? (
             props.category.map((c, i) => <Tag key={i}>{c}</Tag>)
           ) : (
             <>

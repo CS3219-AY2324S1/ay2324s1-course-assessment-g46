@@ -21,7 +21,7 @@ exports.checkQuestion = async (req, res, next) => {
   next();
 };
 
-exports.checkWriteAuthorization = (req, res, next) => {
+exports.checkWriteAuthorization = (isAdmin) => {
   const authorize = (req, res, next) => {
     if (req.headers.origin != clientUrl) {
       res.status(401).json({ message: "Unallowed origin" });

@@ -1,4 +1,4 @@
-import { HStack, Stack, Tag, Text, Wrap } from "@chakra-ui/react";
+import { Stack, Tag, Text, Wrap } from "@chakra-ui/react";
 import React from "react";
 
 export default function Question(props) {
@@ -24,7 +24,7 @@ export default function Question(props) {
         </Text>
         <Wrap spacing={4}>
           {category.map((c) => (
-            <Tag key="{c}">{c}</Tag>
+            <Tag key={c}>{c}</Tag>
           ))}
         </Wrap>
         <Text color={getComplexity()}>{complexity}</Text>

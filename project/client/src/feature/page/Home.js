@@ -5,7 +5,6 @@ import Match from "../match/match";
 import {
   Text,
   Flex,
-  Center,
   AbsoluteCenter,
   VStack,
   Button,
@@ -17,6 +16,14 @@ import { getQuestions } from "../../api/questionClient";
 import Login from "../profile/Login";
 import Signup from "../profile/Signup";
 
+const tempquestion = {
+  id: 1,
+  title: "title1",
+  description: "desc1",
+  category: ["cat1", "cat2"],
+  complexity: "Easy",
+};
+
 export default function Home(props) {
   const [questions, setQuestions] = useState([]);
   const [loginPage, setLoginPage] = useState(true);
@@ -26,7 +33,7 @@ export default function Home(props) {
       let data = await getQuestions();
       setQuestions(data.questions);
     } catch (error) {
-      setQuestions([]);
+      setQuestions([tempquestion]);
       console.log(error);
     }
   };

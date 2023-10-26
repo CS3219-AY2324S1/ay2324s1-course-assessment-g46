@@ -9,19 +9,28 @@ import {
   MdPsychology,
   MdQuestionMark,
 } from "react-icons/md";
+import Console from "../tools/Console";
 
 export default function WorkTools(props) {
   const [curTool, setTool] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const socket = props.socket
+  const socket = props.socket;
 
   function onReceiveMessage(message) {
     setMessages((old) => [...old, { fromSelf: false, text: message }]);
   }
 
-  useEffect( () => {
+  function onUpdateConsole(execution) {
+    props.setOutput(execution);
+  }
+
+  useEffect(() => {
     socket.on("receiveMessage", onReceiveMessage);
+  }, []);
+
+  useEffect(() => {
+    socket.on("updateConsole", onUpdateConsole);
   }, []);
 
   function toggleTool(tool) {
@@ -37,11 +46,18 @@ export default function WorkTools(props) {
       case "question":
         return <Question question={props.question} />;
       case "chat":
-        return <Chat roomName={props.roomName} socket={props.socket} messages={messages} setMessages={setMessages}/>;
+        return (
+          <Chat
+            roomName={props.roomName}
+            socket={props.socket}
+            messages={messages}
+            setMessages={setMessages}
+          />
+        );
       case "list":
         return <QuestionList />;
-      case "ai":
-        return <p>ai</p>;
+      case "console":
+        return <Console output={props.codeOutput} />;
       default:
         return null;
     }
@@ -59,11 +75,14 @@ export default function WorkTools(props) {
           onClick={() => toggleTool("chat")}
         />
         <IconButton icon={<MdList />} onClick={() => toggleTool("list")} />
-        <IconButton icon={<MdPsychology />} onClick={() => toggleTool("ai")} />
+        <IconButton
+          icon={<MdPsychology />}
+          onClick={() => toggleTool("console")}
+        />
       </VStack>
 
       {curTool === "" ? null : (
-        <Box w="25vw" p={2} m={0.5} background="white" borderRadius={5}>
+        <Box width="25vw" p={3} m={0.5} background="white" borderRadius={5}>
           {renderTool()}
         </Box>
       )}

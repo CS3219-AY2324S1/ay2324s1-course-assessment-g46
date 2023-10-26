@@ -1,5 +1,7 @@
-const { supabase } = require('../index.js');
-const jwt_decode = require('jwt-decode');
+require("dotenv").config();
+const { supabase } = require("../config/supabaseClient");
+const jwt = require("jsonwebtoken");
+const secret = process.env.JWT_SECRET
 
 // Check if input token is valid 
 exports.auth = async (req, res, next) => {
@@ -11,7 +13,14 @@ exports.auth = async (req, res, next) => {
       return res.status(401).json({message: "No token is present"}); 
     }
 
-    const decoded = jwt_decode(token);
+    let decoded;
+    let errFlag;
+    jwt.verify(token, secret, (err, user) => {    
+        if (err) errFlag = err
+        else decoded = user
+    })
+    if (errFlag) return res.status(401).json({message: "Token is not verified"}); 
+
     const { data, error } = await supabase
     .from("profiles")
     .select("*")

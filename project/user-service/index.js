@@ -1,13 +1,7 @@
 const express = require("express");
-const { createClient } = require("@supabase/supabase-js");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
-const supabaseUrl = "https://iwxacjmydxiforzrvurs.supabase.co";
-const supabaseAnonKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3eGFjam15ZHhpZm9yenJ2dXJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NTAwMTksImV4cCI6MjAxMDQyNjAxOX0.KkiYYTJUNTD3K7OkHASV3_ZEv5NIFN-Farw9lT7QIfk";
-exports.supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const app = express();
 
@@ -23,6 +17,7 @@ app.use("/user", user);
 app.get("/", (req, res) => {
   res.send("Hello I am working my friend Supabase <3");
 });
+
 
 app.listen(5100, (err) => {
   if (!err) {

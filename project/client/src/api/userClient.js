@@ -23,7 +23,7 @@ export const signOut = async () => {
 
 export const updateProfile = async (userDetails, token) => {
   try {
-    let { data } = await axios.put(`${userApi}/updateProfile`, userDetails, {
+    let { data } = await axios.put(`${userApi}/profile`, userDetails, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -35,7 +35,21 @@ export const updateProfile = async (userDetails, token) => {
 
 export const getProfile = async (token) => {
   try {
-    let { data } = await axios.get(`${userApi}/me`, {
+    let { data } = await axios.get(`${userApi}/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return { data };
+  } catch (error) {
+    console.log("Below")
+    console.log(error)
+    return { error: error.response.data, status: error.response.status };
+  }
+};
+
+export const deleteAccount = async (token) => {
+  try {
+    let { data } = await axios.delete(`${userApi}/profile`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -45,9 +59,22 @@ export const getProfile = async (token) => {
   }
 };
 
-export const deleteAccount = async (token) => {
+export const getQuestionAttempts = async (token) => {
   try {
-    let { data } = await axios.delete(`${userApi}/deleteAccount`, {
+    let { data } = await axios.get(`${userApi}/attempts`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return { data };
+  } catch (error) {
+    return { error: error.response.data };
+  }
+};
+
+
+export const insertNewAttempt = async (token, userDetails) => {
+  try {
+    let { data } = await axios.get(`${userApi}/attempts`, userDetails, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

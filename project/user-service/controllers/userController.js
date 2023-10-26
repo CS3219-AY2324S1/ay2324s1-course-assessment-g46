@@ -1,4 +1,4 @@
-const { supabase } = require("../index.js");
+const { supabase } = require("../config/supabaseClient");
 
 exports.signup = async (req, res) => {
   const { email, password, fullName } = req.body; 
@@ -73,6 +73,38 @@ exports.getProfile = async (req, res) => {
   }
 
   return res.status(404).json({message: "User cannot be found"});
+};
+
+exports.getQuestionAttempts = async (req, res) => {
+  const userId = req.user.id;
+
+  const { data } = await supabase
+  .from("question_attempts")
+  .select('*')
+  .eq("user_id", userId);
+
+  return res.status(200).json({attempts: data})
+};
+
+exports.insertAttempt = async (req, res) => {
+  const userId = req.user.id;
+  const { question_id } = req.body; 
+
+  const { error } = await supabase
+  .from("question_attempts")
+  .insert([
+    {
+      question_id: question_id, 
+      user_id: userId
+    }
+  ])
+  .select()
+
+  if (error) {
+    return res.status(500).json({message: error.message})
+  }
+
+  return res.status(200).json({message: "New attempt created!"})
 };
 
 exports.updateProfile = async (req, res) => {

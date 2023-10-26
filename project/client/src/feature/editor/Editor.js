@@ -8,7 +8,7 @@ import { MdOutlineError } from "react-icons/md";
 export default function Editor(props) {
   const [codeContent, setCodeContent] = useState("");
   const [isDisconnected, setIsDisconnected] = useState(false);
-  const [language, setLanguage] = useState("python");
+  const [language, setLanguage] = useState("javascript");
   const [isLoading, setIsLoading] = useState(false);
 
   let roomName = props.roomName;
@@ -20,6 +20,15 @@ export default function Editor(props) {
 
   function updateDisconnect() {
     setIsDisconnected(true);
+  }
+
+  function onUpdateLanguage(language) {
+    setLanguage(language);
+  }
+
+  function switchLanguage(language) {
+    setLanguage(language);
+    socket.emit("sendLanguage", roomName, language);
   }
 
   async function runCode(e) {
@@ -40,10 +49,12 @@ export default function Editor(props) {
   useEffect(() => {
     socket.on("updateCode", onUpdateCode);
     socket.on("warnDisconnect", updateDisconnect);
+    socket.on("updateLanguage", onUpdateLanguage);
 
     return () => {
       socket.off("updateCode", onUpdateCode);
       socket.off("warnDisconnect", updateDisconnect);
+      socket.off("updateLanguage", onUpdateLanguage);
       socket.disconnect();
     };
   }, []);
@@ -58,8 +69,8 @@ export default function Editor(props) {
       <HStack p={2}>
         <Select
           value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-          width="10%"
+          onChange={(e) => switchLanguage(e.target.value)}
+          width="150px"
         >
           {languageOptions.map((language) => (
             <option value={language.value} key={language.id}>

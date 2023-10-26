@@ -29,6 +29,10 @@ io.on("connection", (socket) => {
     socket.broadcast.to(roomName).emit("receiveMessage", message);
   });
 
+  socket.on("sendLanguage", (roomName, language) => {
+    socket.broadcast.to(roomName).emit("updateLanguage", language);
+  });
+
   socket.on("sendConsole", (roomName, submission) => {
     socket.broadcast.to(roomName).emit("updateConsole", submission);
   });

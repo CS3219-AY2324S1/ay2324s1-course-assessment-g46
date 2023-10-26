@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import { Flex, Text } from "@chakra-ui/react"
+import { Flex, Text } from "@chakra-ui/react";
 
 export default function Messages(props) {
   function AlwaysScrollToBottom() {
@@ -10,17 +10,13 @@ export default function Messages(props) {
   }
 
   return (
-    <Flex maxHeight="100%" w="100%" overflowY="auto" flexDirection="column">
+    <Flex overflowY="auto" flexDirection="column" marginBottom={3}>
       {props.messages.map((message, index) => {
         let sender = "Them: ";
         if (message.fromSelf) {
-          sender =  "You: ";
+          sender = "You: ";
         }
-        return (
-          <Text key={index}>
-            {sender + message.text}
-          </Text>
-        )
+        return <Text key={index}>{sender + message.text}</Text>;
       })}
       <AlwaysScrollToBottom />
     </Flex>

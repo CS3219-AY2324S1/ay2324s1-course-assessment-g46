@@ -42,7 +42,13 @@ export default function Work(props) {
         codeOutput={output}
         setOutput={setOutput}
       />
-      <Box flex="1" background="white" m={0.5} borderRadius={5}>
+      <Box
+        flex="1"
+        background="white"
+        m={0.5}
+        borderRadius={5}
+        overflow="hidden"
+      >
         <Editor
           roomName={props.roomName}
           socket={socket}

@@ -169,6 +169,7 @@ export default function EditQuestion(props) {
                       }))}
                       value={category}
                       onChange={setCategory}
+                      menuPlacement="auto"
                     />
                     {missingCategory && (
                       <FormErrorMessage>

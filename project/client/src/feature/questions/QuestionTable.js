@@ -16,7 +16,9 @@ export default function QuestionTable(props) {
           </Tr>
         </Thead>
         <Tbody>
-          {props.questions.map((data) => (
+          {props.questions == null 
+          ? <></>
+          : props.questions.map((data) => (
             <Fragment key={data.id}>
               <QuestionTableRow
                 {...data}

@@ -12,8 +12,7 @@ const socket = io(collabApi);
 
 export default function Work(props) {
   const [question, setQuestion] = useState({});
-  const [output, setOutput] = useState("");
-  const [hasOutputErr, setHasOutputErr] = useState(false);
+  const [output, setOutput] = useState({});
 
   useEffect(() => {
     if (props.questionId === -1) {
@@ -40,9 +39,14 @@ export default function Work(props) {
         question={question}
         roomName={props.roomName}
         socket={socket}
+        codeOutput={output}
       />
       <Box flex="1" background="white" m={0.5} borderRadius={5}>
-        <Editor roomName={props.roomName} socket={socket} />
+        <Editor
+          roomName={props.roomName}
+          socket={socket}
+          setOutput={setOutput}
+        />
       </Box>
     </Flex>
   );

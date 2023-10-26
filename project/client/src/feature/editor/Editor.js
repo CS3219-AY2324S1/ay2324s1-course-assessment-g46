@@ -1,20 +1,15 @@
-import {
-  Stack,
-  Select,
-  HStack,
-  AlertTitle,
-  Button,
-  Box,
-  Flex,
-} from "@chakra-ui/react";
-import { Alert, AlertIcon } from "@chakra-ui/react";
+import { Stack, Select, HStack, Button, Flex, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
+import { getId, languageOptions } from "../../constants/langauges";
+import { getSubmission, postSubmission } from "../../api/codeExecutionClient";
+import { MdOutlineError } from "react-icons/md";
 
 export default function Editor(props) {
   const [codeContent, setCodeContent] = useState("");
   const [isDisconnected, setIsDisconnected] = useState(false);
-  const [language, setLanguage] = useState("cpp");
+  const [language, setLanguage] = useState("python");
+  const [isLoading, setIsLoading] = useState(false);
 
   let roomName = props.roomName;
   let socket = props.socket;
@@ -29,23 +24,15 @@ export default function Editor(props) {
 
   async function runCode(e) {
     e.preventDefault();
+    setIsLoading(true);
     try {
       let languageId = getId(language);
-      let submission = await postSubmission(languageId, codeContent, "");
-      // let result = await getSubmission(submission.token);
-      parseExecution(submission);
+      let submission = await postSubmission(languageId, codeContent, "", "");
+      props.setOutput(submission);
     } catch (e) {
       console.log(e);
-    }
-  }
-
-  function parseExecution(output) {
-    if (output.stderr) {
-      props.setOutput(output.stderr);
-      props.setHasOutputErr(true);
-    } else {
-      props.setOutput(output.stdout);
-      props.setHasOutputErr(false);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -80,6 +67,8 @@ export default function Editor(props) {
           ))}
         </Select>
         <Button onClick={(e) => runCode(e)}>Run Code</Button>
+
+        {isLoading && <Spinner />}
         <Flex flex="1" justifyContent="center">
           {isDisconnected ? (
             <Button

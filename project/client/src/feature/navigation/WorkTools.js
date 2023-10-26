@@ -15,13 +15,13 @@ export default function WorkTools(props) {
   const [curTool, setTool] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const socket = props.socket
+  const socket = props.socket;
 
   function onReceiveMessage(message) {
     setMessages((old) => [...old, { fromSelf: false, text: message }]);
   }
 
-  useEffect( () => {
+  useEffect(() => {
     socket.on("receiveMessage", onReceiveMessage);
   }, []);
 
@@ -38,13 +38,18 @@ export default function WorkTools(props) {
       case "question":
         return <Question question={props.question} />;
       case "chat":
-        return <Chat roomName={props.roomName} socket={props.socket} messages={messages} setMessages={setMessages}/>;
+        return (
+          <Chat
+            roomName={props.roomName}
+            socket={props.socket}
+            messages={messages}
+            setMessages={setMessages}
+          />
+        );
       case "list":
         return <QuestionList />;
       case "console":
-        return (
-          <Console output={props.output} hasOutputErr={props.hasOutputErr} />
-        );
+        return <Console output={props.codeOutput} />;
       default:
         return null;
     }

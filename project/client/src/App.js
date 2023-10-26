@@ -4,7 +4,7 @@ import Home from "./feature/page/Home";
 import Work from "./feature/page/Work";
 import "./App.css";
 import Workbar from "./feature/navigation/Workbar";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -33,7 +33,6 @@ function App() {
   }
 
   return (
-    // <Flex height="$100vh" flexDirection="column">
     <Box height="100vh">
       {isHomePage() ? (
         <>
@@ -57,7 +56,6 @@ function App() {
         </>
       )}
     </Box>
-    // </Flex>
   );
 }
 

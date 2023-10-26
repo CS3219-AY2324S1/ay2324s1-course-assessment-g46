@@ -22,6 +22,15 @@ export default function Editor(props) {
     setIsDisconnected(true);
   }
 
+  function onUpdateLanguage(language) {
+    setLanguage(language);
+  }
+
+  function switchLanguage(language) {
+    setLanguage(language);
+    socket.emit("sendLanguage", roomName, language);
+  }
+
   async function runCode(e) {
     e.preventDefault();
     setIsLoading(true);
@@ -40,10 +49,12 @@ export default function Editor(props) {
   useEffect(() => {
     socket.on("updateCode", onUpdateCode);
     socket.on("warnDisconnect", updateDisconnect);
+    socket.on("updateLanguage", onUpdateLanguage);
 
     return () => {
       socket.off("updateCode", onUpdateCode);
       socket.off("warnDisconnect", updateDisconnect);
+      socket.off("updateLanguage", onUpdateLanguage);
       socket.disconnect();
     };
   }, []);
@@ -58,7 +69,7 @@ export default function Editor(props) {
       <HStack p={2}>
         <Select
           value={language}
-          onChange={(e) => setLanguage(e.target.value)}
+          onChange={(e) => switchLanguage(e.target.value)}
           width="150px"
         >
           {languageOptions.map((language) => (

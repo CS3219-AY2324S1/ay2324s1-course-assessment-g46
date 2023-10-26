@@ -16,6 +16,7 @@ import { getQuestions } from "../../api/questionClient";
 import Login from "../profile/Login";
 import Signup from "../profile/Signup";
 
+// opening questions tab with this will result in error as this is not in db
 const tempquestion = {
   id: 1,
   title: "title1",

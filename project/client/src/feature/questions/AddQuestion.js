@@ -1,8 +1,15 @@
 import {
+  Box,
   Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Divider,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Heading,
   Input,
   Modal,
   ModalBody,
@@ -12,10 +19,15 @@ import {
   ModalHeader,
   ModalOverlay,
   Select,
+  SimpleGrid,
+  Spacer,
+  Text,
+  Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Select as TagSelect } from "chakra-react-select";
 import React, { useEffect, useState } from "react";
+import Markdown from "react-markdown";
 import {
   addQuestion,
   getFirstMissingQuestionId,
@@ -52,13 +64,7 @@ export default function AddQuestion(props) {
     }
 
     const categories = category.map((c) => c.value);
-    // const question = {
-    //   id: id,
-    //   title: title,
-    //   description: description,
-    //   category: categories,
-    //   complexity: complexity,
-    // };
+
     try {
       await addQuestion(id, title, description, categories, complexity);
       onClose();
@@ -122,80 +128,105 @@ export default function AddQuestion(props) {
       <Button onClick={onOpen} colorScheme="twitter">
         Add Question
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} size={"full"} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Question</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl isInvalid={missingTitle || repeatTitle}>
-              <FormLabel>Title</FormLabel>
-              <Input
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                isRequired={true}
-              />
-              {missingTitle && (
-                <FormErrorMessage>Title is required.</FormErrorMessage>
-              )}
-              {repeatTitle && (
-                <FormErrorMessage>Title already exists</FormErrorMessage>
-              )}
-            </FormControl>
+            <SimpleGrid columns={2} spacing={15}>
+              <Card>
+                <CardHeader>
+                  <Heading size={"xl"}>Input</Heading>
+                </CardHeader>
+                <CardBody>
+                  <FormControl isInvalid={missingTitle || repeatTitle}>
+                    <FormLabel>Title</FormLabel>
+                    <Input
+                      placeholder="Title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      isRequired={true}
+                    />
+                    {missingTitle && (
+                      <FormErrorMessage>Title is required.</FormErrorMessage>
+                    )}
+                    {repeatTitle && (
+                      <FormErrorMessage>Title already exists</FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={missingDesc || repeatDesc}>
+                    <FormLabel>Description</FormLabel>
+                    <Textarea
+                      placeholder="Description"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      isRequired={true}
+                      h={"300px"}
+                    />
+                    {missingDesc && (
+                      <FormErrorMessage>
+                        Description is required.
+                      </FormErrorMessage>
+                    )}
+                    {repeatDesc && (
+                      <FormErrorMessage>
+                        Description already exists
+                      </FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl isInvalid={missingCategory}>
+                    <FormLabel>Category</FormLabel>
+                    <TagSelect
+                      isMulti
+                      options={questionCategories.map((c) => ({
+                        value: c,
+                        label: c,
+                      }))}
+                      onChange={setCategory}
+                      menuPlacement="auto"
+                    />
+                    {missingCategory && (
+                      <FormErrorMessage>
+                        At least 1 category is required.
+                      </FormErrorMessage>
+                    )}
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Complexity</FormLabel>
+                    <Select
+                      value={complexity}
+                      onChange={(e) => setComplexity(e.target.value)}
+                    >
+                      <option value="Easy">Easy</option>
+                      <option value="Medium">Medium</option>
+                      <option value="Hard">Hard</option>
+                    </Select>
+                  </FormControl>
+                  <FormControl isInvalid={apiError}>
+                    {apiError && (
+                      <FormErrorMessage>
+                        Server encountered error adding question
+                      </FormErrorMessage>
+                    )}
+                  </FormControl>
+                </CardBody>
+              </Card>
 
-            <FormControl isInvalid={missingDesc || repeatDesc}>
-              <FormLabel>Description</FormLabel>
-              <Input
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                isRequired={true}
-              />
-              {missingDesc && (
-                <FormErrorMessage>Description is required.</FormErrorMessage>
-              )}
-              {repeatDesc && (
-                <FormErrorMessage>Description already exists</FormErrorMessage>
-              )}
-            </FormControl>
-
-            <FormControl isInvalid={missingCategory}>
-              <FormLabel>Category</FormLabel>
-              <TagSelect
-                isMulti
-                options={questionCategories.map((c) => ({
-                  value: c,
-                  label: c,
-                }))}
-                onChange={setCategory}
-              />
-              {missingCategory && (
-                <FormErrorMessage>
-                  At least 1 category is required.
-                </FormErrorMessage>
-              )}
-            </FormControl>
-
-            <FormControl>
-              <FormLabel>Complexity</FormLabel>
-              <Select
-                value={complexity}
-                onChange={(e) => setComplexity(e.target.value)}
-              >
-                <option value="Easy">Easy</option>
-                <option value="Medium">Medium</option>
-                <option value="Hard">Hard</option>
-              </Select>
-            </FormControl>
-
-            <FormControl isInvalid={apiError}>
-              {apiError && (
-                <FormErrorMessage>
-                  Server encountered error adding question
-                </FormErrorMessage>
-              )}
-            </FormControl>
+              <Card>
+                <CardHeader>
+                  <Heading>Preview</Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text as="b" fontSize={"xl"}>
+                    {title ? title : "Question title"}
+                  </Text>
+                  <Markdown>
+                    {description ? description : "Question description"}
+                  </Markdown>
+                </CardBody>
+              </Card>
+            </SimpleGrid>
           </ModalBody>
           <ModalFooter>
             <FormControl>

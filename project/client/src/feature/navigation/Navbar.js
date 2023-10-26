@@ -1,13 +1,18 @@
 import React from "react";
-import Login from "../profile/Login";
 import LoginOptions from "../profile/LoginOptions";
 import { Box, Flex, Spacer, Text } from "@chakra-ui/react";
-import Signup from "../profile/Signup";
 
 export default function Navbar(props) {
   return (
     <>
-      <Flex direction={"row"} spacing={4} mx={10} py={2} alignItems="center">
+      <Flex
+        direction={"row"}
+        spacing={4}
+        mx={10}
+        py={2}
+        alignItems="center"
+        height="60px"
+      >
         <Box>
           <Text fontSize="lg" as="b" color="#006AFF">
             Peerprep

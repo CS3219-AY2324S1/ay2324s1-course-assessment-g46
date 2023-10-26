@@ -22,17 +22,15 @@ export default function Chat(props) {
   }
 
   return (
-    <Flex flexDir="column" h="100%">
-      <Flex h="100%">
-        <Messages messages={props.messages}/>
-      </Flex>
+    <Flex flexDir="column" h="100%" justifyContent="space-between">
+      <Messages messages={props.messages} />
       <Flex>
-        <Input 
-          placeholder='Type message here'
+        <Input
+          placeholder="Type message here"
           value={sendMessage}
           onChange={(e) => setSendMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key == "Enter") {
+            if (e.key === "Enter") {
               handleSendMessage();
             }
           }}

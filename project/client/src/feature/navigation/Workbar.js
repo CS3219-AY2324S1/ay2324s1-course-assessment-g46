@@ -5,7 +5,14 @@ import { MdOutlineWest } from "react-icons/md";
 export default function Workbar(props) {
   return (
     <>
-      <Flex direction={"row"} spacing={4} mx={10} py={2} alignItems="center">
+      <Flex
+        direction={"row"}
+        spacing={4}
+        mx={10}
+        py={2}
+        alignItems="center"
+        height="40px"
+      >
         <Box>
           <Button
             leftIcon={<MdOutlineWest />}

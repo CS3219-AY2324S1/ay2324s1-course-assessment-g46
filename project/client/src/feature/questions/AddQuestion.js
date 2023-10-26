@@ -184,6 +184,7 @@ export default function AddQuestion(props) {
                         label: c,
                       }))}
                       onChange={setCategory}
+                      menuPlacement="auto"
                     />
                     {missingCategory && (
                       <FormErrorMessage>

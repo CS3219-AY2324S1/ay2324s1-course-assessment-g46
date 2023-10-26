@@ -33,11 +33,12 @@ function App() {
   }
 
   return (
-    <Flex height="$100vh" flexDirection="column">
+    // <Flex height="$100vh" flexDirection="column">
+    <Box height="100vh">
       {isHomePage() ? (
         <>
           <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-          <Box flex="1">
+          <Box height="calc(100vh - 60px)">
             <Home
               attemptQuestion={setQuestionId}
               loggedIn={loggedIn}
@@ -50,10 +51,13 @@ function App() {
       ) : (
         <>
           <Workbar goHome={() => setQuestionId(-1)} />
-          <Work questionId={questionId} roomName={roomName} />
+          <Box height="calc(100vh - 40px)">
+            <Work questionId={questionId} roomName={roomName} />
+          </Box>
         </>
       )}
-    </Flex>
+    </Box>
+    // </Flex>
   );
 }
 

@@ -40,6 +40,7 @@ export default function Work(props) {
         roomName={props.roomName}
         socket={socket}
         codeOutput={output}
+        setOutput={setOutput}
       />
       <Box flex="1" background="white" m={0.5} borderRadius={5}>
         <Editor

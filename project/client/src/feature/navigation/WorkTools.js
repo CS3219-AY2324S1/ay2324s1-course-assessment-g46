@@ -21,8 +21,16 @@ export default function WorkTools(props) {
     setMessages((old) => [...old, { fromSelf: false, text: message }]);
   }
 
+  function onUpdateConsole(execution) {
+    props.setOutput(execution);
+  }
+
   useEffect(() => {
     socket.on("receiveMessage", onReceiveMessage);
+  }, []);
+
+  useEffect(() => {
+    socket.on("updateConsole", onUpdateConsole);
   }, []);
 
   function toggleTool(tool) {

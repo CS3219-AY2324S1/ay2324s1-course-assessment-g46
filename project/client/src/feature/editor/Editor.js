@@ -2,7 +2,7 @@ import { Stack, Select, HStack, Button, Flex, Spinner } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 import { getId, languageOptions } from "../../constants/langauges";
-import { getSubmission, postSubmission } from "../../api/codeExecutionClient";
+import { postSubmission } from "../../api/codeExecutionClient";
 import { MdOutlineError } from "react-icons/md";
 
 export default function Editor(props) {
@@ -29,6 +29,7 @@ export default function Editor(props) {
       let languageId = getId(language);
       let submission = await postSubmission(languageId, codeContent, "", "");
       props.setOutput(submission);
+      socket.emit("sendConsole", roomName, submission);
     } catch (e) {
       console.log(e);
     } finally {

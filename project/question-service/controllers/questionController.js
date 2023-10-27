@@ -15,6 +15,7 @@ exports.getOneQuestion = async (req, res) => {
     .from("questions")
     .select()
     .eq("question_id", req.params.id);
+
   if (error) {
     res.status(500).json({ message: error.message });
   }
@@ -23,7 +24,7 @@ exports.getOneQuestion = async (req, res) => {
     res.status(404).json({ message: "Cannot find question" });
   }
 
-  res.status(200).json({ question: data });
+  res.status(200).json(data[0]);
 };
 
 exports.createOneQuestion = async (req, res) => {

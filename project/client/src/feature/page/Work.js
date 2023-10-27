@@ -1,17 +1,25 @@
-import React, { useEffect, useState } from "react";
-import WorkTools from "../navigation/WorkTools";
-import Editor from "../editor/Editor";
 import { Box, Flex } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { getQuestion } from "../../api/questionClient";
+import Editor from "../editor/Editor";
+import WorkTools from "../navigation/WorkTools";
 
 import { io } from "socket.io-client";
+import Question from "../tools/Question";
 
 const collabApi = process.env.COLLAB_API_URL || "http://localhost:8081";
 
 const socket = io(collabApi);
 
+const questionTemplate = {
+  title: "",
+  description: "",
+  category: [],
+  complexity: "",
+};
+
 export default function Work(props) {
-  const [question, setQuestion] = useState({});
+  const [question, setQuestion] = useState(questionTemplate);
   const [output, setOutput] = useState({});
 
   useEffect(() => {
@@ -20,6 +28,7 @@ export default function Work(props) {
     } else {
       getQuestion(props.questionId)
         .then((data) => {
+          console.log(data);
           setQuestion(data);
         })
         .catch((err) => {
@@ -35,18 +44,20 @@ export default function Work(props) {
 
   return (
     <Flex height="100%" py={0.5} background="#e0e3eb">
-      <WorkTools
-        question={question}
-        roomName={props.roomName}
-        socket={socket}
-        codeOutput={output}
-        setOutput={setOutput}
-      />
       <Box
         flex="1"
         background="white"
         m={0.5}
-        borderRadius={5}
+        borderRadius={10}
+        overflow="hidden"
+      >
+        <Question question={question} />
+      </Box>
+      <Box
+        flex="1"
+        background="white"
+        m={0.5}
+        borderRadius={10}
         overflow="hidden"
       >
         <Editor
@@ -57,4 +68,33 @@ export default function Work(props) {
       </Box>
     </Flex>
   );
+
+  // return (
+  //   <Flex height="100%" py={0.5} background="#e0e3eb">
+  //     <WorkTools
+  //       question={question}
+  //       roomName={props.roomName}
+  //       socket={socket}
+  //       codeOutput={output}
+  //       setOutput={setOutput}
+  //     />
+  //     <Flex>
+  //       <Box></Box>
+
+  //     </Flex>
+  //     <Box
+  //       flex="1"
+  //       background="white"
+  //       m={0.5}
+  //       borderRadius={5}
+  //       overflow="hidden"
+  //     >
+  //       <Editor
+  //         roomName={props.roomName}
+  //         socket={socket}
+  //         setOutput={setOutput}
+  //       />
+  //     </Box>
+  //   </Flex>
+  // );
 }

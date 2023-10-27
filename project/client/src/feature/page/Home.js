@@ -35,10 +35,15 @@ export default function Home(props) {
       let questions = data.questions;
       questions.forEach((q, i) => {
         q.id = i + 1;
+        console.log(q);
       });
-      setQuestions(data.questions);
+      // sort question by created date
+      questions.sort((a, b) => {
+        return new Date(b.created_at) - new Date(a.created_at);
+      });
+      setQuestions(questions);
     } catch (error) {
-      setQuestions([tempquestion]);
+      // setQuestions([tempquestion]);
       console.log(error);
     }
   };

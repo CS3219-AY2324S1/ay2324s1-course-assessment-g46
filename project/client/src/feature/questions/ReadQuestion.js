@@ -1,28 +1,28 @@
-import React from "react";
 import {
+  Button,
+  Center,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure,
-  Button,
-  Text,
-  Tag,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Stack,
-  Center,
+  Tag,
+  Text,
   Wrap,
+  useDisclosure,
 } from "@chakra-ui/react";
+import React from "react";
 
 export default function ReadQuestion(props) {
-  const { id, title, description, category, complexity, _id } = props;
+  const { question_id, id, title, description, category, complexity } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function attemptQuestion() {
     onClose();
-    props.attemptQuestion(_id);
+    props.attemptQuestion(question_id);
   }
 
   function getComplexity() {
@@ -59,11 +59,11 @@ export default function ReadQuestion(props) {
           <ModalBody>
             <Stack spacing={4}>
               <Wrap spacing={4}>
-                {category == null ?
-                <></>
-                : category.map((c, i) => (
-                  <Tag key={i}>{c}</Tag>
-                ))}
+                {category == null ? (
+                  <></>
+                ) : (
+                  category.map((c, i) => <Tag key={i}>{c}</Tag>)
+                )}
               </Wrap>
               <Text color={getComplexity()}>{complexity}</Text>
               <Text>{description}</Text>

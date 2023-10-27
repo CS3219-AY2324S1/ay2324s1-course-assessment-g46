@@ -1,10 +1,10 @@
+import { Box } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
+import "./App.css";
 import Navbar from "./feature/navigation/Navbar";
+import Workbar from "./feature/navigation/Workbar";
 import Home from "./feature/page/Home";
 import Work from "./feature/page/Work";
-import "./App.css";
-import Workbar from "./feature/navigation/Workbar";
-import { Box } from "@chakra-ui/react";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -12,12 +12,12 @@ function App() {
   const [questionId, setQuestionId] = useState(-1);
   const [roomName, setRoomName] = useState("");
 
-   useEffect(() => {
+  useEffect(() => {
     const admin = localStorage.getItem("admin");
     setIsAdmin(admin === "admin");
     const token = localStorage.getItem("token");
     if (token) {
-        setLoggedIn(true);
+      setLoggedIn(true);
     } else {
       setLoggedIn(false);
     }
@@ -29,7 +29,7 @@ function App() {
   }, [loggedIn]);
 
   function isHomePage() {
-    return questionId === -1;
+    return x === -1;
   }
 
   return (
@@ -51,7 +51,7 @@ function App() {
         <>
           <Workbar goHome={() => setQuestionId(-1)} />
           <Box height="calc(100vh - 40px)">
-            <Work questionId={questionId} roomName={roomName} />
+            <Woxrk questionId={questionId} roomName={roomName} />
           </Box>
         </>
       )}

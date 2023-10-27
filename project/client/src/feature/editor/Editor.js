@@ -1,9 +1,9 @@
-import { Stack, Select, HStack, Button, Flex, Spinner } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import { Button, Flex, HStack, Select, Spinner, Stack } from "@chakra-ui/react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
-import { getId, languageOptions } from "../../constants/langauges";
-import { postSubmission } from "../../api/codeExecutionClient";
+import React, { useEffect, useState } from "react";
 import { MdOutlineError } from "react-icons/md";
+import { postSubmission } from "../../api/codeExecutionClient";
+import { getId, languageOptions } from "../../constants/langauges";
 
 export default function Editor(props) {
   const [codeContent, setCodeContent] = useState("");

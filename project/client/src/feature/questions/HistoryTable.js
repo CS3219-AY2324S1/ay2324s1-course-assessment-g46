@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, TableContainer } from "@chakra-ui/react";
-import HistoryTableRow from "./HistoryTableRow";
 import { getQuestionAttempts } from "../../api/userClient";
+import QuestionTableRow from "./QuestionTableRow";
 
 export default function HistoryTable(props) {
   const [questions, setQuestions] = useState([]);
@@ -29,6 +29,9 @@ export default function HistoryTable(props) {
           <Tr>
             <Th>ID</Th>
             <Th>Title</Th>
+            <Th>Description</Th>
+            <Th>Category</Th>
+            <Th>Complexity</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -37,9 +40,11 @@ export default function HistoryTable(props) {
           ) : (
             questions.map((data) => (
               <Fragment key={data.question_id}>
-                <HistoryTableRow
+                <QuestionTableRow
                   {...getQuestion(data.question_id)}
                   attemptQuestion={props.attemptQuestion}
+                  questions={props.questions}
+                  isAdmin={false}
                 />
               </Fragment>
             ))

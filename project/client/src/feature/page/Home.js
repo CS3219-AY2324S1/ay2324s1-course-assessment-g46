@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import QuestionTable from "../questions/QuestionTable";
-import AddQuestion from "../questions/AddQuestion";
-import Match from "../match/match";
 import {
-  Text,
-  Flex,
   AbsoluteCenter,
-  VStack,
+  Box,
   Button,
   Divider,
-  Box,
+  Flex,
   HStack,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { getQuestions } from "../../api/questionClient";
+import Match from "../match/match";
 import Login from "../profile/Login";
 import Signup from "../profile/Signup";
+import AddQuestion from "../questions/AddQuestion";
+import QuestionTable from "../questions/QuestionTable";
 
 // opening questions tab with this will result in error as this is not in db
 const tempquestion = {
@@ -32,6 +32,10 @@ export default function Home(props) {
   const updateQuestionsList = async () => {
     try {
       let data = await getQuestions();
+      let questions = data.questions;
+      questions.forEach((q, i) => {
+        q.id = i + 1;
+      });
       setQuestions(data.questions);
     } catch (error) {
       setQuestions([tempquestion]);

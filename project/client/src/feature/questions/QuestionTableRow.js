@@ -1,8 +1,8 @@
-import React from "react";
+import { HStack, Tag, Td, Tr } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import DeleteQuestion from "./DeleteQuestion";
 import EditQuestion from "./EditQuestion";
 import ReadQuestion from "./ReadQuestion";
-import DeleteQuestion from "./DeleteQuestion";
-import { HStack, Tag, Td, Tr } from "@chakra-ui/react";
 
 export default function QuestionTableRow(props) {
   function truncate(str) {
@@ -16,12 +16,11 @@ export default function QuestionTableRow(props) {
       <Td>
         <ReadQuestion {...props} />
       </Td>
-      <Td>{truncate(props.description)}</Td>
       <Td>
         <HStack spacing={4}>
-          { props.category == null 
-          ? <> </>
-          : props.category.length <= 3 ? (
+          {props.category == null ? (
+            <> </>
+          ) : props.category.length <= 3 ? (
             props.category.map((c, i) => <Tag key={i}>{c}</Tag>)
           ) : (
             <>

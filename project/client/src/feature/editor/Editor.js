@@ -4,12 +4,15 @@ import { Editor as MonacoEditor } from "@monaco-editor/react";
 import { getId, languageOptions } from "../../constants/langauges";
 import { postSubmission } from "../../api/codeExecutionClient";
 import { MdOutlineError } from "react-icons/md";
+import { insertNewAttempt } from "../../api/userClient";
 
 export default function Editor(props) {
   const [codeContent, setCodeContent] = useState("");
   const [isDisconnected, setIsDisconnected] = useState(false);
   const [language, setLanguage] = useState("javascript");
   const [isLoading, setIsLoading] = useState(false);
+
+  const token = localStorage.getItem("token");
 
   let roomName = props.roomName;
   let socket = props.socket;
@@ -39,6 +42,8 @@ export default function Editor(props) {
       let submission = await postSubmission(languageId, codeContent, "", "");
       props.setOutput(submission);
       socket.emit("sendConsole", roomName, submission);
+      props.updateUserHistory();
+      await insertNewAttempt(token, { question_id: props.questionId });
     } catch (e) {
       console.log(e);
     } finally {

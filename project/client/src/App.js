@@ -29,7 +29,7 @@ function App() {
   }, [loggedIn]);
 
   function isHomePage() {
-    return x === -1;
+    return questionId === -1;
   }
 
   return (
@@ -51,7 +51,7 @@ function App() {
         <>
           <Workbar goHome={() => setQuestionId(-1)} />
           <Box height="calc(100vh - 40px)">
-            <Woxrk questionId={questionId} roomName={roomName} />
+            <Work questionId={questionId} roomName={roomName} />
           </Box>
         </>
       )}

@@ -5,6 +5,8 @@ import Editor from "../editor/Editor";
 import WorkTools from "../navigation/WorkTools";
 
 import { io } from "socket.io-client";
+import Chat from "../tools/Chat";
+import Console from "../tools/Console";
 import Question from "../tools/Question";
 
 const collabApi = process.env.COLLAB_API_URL || "http://localhost:8081";
@@ -44,28 +46,54 @@ export default function Work(props) {
 
   return (
     <Flex height="100%" py={0.5} background="#e0e3eb">
-      <Box
-        flex="1"
-        background="white"
-        m={0.5}
-        borderRadius={10}
-        overflow="hidden"
-      >
-        <Question question={question} />
-      </Box>
-      <Box
-        flex="1"
-        background="white"
-        m={0.5}
-        borderRadius={10}
-        overflow="hidden"
-      >
-        <Editor
-          roomName={props.roomName}
-          socket={socket}
-          setOutput={setOutput}
-        />
-      </Box>
+      <Flex flex="1" direction={"column"}>
+        <Box
+          flex="1"
+          background="white"
+          m={0.5}
+          p={1}
+          borderRadius={20}
+          overflow="hidden"
+        >
+          <Question question={question} />
+        </Box>
+        <Box
+          flex="1"
+          background="white"
+          m={0.5}
+          p={1}
+          borderRadius={20}
+          overflow="hidden"
+        >
+          {/* <Chat socket={socket} /> */}
+        </Box>
+      </Flex>
+      <Flex flex="1" direction={"column"}>
+        <Box
+          flex="2"
+          background="white"
+          m={0.5}
+          p={1}
+          borderRadius={20}
+          overflow="hidden"
+        >
+          <Editor
+            roomName={props.roomName}
+            socket={socket}
+            setOutput={setOutput}
+          />
+        </Box>
+        <Box
+          flex="1"
+          background="white"
+          p={1}
+          m={0.5}
+          borderRadius={20}
+          overflow="hidden"
+        >
+          <Console output={output} />
+        </Box>
+      </Flex>
     </Flex>
   );
 

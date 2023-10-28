@@ -112,7 +112,11 @@ exports.updateProfile = async (req, res) => {
   const { fullName, goal } = req.body;
 
   if (goal != null && goal.length > 100) {
-    return res.status(400).json({message: "Goal field must be less than 100 characters"})
+    return res.status(400).json({message: "Goal field must be less than 100 characters"});
+  }
+
+  if (fullName == null ||  (fullName.length == 0)) {
+    return res.status(400).json({message: "Full name is missing"});
   }
 
   const { data, error } = await supabase

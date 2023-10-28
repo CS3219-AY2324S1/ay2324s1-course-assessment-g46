@@ -15,9 +15,9 @@ export const signUp = async (userDetails) => {
 export const signOut = async () => {
   try {
     let { data } = await axios.post(`${userApi}/logout`);
-    return { data };
+    return { data: data, error: null };
   } catch (error) {
-    return { error: error.response.data };
+    return { data: null, error: error.response.data };
   }
 };
 
@@ -27,9 +27,9 @@ export const updateProfile = async (userDetails, token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    return { data };
+    return { data: data, error: null };
   } catch (error) {
-    return { error: error.response.data };
+    return { data: null, error: error.response.data };
   }
 };
 
@@ -39,9 +39,9 @@ export const getProfile = async (token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    return { data };
+    return { data: data, error: null };
   } catch (error) {
-    return { error: error.response.data };
+    return { data: null, error: error.response.data };
   }
 };
 
@@ -51,8 +51,8 @@ export const deleteAccount = async (token) => {
       headers: { Authorization: `Bearer ${token}` },
     });
 
-    return { data };
+    return { data: data, error: null };
   } catch (error) {
-    return { error: error.response.data };
+    return { data: null, error: error.response.data };
   }
 };

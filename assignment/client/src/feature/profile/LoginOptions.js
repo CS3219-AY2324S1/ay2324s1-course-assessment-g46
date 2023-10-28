@@ -26,9 +26,9 @@ export default function LoginOptions(props) {
 
   async function submitLogout(e) {
     e.preventDefault();
-    const res = await signOut();
-    if (res.hasOwnProperty("error")) {
-      alert(res.error.message);
+    const { data, error } = await signOut();
+    if (error != null) {
+      alert(error.message);
     } else {
       localStorage.removeItem("token");
       localStorage.removeItem("admin");
@@ -39,9 +39,9 @@ export default function LoginOptions(props) {
   async function submitDelete(e) {
     e.preventDefault();
 
-    const res = await deleteAccount(token);
-    if (res.hasOwnProperty("error")) {
-      alert(res.error.message);
+    const { data, error } = await deleteAccount(token);
+    if (error != null) {
+      alert(error.message);
     } else {
       onClose(e);
       submitLogout(e);

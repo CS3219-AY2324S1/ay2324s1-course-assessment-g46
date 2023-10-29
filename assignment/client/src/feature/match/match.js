@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 import {
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
   Button,
   FormControl,
   FormLabel,
@@ -17,6 +22,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
+import Timer from "./timer";
+
 import { io } from "socket.io-client";
 
 const matchApi =
@@ -24,23 +31,25 @@ const matchApi =
 
 let socket;
 let timeout;
+let identifier;
 
 export default function Match(props) {
   const [isFindingMatch, setFindingMatch] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [category, setCategory] = useState("");
   const [complexity, setComplexity] = useState("Easy");
+  const { isOpen: isAlertOpen, onOpen: onAlertOpen, onClose: onAlertClose } = useDisclosure();
 
   function cleanUpSocket() {
     clearTimeout(timeout);
     socket.off("matchFound", matchFound);
-    socket.disconnect();
     setFindingMatch(false);
   }
 
   useEffect(() => {
     socket = io(matchApi);
-  })
+    identifier = Math.random().toString();
+  }, [])
 
   function matchFound(match) {
     props.setRoomName(match.roomName);
@@ -52,6 +61,7 @@ export default function Match(props) {
     setFindingMatch(true);
 
     timeout = setTimeout(() => {
+      onAlertOpen();
       cancelFind();
     }, 30000);
 
@@ -61,13 +71,14 @@ export default function Match(props) {
 
     socket.emit("findMatch", {
       socketId: socket.id,
+      identifier: identifier,
       complexity: complexity,
       time: new Date().getTime()
     });
   }
 
   function cancelFind() {
-    socket.emit("cancel", socket.id);
+    socket.emit("cancel", identifier);
     cleanUpSocket();
   }
 
@@ -84,6 +95,7 @@ export default function Match(props) {
               <>
                 <p>finding collaborator...</p>
                 <Spinner />
+                <Timer duration={30}/>
               </>
             ) : (
               <>
@@ -126,6 +138,20 @@ export default function Match(props) {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <AlertDialog isOpen={isAlertOpen} onClose={onAlertClose}>
+      <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+              No match found
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+            <Button onClick={onAlertClose}>
+              Ok
+            </Button>
+          </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </>
   );
 }

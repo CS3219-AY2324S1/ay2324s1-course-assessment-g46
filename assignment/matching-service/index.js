@@ -39,9 +39,13 @@ function getQuestionId(complexity) {
 
 io.on("connection", (socket) => {
   socket.on("findMatch", (match) => {
+    console.log("Before:")
+      console.log(matchingDict);
     complexity = match.complexity;
-    if (matchingDict[complexity] == null || matchingDict[complexity].time <= new Date().getTime() - 30000) {
+    if (matchingDict[complexity] == null || matchingDict[complexity].time <= new Date().getTime() - 30000 || matchingDict[complexity].identifier == match.identifier) {
       matchingDict[complexity] = match;
+      console.log("Added to queue:")
+      console.log(matchingDict);
     } else {
       const roomName = Math.random().toString(); // ~56 bits of entropy
       let questionId = getQuestionId(complexity);
@@ -49,13 +53,17 @@ io.on("connection", (socket) => {
       io.to(matchingDict[complexity].socketId).emit("matchFound", message);
       io.to(match.socketId).emit("matchFound", message);
       matchingDict[complexity] = null;
+      console.log("Matched:")
+      console.log(matchingDict);
     }
   });
 
   socket.on("cancel", (id) => {
     for (let property in matchingDict) {
-      if (matchingDict[property]?.socketId == id) {
+      if (matchingDict[property]?.identifier == id) {
         matchingDict[property] = null;
+        console.log("After cancelling:")
+        console.log(matchingDict);
       }
     }
   })

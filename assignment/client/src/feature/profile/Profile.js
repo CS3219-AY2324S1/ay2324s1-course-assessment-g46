@@ -18,23 +18,23 @@ import {
 import { getProfile, updateProfile } from "../../api/userClient";
 
 export default function Profile(props) {
-  const INVALID_GOAL_LENGTH = "Please make sure your goal has no more than 100 characters";
   const { isOpen: isOpenFirstModal, onOpen: onOpenFirstModal, onClose: onCloseFirstModal } = useDisclosure();
   const { isOpen: isOpenSecondModal, onOpen: onOpenSecondModal, onClose: onCloseSecondModal } = useDisclosure();
 
-  // const { token } = useAuth();
   const token = localStorage.getItem("token")
   const [fullName, setFullName] = useState("");
+  const [newName, setNewName] = useState("");
   const [goal, setGoal] = useState("");
+  const [newGoal, setNewGoal] = useState("");
 
   const getPersonalInfo = async () => {
     // Fetch user here 
-    const res = await getProfile(token)
-    if (res.hasOwnProperty("error")) {
-      alert(res.error.message)
+    const { data, error } = await getProfile(token)
+    if (error != null) {
+      alert(error.message)
     } else {
-      setFullName(res.data.fullName)
-      setGoal(res.data.goal)
+      setFullName(data.fullName)
+      setGoal(data.goal)
     }
   }
 
@@ -44,14 +44,12 @@ export default function Profile(props) {
 
   async function updateUser(e) {
     e.preventDefault();
-    const res = await updateProfile({fullName: fullName, goal: goal}, token)
-    if (res.hasOwnProperty("error")) {
-      alert(res.error.message)
+    const { data, error } = await updateProfile({fullName: newName, goal: newGoal}, token)
+    if (error != null) {
+      alert(error.message)
     } else {
       getPersonalInfo();
     }
-    
-    // Update profile here
   }
 
   return (
@@ -99,15 +97,15 @@ export default function Profile(props) {
             <FormControl>
               <FormLabel>Full Name</FormLabel>
               <Input
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
               />
             </FormControl>
             <FormControl>
               <FormLabel>Goal</FormLabel>
               <Textarea
-                value={goal}
-                onChange={(e) => setGoal(e.target.value)}
+                value={newGoal}
+                onChange={(e) => setNewGoal(e.target.value)}
               />
             </FormControl>
           </ModalBody>

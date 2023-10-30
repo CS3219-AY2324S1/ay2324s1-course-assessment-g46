@@ -42,12 +42,16 @@ export default function Editor(props) {
       let submission = await postSubmission(languageId, codeContent, "", "");
       props.setOutput(submission);
       socket.emit("sendConsole", roomName, submission);
-      props.updateUserHistory();
-      await insertNewAttempt(token, { question_id: props.questionId });
     } catch (e) {
       console.log(e);
     } finally {
       setIsLoading(false);
+    }
+
+    try {
+      await insertNewAttempt(token, { question_id: props.questionId });
+    } catch (e) {
+      console.log(e);
     }
   }
 

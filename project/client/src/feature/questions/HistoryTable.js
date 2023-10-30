@@ -4,7 +4,7 @@ import { getQuestionAttempts } from "../../api/userClient";
 import QuestionTableRow from "./QuestionTableRow";
 
 export default function HistoryTable(props) {
-  const [questions, setQuestions] = useState([]);
+  const [history, setHistory] = useState([]);
   const token = localStorage.getItem("token");
 
   function getQuestion(id) {
@@ -14,8 +14,12 @@ export default function HistoryTable(props) {
 
   useEffect(() => {
     getQuestionAttempts(token)
-      .then((data) => {
-        setQuestions(data);
+      .then((res) => {
+        if (res.data != null) {
+          setHistory(res.data);
+        } else {
+          setHistory([]);
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -38,7 +42,7 @@ export default function HistoryTable(props) {
           {props.questions == null ? (
             <></>
           ) : (
-            questions.map((data) => (
+            history.map((data) => (
               <Fragment key={data.question_id}>
                 <QuestionTableRow
                   {...getQuestion(data.question_id)}

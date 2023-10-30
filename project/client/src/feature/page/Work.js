@@ -53,6 +53,7 @@ export default function Work(props) {
           roomName={props.roomName}
           socket={socket}
           setOutput={setOutput}
+          questionId={props.questionId}
         />
       </Box>
     </Flex>

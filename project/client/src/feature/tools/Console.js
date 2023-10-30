@@ -1,4 +1,11 @@
-import { Alert, AlertDescription, Box, HStack, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  Box,
+  Divider,
+  HStack,
+  Text,
+} from "@chakra-ui/react";
 import React from "react";
 
 export default function Console(props) {
@@ -13,6 +20,7 @@ export default function Console(props) {
       <Text fontSize="lg" paddingBottom={2}>
         Console
       </Text>
+      <Divider />
       {token != null && (
         <>
           <HStack paddingBottom={2}>

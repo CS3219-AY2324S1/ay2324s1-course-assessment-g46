@@ -11,7 +11,7 @@ export default function QuestionTableRow(props) {
   }
 
   return (
-    <Tr>
+    <Tr height="60px">
       <Td>{props.id}</Td>
       <Td>
         <ReadQuestion {...props} />
@@ -19,9 +19,9 @@ export default function QuestionTableRow(props) {
       <Td>{truncate(props.description)}</Td>
       <Td>
         <HStack spacing={4}>
-          { props.category == null 
-          ? <> </>
-          : props.category.length <= 3 ? (
+          {props.category == null ? (
+            <> </>
+          ) : props.category.length <= 3 ? (
             props.category.map((c, i) => <Tag key={i}>{c}</Tag>)
           ) : (
             <>

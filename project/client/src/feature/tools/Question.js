@@ -2,7 +2,7 @@ import { Stack, Tag, Text, Wrap } from "@chakra-ui/react";
 import React from "react";
 
 export default function Question(props) {
-  const { question_id, title, description, category, complexity } = props.question.question[0];
+  const { title, description, category, complexity } = props.question.question[0];
 
   function getComplexity() {
     if (complexity === "Easy") {

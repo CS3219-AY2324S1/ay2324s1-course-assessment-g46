@@ -8,7 +8,6 @@ export default function HistoryTable(props) {
   const token = localStorage.getItem("token");
 
   function getQuestion(id) {
-    console.log(props.questions);
     let question = props.questions.find((q) => q.question_id === id);
     return question;
   }
@@ -18,8 +17,6 @@ export default function HistoryTable(props) {
       .then((res) => {
         if (res.data != null) {
           setHistory(res.data.attempts);
-          console.log(res.data.attempts[0].question_id);
-          console.log(getQuestion(res.data.attempts[0].question_id));
         } else {
           setHistory([]);
         }

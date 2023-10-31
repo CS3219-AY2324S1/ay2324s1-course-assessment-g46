@@ -8,8 +8,12 @@ export const signIn = async (userDetails) => {
 };
 
 export const signUp = async (userDetails) => {
-  let { data } = await axios.post(`${userApi}/signup`, userDetails);
-  return { data };
+  try {
+    let { data } = await axios.post(`${userApi}/signup`, userDetails);
+    return { data: data, error: null };
+  } catch (error) {
+    return { data: null, error: error.response.data };
+  }
 };
 
 export const signOut = async () => {
@@ -68,7 +72,6 @@ export const getQuestionAttempts = async (token) => {
     return { data: null, error: error.response.data };
   }
 };
-
 
 export const insertNewAttempt = async (token, userDetails) => {
   try {

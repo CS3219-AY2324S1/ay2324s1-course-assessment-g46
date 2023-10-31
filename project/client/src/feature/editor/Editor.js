@@ -28,6 +28,8 @@ export default function Editor(props) {
   const [isLoading, setIsLoading] = useState(false);
   const {isOpen, onOpen, onClose} = useDisclosure();
 
+  const token = localStorage.getItem("token");
+
   let roomName = props.roomName;
   let socket = props.socket;
 
@@ -60,6 +62,12 @@ export default function Editor(props) {
       console.log(e);
     } finally {
       setIsLoading(false);
+    }
+
+    try {
+      await insertNewAttempt(token, { question_id: props.questionId });
+    } catch (e) {
+      console.log(e);
     }
   }
 

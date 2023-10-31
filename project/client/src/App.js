@@ -4,7 +4,7 @@ import Home from "./feature/page/Home";
 import Work from "./feature/page/Work";
 import "./App.css";
 import Workbar from "./feature/navigation/Workbar";
-import { Box } from "@chakra-ui/react";
+import { Box, Divider } from "@chakra-ui/react";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -12,12 +12,12 @@ function App() {
   const [questionId, setQuestionId] = useState(-1);
   const [roomName, setRoomName] = useState("");
 
-   useEffect(() => {
+  useEffect(() => {
     const admin = localStorage.getItem("admin");
     setIsAdmin(admin === "admin");
     const token = localStorage.getItem("token");
     if (token) {
-        setLoggedIn(true);
+      setLoggedIn(true);
     } else {
       setLoggedIn(false);
     }
@@ -37,7 +37,7 @@ function App() {
       {isHomePage() ? (
         <>
           <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-          <Box height="calc(100vh - 60px)">
+          <Box height="calc(100vh - 80px)">
             <Home
               attemptQuestion={setQuestionId}
               loggedIn={loggedIn}

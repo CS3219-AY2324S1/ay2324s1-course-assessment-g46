@@ -11,10 +11,14 @@ import {
   Divider,
   Box,
   HStack,
+  Tabs,
+  Tab,
+  TabList,
 } from "@chakra-ui/react";
 import { getQuestions } from "../../api/questionClient";
 import Login from "../profile/Login";
 import Signup from "../profile/Signup";
+import HistoryTable from "../questions/HistoryTable";
 
 // opening questions tab with this will result in error as this is not in db
 const tempquestion = {
@@ -28,6 +32,7 @@ const tempquestion = {
 export default function Home(props) {
   const [questions, setQuestions] = useState([]);
   const [loginPage, setLoginPage] = useState(true);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const updateQuestionsList = async () => {
     try {
@@ -49,8 +54,19 @@ export default function Home(props) {
 
   return props.loggedIn ? (
     <>
-      <Flex justifyContent="space-between" alignItems="center" mx={10} my={3}>
-        <Text as="b">Questions</Text>
+      <Flex justifyContent="space-between" alignItems="center" mx={10}>
+        {/* <Text as="b">Questions</Text> */}
+        <Tabs
+          variant="unstyled"
+          colorScheme="twitter"
+          onChange={(index) => setTabIndex(index)}
+          index={tabIndex}
+        >
+          <TabList>
+            <Tab _selected={{ color: "white", bg: "blue.400" }}>Questions</Tab>
+            <Tab _selected={{ color: "white", bg: "blue.400" }}>History</Tab>
+          </TabList>
+        </Tabs>
         <Match
           setQuestionId={props.attemptQuestion}
           setRoomName={props.setRoomName}
@@ -64,12 +80,19 @@ export default function Home(props) {
           <Box />
         )}
       </Flex>
-      <QuestionTable
-        questions={questions}
-        updateQuestionsList={updateQuestionsList}
-        attemptQuestion={props.attemptQuestion}
-        isAdmin={props.isAdmin}
-      />
+      {tabIndex === 0 ? (
+        <QuestionTable
+          questions={questions}
+          updateQuestionsList={updateQuestionsList}
+          attemptQuestion={props.attemptQuestion}
+          isAdmin={props.isAdmin}
+        />
+      ) : (
+        <HistoryTable
+          questions={questions}
+          attemptQuestion={props.attemptQuestion}
+        />
+      )}
     </>
   ) : (
     <AbsoluteCenter>

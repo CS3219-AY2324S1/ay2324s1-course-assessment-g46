@@ -2,16 +2,10 @@ const axios = require('axios').default;
 const express = require('express');
 const { createServer } = require('node:http');
 const { Server } = require('socket.io');
-const { jwtDecode } = require('jwt-decode');
+const { getQuestionAttempts, getQuestionIds } = require('./api/userApi');
 
 const clientUrl =
   process.env.CLIENT_URL || "http://localhost:3000";
-
-const questionsApi = 
-  process.env.QUESTIONS_API_URL || "http://localhost:8888/questions"
-
-const usersApi = 
-  process.env.USERS_API_URL || "http://localhost:5100/user"
 
 const app = express();
 const server = createServer(app);
@@ -29,13 +23,21 @@ let matchingDict = {
 };
 
 async function getQuestionId(complexity, user1, user2) {
-  let questionId = 1;
-  token1 = jwtDecode(user1)?.sub;
-  token2 = jwtDecode(user2)?.sub;
-  const { data } = await axios.get(`${questionsApi}/complexity/${complexity}`);
-  const questions = data.questions;
-  questionId = questions[Math.floor(Math.random()*questions.length)].question_id;
-  return questionId;
+  const questionIds = await getQuestionIds(complexity)
+  const user1Set = await getQuestionAttempts(user1);
+  const user2Set = await getQuestionAttempts(user2);
+  let availableIds = [];
+  for (let index in questionIds) {
+    const id = questionIds[index];
+    if (user1Set.has(id) || user2Set.has(id)) {
+      continue;
+    }
+    availableIds.push(id);
+  }
+  if (availableIds.length > 0) {
+    return availableIds[Math.floor(Math.random()*availableIds.length)];
+  }
+  return questionIds[Math.floor(Math.random()*questionIds.length)]; // no available questions
 }
 
 io.on("connection", (socket) => {

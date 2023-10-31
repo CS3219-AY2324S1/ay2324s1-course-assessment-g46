@@ -1,5 +1,6 @@
 import { Stack, Tag, Text, Wrap } from "@chakra-ui/react";
 import React from "react";
+import Markdown from "react-markdown";
 
 export default function Question(props) {
   const { title, description, category, complexity } = props.question.question[0];
@@ -28,7 +29,7 @@ export default function Question(props) {
           ))}
         </Wrap>
         <Text color={getComplexity()}>{complexity}</Text>
-        <Text>{description}</Text>
+        <Markdown>{description}</Markdown>
       </Stack>
     </>
   );

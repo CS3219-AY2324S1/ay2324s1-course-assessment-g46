@@ -8,7 +8,6 @@ export default function QuestionTable(props) {
       <Table size="sm">
         <Thead>
           <Tr>
-            <Th>ID</Th>
             <Th>Title</Th>
             <Th>Description</Th>
             <Th>Category</Th>
@@ -26,6 +25,7 @@ export default function QuestionTable(props) {
                 updateQuestionsList={props.updateQuestionsList}
                 questions={props.questions}
                 isAdmin={props.isAdmin}
+                questionIndex={index}
               />
             </Fragment>
           ))}

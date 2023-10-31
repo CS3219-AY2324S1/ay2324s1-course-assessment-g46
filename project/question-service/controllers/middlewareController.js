@@ -12,13 +12,12 @@ exports.checkQuestion = async (req, res, next) => {
 
   if (data == null) {
     res.status(404).json({ message: "Cannot find question" });
-  }
-  if (error) {
+  } else if (error) {
     res.status(500).json({ message: error.message });
+  } else {
+    res.question = data;
+    next();
   }
-
-  res.question = data;
-  next();
 };
 
 exports.checkWriteAuthorization = (isAdmin) => {

@@ -15,14 +15,15 @@ import {
   Center,
   Wrap,
 } from "@chakra-ui/react";
+import Markdown from "react-markdown";
 
 export default function ReadQuestion(props) {
-  const { id, title, description, category, complexity, _id } = props;
+  const { title, description, category, complexity, question_id } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function attemptQuestion() {
     onClose();
-    props.attemptQuestion(_id);
+    props.attemptQuestion(question_id);
   }
 
   function getComplexity() {
@@ -53,7 +54,7 @@ export default function ReadQuestion(props) {
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {id}. {title}
+            {title}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -66,7 +67,7 @@ export default function ReadQuestion(props) {
                 ))}
               </Wrap>
               <Text color={getComplexity()}>{complexity}</Text>
-              <Text>{description}</Text>
+              <Markdown>{description}</Markdown>
             </Stack>
           </ModalBody>
 

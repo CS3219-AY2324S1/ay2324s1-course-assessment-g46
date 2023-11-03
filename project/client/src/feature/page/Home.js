@@ -33,13 +33,15 @@ export default function Home(props) {
     try {
       let data = await getQuestions();
       let questions = data.questions;
-      questions.forEach((q, i) => {
-        q.id = i + 1;
-        console.log(q);
-      });
+
       // sort question by created date
       questions.sort((a, b) => {
-        return new Date(b.created_at) - new Date(a.created_at);
+        return new Date(a.created_at) - new Date(b.created_at);
+      });
+
+      questions.forEach((q, i) => {
+        q.id = i + 1;
+        // console.log(q);
       });
       setQuestions(questions);
     } catch (error) {

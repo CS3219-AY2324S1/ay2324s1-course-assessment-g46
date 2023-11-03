@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Button,
@@ -19,8 +19,7 @@ import {
 
 import { io } from "socket.io-client";
 
-const matchApi =
-  process.env.MATCHING_API_URL || "http://localhost:8080";
+const matchApi = process.env.MATCHING_API_URL || "http://localhost:8080";
 
 let socket;
 let timeout;
@@ -40,9 +39,10 @@ export default function Match(props) {
 
   useEffect(() => {
     socket = io(matchApi);
-  })
+  });
 
   function matchFound(match) {
+    console.log("match found", match);
     props.setRoomName(match.roomName);
     props.setQuestionId(match.questionId);
     cleanUpSocket();
@@ -62,7 +62,7 @@ export default function Match(props) {
     socket.emit("findMatch", {
       socketId: socket.id,
       complexity: complexity,
-      time: new Date().getTime()
+      time: new Date().getTime(),
     });
   }
 

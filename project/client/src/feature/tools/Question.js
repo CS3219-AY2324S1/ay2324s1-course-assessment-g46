@@ -2,7 +2,7 @@ import { Stack, Tag, Text, Wrap } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 
 export default function Question(props) {
-  const { id, title, description, category, complexity } = props.question;
+  const { title, description, category, complexity } = props.question;
 
   function getComplexity() {
     if (complexity === "Easy") {
@@ -19,7 +19,6 @@ export default function Question(props) {
   return (
     <>
       <Stack spacing={4}>
-        <Text>{id}</Text>
         <Text fontSize="lg">{title}</Text>
         <Wrap spacing={4}>
           {category.map((c) => (

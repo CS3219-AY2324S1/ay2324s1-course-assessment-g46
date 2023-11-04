@@ -3,8 +3,14 @@ import React from "react";
 import Markdown from "react-markdown";
 
 export default function Question(props) {
-  console.log(props);
-  const { title, description, category, complexity } = props;
+  const { title, description, category, complexity } = props.question.question
+    ? props.question.question[0]
+    : {
+        title: "",
+        description: "",
+        category: [],
+        complexity: "",
+      };
 
   function getComplexity() {
     if (complexity === "Easy") {
@@ -22,11 +28,13 @@ export default function Question(props) {
     <>
       <Stack spacing={4}>
         <Text fontSize="lg">{title}</Text>
-        <Wrap spacing={4}>
-          {category.map((c, index) => (
-            <Tag key={index}>{c}</Tag>
-          ))}
-        </Wrap>
+        {category != null && category.length > 0 && (
+          <Wrap spacing={4}>
+            {category.map((c, index) => (
+              <Tag key={index}>{c}</Tag>
+            ))}
+          </Wrap>
+        )}
         <Text color={getComplexity()}>{complexity}</Text>
         <Markdown>{description}</Markdown>
       </Stack>

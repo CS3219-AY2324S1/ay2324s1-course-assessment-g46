@@ -30,6 +30,8 @@ export default function Match(props) {
   const [category, setCategory] = useState("");
   const [complexity, setComplexity] = useState("Easy");
 
+  let token = localStorage.getItem("token");
+
   function cleanUpSocket() {
     clearTimeout(timeout);
     socket.off("matchFound", matchFound);
@@ -39,6 +41,7 @@ export default function Match(props) {
 
   useEffect(() => {
     socket = io(matchApi);
+    token = localStorage.getItem("token");
   });
 
   function matchFound(match) {
@@ -61,6 +64,7 @@ export default function Match(props) {
 
     socket.emit("findMatch", {
       socketId: socket.id,
+      token: token,
       complexity: complexity,
       time: new Date().getTime(),
     });

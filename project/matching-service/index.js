@@ -5,8 +5,7 @@ const { Server } = require("socket.io");
 
 const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
 
-const questionsApi =
-  process.env.QUESTIONS_API_URL || "http://localhost:8888/questions";
+const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
 
 const app = express();
 const server = createServer(app);
@@ -23,31 +22,40 @@ let matchingDict = {
   Hard: null,
 };
 
-function getQuestionId(complexity) {
-  let questionId = 1;
-  axios
-    .get(`${questionsApi}/complexity/${complexity}`)
-    .then((response) => {
-      const { data } = response;
-      questionId = data[Math.floor(Math.random() * data.length)].id;
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  return questionId;
+async function getQuestionId(complexity, user1, user2) {
+  const questionIds = await getQuestionIds(complexity);
+  const user1Set = await getQuestionAttempts(user1);
+  const user2Set = await getQuestionAttempts(user2);
+  let availableIds = [];
+  for (let index in questionIds) {
+    const id = questionIds[index];
+    if (user1Set.has(id) || user2Set.has(id)) {
+      continue;
+    }
+    availableIds.push(id);
+  }
+  if (availableIds.length > 0) {
+    return availableIds[Math.floor(Math.random() * availableIds.length)];
+  }
+  return questionIds[Math.floor(Math.random() * questionIds.length)]; // no available questions
 }
 
 io.on("connection", (socket) => {
-  socket.on("findMatch", (match) => {
+  socket.on("findMatch", async (match) => {
     complexity = match.complexity;
     if (
       matchingDict[complexity] == null ||
-      matchingDict[complexity].time <= new Date().getTime() - 30000
+      matchingDict[complexity].time <= new Date().getTime() - 30000 ||
+      matchingDict[complexity].token == match.token
     ) {
       matchingDict[complexity] = match;
     } else {
       const roomName = Math.random().toString(); // ~56 bits of entropy
-      let questionId = getQuestionId(complexity);
+      let questionId = await getQuestionId(
+        complexity,
+        match.token,
+        matchingDict[complexity].token
+      );
       let message = { roomName: roomName, questionId: questionId };
       io.to(matchingDict[complexity].socketId).emit("matchFound", message);
       io.to(match.socketId).emit("matchFound", message);

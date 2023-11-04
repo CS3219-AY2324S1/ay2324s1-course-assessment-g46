@@ -37,7 +37,7 @@ function App() {
       {isHomePage() ? (
         <>
           <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-          <Box height="calc(100vh - 60px)">
+          <Box height="calc(100vh - 80px)">
             <Home
               attemptQuestion={setQuestionId}
               loggedIn={loggedIn}

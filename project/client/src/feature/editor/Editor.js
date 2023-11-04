@@ -1,8 +1,8 @@
 import { Button, Flex, HStack, Select, Spinner, Stack } from "@chakra-ui/react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 import React, { useEffect, useState } from "react";
-import { MdOutlineError } from "react-icons/md";
-import { postSubmission } from "../../api/codeExecutionClient";
+import { MdOutlineError, MdOutlineError } from "react-icons/md";
+import { postSubmission, postSubmission } from "../../api/codeExecutionClient";
 import { getId, languageOptions } from "../../constants/langauges";
 
 export default function Editor(props) {
@@ -10,6 +10,9 @@ export default function Editor(props) {
   const [isDisconnected, setIsDisconnected] = useState(false);
   const [language, setLanguage] = useState("javascript");
   const [isLoading, setIsLoading] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const token = localStorage.getItem("token");
 
   let roomName = props.roomName;
   let socket = props.socket;
@@ -44,6 +47,12 @@ export default function Editor(props) {
     } finally {
       setIsLoading(false);
     }
+
+    try {
+      await insertNewAttempt(token, { question_id: props.questionId });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {
@@ -64,36 +73,81 @@ export default function Editor(props) {
     socket.emit("sendCode", roomName, value);
   }
 
-  return (
-    <Stack spacing={0} height="100%">
-      <HStack p={2}>
-        <Select
-          value={language}
-          onChange={(e) => switchLanguage(e.target.value)}
-          width="150px"
-        >
-          {languageOptions.map((language) => (
-            <option value={language.value} key={language.id}>
-              {language.label}
-            </option>
-          ))}
-        </Select>
-        <Button onClick={(e) => runCode(e)}>Run Code</Button>
+  async function completeQuestion() {
+    const token = localStorage.getItem("token");
+    const { data, error } = await insertNewAttempt(token, {
+      questionId: props.questionId,
+    });
+    if (error != null) {
+      console.log(data);
+      console.log(error);
+    }
+    onClose();
+  }
 
-        {isLoading && <Spinner />}
-        <Flex flex="1" justifyContent="center">
-          {isDisconnected ? (
-            <Button
-              leftIcon={<MdOutlineError color="red" />}
-              colorScheme="red"
-              variant="outline"
-            >
-              The other collaborator has disconnected.
-            </Button>
-          ) : null}
-        </Flex>
-      </HStack>
-      <MonacoEditor language={language} value={codeContent} onChange={update} />
-    </Stack>
+  return (
+    <>
+      <AlertDialog isOpen={isOpen} onClose={onClose}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Mark as complete
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to mark this question as complete? You
+              cannot undo this.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button onClick={onClose}>Cancel</Button>
+              <Button colorScheme="red" onClick={completeQuestion}>
+                Mark as done
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+      <Stack spacing={0} height="100%">
+        <HStack p={2}>
+          <Select
+            value={language}
+            onChange={(e) => switchLanguage(e.target.value)}
+            width="150px"
+          >
+            {languageOptions.map((language) => (
+              <option value={language.value} key={language.id}>
+                {language.label}
+              </option>
+            ))}
+          </Select>
+          <Button onClick={(e) => runCode(e)}>Run Code</Button>
+
+          {isLoading && <Spinner />}
+
+          <Flex flex="1" justifyContent="center">
+            {isDisconnected ? (
+              <Button
+                leftIcon={<MdOutlineError color="red" />}
+                colorScheme="red"
+                variant="outline"
+              >
+                The other collaborator has disconnected.
+              </Button>
+            ) : null}
+          </Flex>
+
+          <Spacer />
+          <Button colorScheme="red" onClick={onOpen}>
+            Mark as done
+          </Button>
+        </HStack>
+        <MonacoEditor
+          language={language}
+          value={codeContent}
+          onChange={update}
+        />
+      </Stack>
+    </>
   );
 }

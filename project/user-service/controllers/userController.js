@@ -88,13 +88,13 @@ exports.getQuestionAttempts = async (req, res) => {
 
 exports.insertAttempt = async (req, res) => {
   const userId = req.user.id;
-  const { question_id } = req.body; 
+  const { questionId } = req.body;
 
   const { error } = await supabase
   .from("question_attempts")
   .insert([
     {
-      question_id: question_id, 
+      question_id: questionId, 
       user_id: userId
     }
   ])
@@ -112,7 +112,11 @@ exports.updateProfile = async (req, res) => {
   const { fullName, goal } = req.body;
 
   if (goal != null && goal.length > 100) {
-    return res.status(400).json({message: "Goal field must be less than 100 characters"})
+    return res.status(400).json({message: "Goal field must be less than 100 characters"});
+  }
+
+  if (fullName == null ||  (fullName.length == 0)) {
+    return res.status(400).json({message: "Full name is missing"});
   }
 
   const { data, error } = await supabase

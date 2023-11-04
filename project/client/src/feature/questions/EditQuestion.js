@@ -63,7 +63,7 @@ export default function EditQuestion(props) {
       category: categories,
       complexity: complexity,
     };
-    await updateQuestion(props._id, question);
+    await updateQuestion(props.questions[props.questionIndex].question_id, question);
     onClose();
     props.updateQuestionsList();
   }

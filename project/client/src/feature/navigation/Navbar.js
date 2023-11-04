@@ -11,7 +11,7 @@ export default function Navbar(props) {
         mx={10}
         py={2}
         alignItems="center"
-        height="60px"
+        height="80px"
       >
         <Box>
           <Text fontSize="lg" as="b" color="#006AFF">

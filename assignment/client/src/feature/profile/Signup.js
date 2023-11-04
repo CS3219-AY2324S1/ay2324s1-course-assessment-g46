@@ -24,7 +24,7 @@ export default function Signup(props) {
   const [missingName, setMissingName] = useState(false);
   const [missingEmail, setMissingEmail] = useState(false);
   const [missingPassword, setMissingPassword] = useState(false);
-  const [userExists, setUserExists] = useState(false);
+  const [err, setErr] = useState("");
 
   async function submitSignup(e) {
     e.preventDefault();
@@ -32,17 +32,17 @@ export default function Signup(props) {
       return;
     }
 
-    try {
-      await signUp({
-        email: email,
-        password: password,
-        fullName: fullName,
-      });
+    const {data, error} = await signUp({
+      email: email,
+      password: password,
+      fullName: fullName,
+    });
+
+    if (error != null) {
+      setErr(error.message);
+    } else {
       props.toggleLoginSignup();
-    } catch (error) {
-      setUserExists(true);
-      console.log(error);
-    }
+    }   
   }
 
   function validate() {
@@ -67,7 +67,7 @@ export default function Signup(props) {
     setMissingName(false);
     setMissingEmail(false);
     setMissingPassword(false);
-    setUserExists(false);
+    setErr("");
   }
 
   function handleKeyDown(e) {
@@ -124,7 +124,7 @@ export default function Signup(props) {
         )}
       </FormControl>
 
-      {userExists && <Text color="red">User already exists.</Text>}
+      {err.length != 0 && <Text color="red">{err}.</Text>}
 
       <Button colorScheme="blue" mr={3} onClick={submitSignup} w="100%">
         Sign Up

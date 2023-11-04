@@ -14,10 +14,10 @@ import {
   Wrap,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import Markdown from "react-markdown";
 
 export default function ReadQuestion(props) {
-  const { question_id, id, title, description, category, complexity } = props;
+  const { title, description, category, complexity, question_id } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function attemptQuestion() {
@@ -52,9 +52,7 @@ export default function ReadQuestion(props) {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            {id}. {title}
-          </ModalHeader>
+          <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack spacing={4}>
@@ -66,7 +64,7 @@ export default function ReadQuestion(props) {
                 )}
               </Wrap>
               <Text color={getComplexity()}>{complexity}</Text>
-              <Text>{description}</Text>
+              <Markdown>{description}</Markdown>
             </Stack>
           </ModalBody>
 

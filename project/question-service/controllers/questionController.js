@@ -5,13 +5,9 @@ exports.getAllQuestions = async (req, res) => {
 
   if (error) {
     res.status(500).json({ message: error.message });
+  } else {
+    res.status(200).json({ questions: data });
   }
-
-  if (data == null) {
-    res.status(404).json({ message: "Cannot find questions" });
-  }
-
-  res.status(200).json({ questions: data });
 };
 
 exports.getOneQuestion = async (req, res) => {
@@ -32,10 +28,11 @@ exports.getOneQuestion = async (req, res) => {
 
   if (error) {
     res.status(500).json({ message: error.message });
-    return;
+  } else if (data == null) {
+    res.status(404).json({ message: "Cannot find question" });
+  } else {
+    res.status(200).json({ question: data });
   }
-
-  res.status(200).json(data[0]);
 };
 
 exports.createOneQuestion = async (req, res) => {
@@ -52,14 +49,12 @@ exports.createOneQuestion = async (req, res) => {
     .select();
 
   if (error) {
-    return res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
+  } else if (data == null) {
+    res.status(404).json({ message: "Cannot create question" });
+  } else {
+    res.status(200).json({ question: data });
   }
-
-  if (data == null) {
-    return res.status(404).json({ message: "Cannot create question" });
-  }
-
-  return res.status(200).json({ question: data });
 };
 
 exports.updateOneQuestion = async (req, res) => {
@@ -71,13 +66,11 @@ exports.updateOneQuestion = async (req, res) => {
 
   if (error) {
     res.status(500).json({ message: error.message });
-  }
-
-  if (data == null) {
+  } else if (data == null) {
     res.status(404).json({ message: "Cannot update question" });
+  } else {
+    res.status(200).json({ question: data });
   }
-
-  res.status(200).json({ question: data });
 };
 
 exports.deleteOneQuestion = async (req, res) => {
@@ -88,9 +81,9 @@ exports.deleteOneQuestion = async (req, res) => {
 
   if (error) {
     res.status(500).json({ message: error.message });
+  } else {
+    res.status(200).json({ message: "Question deleted" });
   }
-
-  res.status(200).json({ message: "Question deleted" });
 };
 
 exports.getQuestionsByComplexity = async (req, res) => {
@@ -101,14 +94,9 @@ exports.getQuestionsByComplexity = async (req, res) => {
 
   if (error) {
     res.status(500).json({ message: error.message });
+  } else {
+    res.status(200).json({ questions: data });
   }
-
-  if (data == null) {
-    res.status(404).json({ message: "Cannot find question" });
-  }
-
-  // get a random question
-  res.status(200).json(data[Math.floor(Math.random() * data.length)]);
 };
 
 exports.getQuestionByCategory = async (req, res) => {
@@ -119,11 +107,7 @@ exports.getQuestionByCategory = async (req, res) => {
 
   if (error) {
     res.status(500).json({ message: error.message });
+  } else {
+    res.status(200).json({ questions: data });
   }
-
-  if (data) {
-    res.status(404).json({ message: "Cannot find question" });
-  }
-
-  res.status(200).json({ questions: data });
 };

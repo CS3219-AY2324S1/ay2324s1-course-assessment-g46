@@ -3,8 +3,8 @@ import React from "react";
 import Markdown from "react-markdown";
 
 export default function Question(props) {
-  const { title, description, category, complexity } =
-    props.question.question[0];
+  console.log(props);
+  const { title, description, category, complexity } = props;
 
   function getComplexity() {
     if (complexity === "Easy") {

@@ -21,8 +21,8 @@ export default function ReadQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function attemptQuestion() {
-    onClose();
     props.attemptQuestion(question_id);
+    onClose();
   }
 
   function getComplexity() {

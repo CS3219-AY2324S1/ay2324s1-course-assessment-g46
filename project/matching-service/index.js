@@ -5,8 +5,6 @@ const { Server } = require("socket.io");
 
 const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
 
-const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
-
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {

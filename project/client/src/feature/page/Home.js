@@ -8,13 +8,17 @@ import {
   Tab,
   TabList,
   Tabs,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { getQuestions } from "../../api/questionClient";
 import Match from "../match/match";
 import Login from "../profile/Login";
 import Signup from "../profile/Signup";
+import AddQuestion from "../questions/AddQuestion";
 import HistoryTable from "../questions/HistoryTable";
+import QuestionTable from "../questions/QuestionTable";
 
 // opening questions tab with this will result in error as this is not in db
 const tempquestion = {

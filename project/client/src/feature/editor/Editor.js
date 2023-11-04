@@ -1,8 +1,24 @@
-import { Button, Flex, HStack, Select, Spinner, Stack } from "@chakra-ui/react";
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Button,
+  Flex,
+  HStack,
+  Select,
+  Spacer,
+  Spinner,
+  Stack,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
 import React, { useEffect, useState } from "react";
-import { MdOutlineError, MdOutlineError } from "react-icons/md";
-import { postSubmission, postSubmission } from "../../api/codeExecutionClient";
+import { MdOutlineError } from "react-icons/md";
+import { postSubmission } from "../../api/codeExecutionClient";
+import { insertNewAttempt } from "../../api/userClient";
 import { getId, languageOptions } from "../../constants/langauges";
 
 export default function Editor(props) {

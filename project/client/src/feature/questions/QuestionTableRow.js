@@ -12,6 +12,7 @@ export default function QuestionTableRow(props) {
 
   return (
     <Tr>
+      <Td>{props.id}</Td>
       <Td>
         <ReadQuestion {...props} />
       </Td>

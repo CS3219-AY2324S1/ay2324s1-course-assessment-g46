@@ -25,6 +25,7 @@ export default function Work(props) {
   const [output, setOutput] = useState({});
 
   useEffect(() => {
+    console.log(props);
     if (props.questionId === -1) {
       setQuestion({});
     } else {

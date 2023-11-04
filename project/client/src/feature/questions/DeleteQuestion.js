@@ -1,15 +1,15 @@
-import React from "react";
 import {
-  Button,
   AlertDialog,
   AlertDialogBody,
+  AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogContent,
   AlertDialogOverlay,
-  useDisclosure,
+  Button,
   IconButton,
+  useDisclosure,
 } from "@chakra-ui/react";
+import React from "react";
 import { MdDelete } from "react-icons/md";
 import { deleteQuestion } from "../../api/questionClient";
 
@@ -18,7 +18,7 @@ export default function DeleteQuestion(props) {
   const cancelRef = React.useRef();
 
   async function submit() {
-    await deleteQuestion(props._id);
+    await deleteQuestion(props.question_id);
     onClose();
     props.updateQuestionsList();
   }

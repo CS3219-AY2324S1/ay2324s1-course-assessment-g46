@@ -8,6 +8,7 @@ export default function QuestionTable(props) {
       <Table size="sm">
         <Thead>
           <Tr>
+            <Th>Id</Th>
             <Th>Title</Th>
             <Th>Category</Th>
             <Th>Complexity</Th>

@@ -11,8 +11,6 @@ exports.getAllQuestions = async (req, res) => {
     res.status(404).json({ message: "Cannot find questions" });
   }
 
-  console.log(data);
-
   res.status(200).json({ questions: data });
 };
 
@@ -37,11 +35,6 @@ exports.getOneQuestion = async (req, res) => {
     return;
   }
 
-  if (data == null) {
-    res.status(404).json({ message: "Cannot find question" });
-    return;
-  }
-
   res.status(200).json(data[0]);
 };
 
@@ -59,14 +52,14 @@ exports.createOneQuestion = async (req, res) => {
     .select();
 
   if (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 
   if (data == null) {
-    res.status(404).json({ message: "Cannot create question" });
+    return res.status(404).json({ message: "Cannot create question" });
   }
 
-  res.status(200).json({ question: data });
+  return res.status(200).json({ question: data });
 };
 
 exports.updateOneQuestion = async (req, res) => {

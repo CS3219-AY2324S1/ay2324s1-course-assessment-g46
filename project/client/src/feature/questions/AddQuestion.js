@@ -66,7 +66,7 @@ export default function AddQuestion(props) {
     const categories = category.map((c) => c.value);
 
     try {
-      await addQuestion(id, title, description, categories, complexity);
+      await addQuestion(title, description, categories, complexity);
       onClose();
       props.updateQuestionsList();
     } catch (error) {
@@ -219,11 +219,9 @@ export default function AddQuestion(props) {
                 </CardHeader>
                 <CardBody>
                   <Text as="b" fontSize={"xl"}>
-                    {title ? title : "Question title"}
+                    {title ? title : ""}
                   </Text>
-                  <Markdown>
-                    {description ? description : "Question description"}
-                  </Markdown>
+                  <Markdown>{description ? description : ""}</Markdown>
                 </CardBody>
               </Card>
             </SimpleGrid>

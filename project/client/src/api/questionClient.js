@@ -54,14 +54,15 @@ export const getFirstMissingQuestionId = async () => {
   }
 };
 
-export const addQuestion = async (id, title, desc, categories, complexity) => {
+export const addQuestion = async (title, desc, categories, complexity) => {
   const question = {
-    id: id,
     title: title,
     description: desc,
     category: categories,
     complexity: complexity,
   };
+  console.log(question);
+  console.log(getHeader());
   let { data } = await axios.post(questionsApi, question, getHeader());
   return data;
 };

@@ -41,11 +41,9 @@ export default function Home(props) {
 
       questions.forEach((q, i) => {
         q.id = i + 1;
-        // console.log(q);
       });
       setQuestions(questions);
     } catch (error) {
-      // setQuestions([tempquestion]);
       console.log(error);
     }
   };

@@ -1,21 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const Question = require("../models/question");
-const jwt_decode = require('jwt-decode');
+const jwt_decode = require("jwt-decode");
 
-const clientUrl =
-  process.env.CLIENT_URL || "http://localhost:3000";
+const clientUrl = process.env.CLIENT_URL || "http://localhost:3000";
 
-const matchingUrl =
-  process.env.MATCHING_URL || "http://localhost:8080";
+const matchingUrl = process.env.MATCHING_URL || "http://localhost:8080";
 
 function createAuthorize(isAdmin) {
   function authorize(req, res, next) {
     if (req.headers.origin != clientUrl) {
-      res.status(401).json({message: "Unallowed origin"});
+      res.status(401).json({ message: "Unallowed origin" });
     }
     if (!req.headers.authorization) {
-      res.status(401).json({message: "No token is present"});
+      res.status(401).json({ message: "No token is present" });
     }
     role = jwt_decode(req.headers.authorization)?.role;
     if (role == "admin" || (role == "authenticated" && !isAdmin)) {
@@ -27,7 +25,7 @@ function createAuthorize(isAdmin) {
       } else {
         errMsg = "No authorization to view questions";
       }
-      res.status(403).json({message: errMsg});
+      res.status(403).json({ message: errMsg });
     }
   }
   return authorize;
@@ -40,6 +38,7 @@ router.get("/", createAuthorize(false), async (req, res) => {
     questions.sort((a, b) => {
       return a?.id - b?.id;
     });
+    console.log(questions);
     res.status(200).json(questions);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -96,19 +95,26 @@ router.patch("/:id", [createAuthorize(true), getQuestion], async (req, res) => {
 });
 
 // DELETE ONE
-router.delete("/:id", [createAuthorize(true), getQuestion], async (req, res) => {
-  try {
-    await res.question.deleteOne();
-    res.json({ message: "Deleted question" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+router.delete(
+  "/:id",
+  [createAuthorize(true), getQuestion],
+  async (req, res) => {
+    try {
+      await res.question.deleteOne();
+      res.json({ message: "Deleted question" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
-});
+);
 
 // GET QUESTIONS BY COMPLEXITY
 router.get("/complexity/:complexity", async (req, res) => {
   try {
-    const questions = await Question.find({ complexity: req.params.complexity }, 'id');
+    const questions = await Question.find(
+      { complexity: req.params.complexity },
+      "id"
+    );
     res.status(200).json(questions);
   } catch (error) {
     res.status(500).json({ message: error.message });

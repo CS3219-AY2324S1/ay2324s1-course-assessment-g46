@@ -3,12 +3,17 @@ import axios from "axios";
 const questionsApi =
   process.env.QUESTIONS_API_URL || "http://localhost:8888/questions";
 
-const getHeader = () => {return {headers: {
-  'Authorization': `Bearer ${localStorage.getItem('token')}`
-}}};
+const getHeader = () => {
+  return {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  };
+};
 
 export const getQuestions = async () => {
   let { data } = await axios.get(questionsApi, getHeader());
+  console.log(data);
   return data;
 };
 
@@ -37,7 +42,7 @@ export const getFirstMissingQuestionId = async () => {
     for (let i in data) {
       idSet.add(data[i].id);
     }
-    let value = 1
+    let value = 1;
     while (true) {
       if (!idSet.has(value)) {
         return value;

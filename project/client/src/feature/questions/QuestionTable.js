@@ -25,6 +25,7 @@ export default function QuestionTable(props) {
                 updateQuestionsList={props.updateQuestionsList}
                 questions={props.questions}
                 isAdmin={props.isAdmin}
+                isAttempt={false}
               />
             </Fragment>
           ))}

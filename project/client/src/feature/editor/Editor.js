@@ -63,12 +63,6 @@ export default function Editor(props) {
     } finally {
       setIsLoading(false);
     }
-
-    try {
-      await insertNewAttempt(token, { question_id: props.questionId });
-    } catch (e) {
-      console.log(e);
-    }
   }
 
   useEffect(() => {

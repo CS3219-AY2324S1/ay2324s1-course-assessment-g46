@@ -12,6 +12,11 @@ export default function QuestionTableRow(props) {
 
   return (
     <Tr>
+      {props.isAttempt && (
+        <Td>
+          {props.attemptNumber}
+        </Td>
+      )}
       <Td>
         <ReadQuestion {...props} />
       </Td>

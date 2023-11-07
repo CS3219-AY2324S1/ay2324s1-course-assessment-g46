@@ -31,6 +31,7 @@ export default function HistoryTable(props) {
       <Table size="sm">
         <Thead>
           <Tr>
+            <Th>Attempt number</Th>
             <Th>Title</Th>
             <Th>Description</Th>
             <Th>Category</Th>
@@ -49,6 +50,8 @@ export default function HistoryTable(props) {
                   attemptQuestion={props.attemptQuestion}
                   questions={props.questions}
                   isAdmin={false}
+                  isAttempt={true}
+                  attemptNumber={data.attempt}
                 />
               </Fragment>
             ))

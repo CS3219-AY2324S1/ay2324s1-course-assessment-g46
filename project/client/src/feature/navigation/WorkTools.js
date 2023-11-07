@@ -12,7 +12,7 @@ import {
 import Console from "../tools/Console";
 
 export default function WorkTools(props) {
-  const [curTool, setTool] = useState("question");
+  const [curTool, setTool] = useState("chat");
   const [messages, setMessages] = useState([]);
 
   const socket = props.socket;

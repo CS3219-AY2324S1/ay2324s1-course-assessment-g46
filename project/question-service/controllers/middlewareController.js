@@ -1,8 +1,8 @@
 const { supabase } = require("../config/supabaseClient");
 const jwt_decode = require("jwt-decode");
 
-const clientUrl = process.env.CLIENT_URL || "http://34.121.234.55:3000";
-const matchingUrl = process.env.MATCHING_URL || "http://34.121.234.55:8080";
+const clientUrl = process.env.CLIENT_URL || "http://34.123.170.74:3000";
+const matchingUrl = process.env.MATCHING_URL || "http://34.123.170.74:8080";
 
 exports.checkQuestion = async (req, res, next) => {
   let { data, error } = await supabase

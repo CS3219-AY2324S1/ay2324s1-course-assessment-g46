@@ -6,7 +6,7 @@ import { getQuestion } from "../../api/questionClient";
 
 import { io } from "socket.io-client";
 
-const collabApi = process.env.COLLAB_API_URL || "http://localhost:8081";
+const collabApi = process.env.COLLAB_API_URL || "http://34.121.234.55:8081";
 
 const socket = io(collabApi);
 

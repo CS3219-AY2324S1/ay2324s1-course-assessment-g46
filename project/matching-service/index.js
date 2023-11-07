@@ -5,7 +5,7 @@ const { Server } = require('socket.io');
 const { getQuestionAttempts, getQuestionIds } = require('./api/userApi');
 
 const clientUrl =
-  process.env.CLIENT_URL || "http://localhost:3000";
+  process.env.CLIENT_URL || "http://34.121.234.55:3000";
 
 const app = express();
 const server = createServer(app);

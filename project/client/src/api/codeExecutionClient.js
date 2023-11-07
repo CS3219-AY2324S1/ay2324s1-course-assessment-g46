@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const codeExecutionApi =
-  process.env.CODE_EXECUTION_API_URL || "http://localhost:2358";
+  process.env.CODE_EXECUTION_API_URL;
 
 export const postSubmission = async (
   languageId,

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const userApi = process.env.USER_API_URL || "http://localhost:5100/user";
+const userApi = process.env.USER_API_URL;
 
 export const signIn = async (userDetails) => {
   let { data } = await axios.post(`${userApi}/login`, userDetails);

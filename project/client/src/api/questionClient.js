@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const questionsApi =
-  process.env.QUESTIONS_API_URL || "http://localhost:8888/questions";
+  process.env.QUESTIONS_API_URL;
 
 const getHeader = () => {return {headers: {
   'Authorization': `Bearer ${localStorage.getItem('token')}`

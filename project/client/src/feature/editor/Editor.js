@@ -39,7 +39,8 @@ export default function Editor(props) {
     setIsLoading(true);
     try {
       let languageId = getId(language);
-      let submission = await postSubmission(languageId, codeContent, "", "");
+      let submission = await postSubmission(languageId, codeContent);
+      console.log(submission);
       props.setOutput(submission);
       socket.emit("sendConsole", roomName, submission);
     } catch (e) {

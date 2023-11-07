@@ -75,7 +75,7 @@ export const getQuestionAttempts = async (token) => {
 
 export const insertNewAttempt = async (token, userDetails) => {
   try {
-    let { data } = await axios.get(`${userApi}/attempts`, userDetails, {
+    let { data } = await axios.post(`${userApi}/attempts`, userDetails, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

@@ -8,7 +8,6 @@ export default function QuestionTable(props) {
       <Table size="sm">
         <Thead>
           <Tr>
-            <Th>ID</Th>
             <Th>Title</Th>
             <Th>Description</Th>
             <Th>Category</Th>
@@ -18,8 +17,8 @@ export default function QuestionTable(props) {
         <Tbody>
           {props.questions == null 
           ? <></>
-          : props.questions.map((data) => (
-            <Fragment key={data.id}>
+          : props.questions.map((data, index) => (
+            <Fragment key={index}>
               <QuestionTableRow
                 {...data}
                 attemptQuestion={props.attemptQuestion}

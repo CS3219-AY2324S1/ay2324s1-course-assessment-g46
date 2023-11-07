@@ -11,8 +11,7 @@ export default function QuestionTableRow(props) {
   }
 
   return (
-    <Tr height="60px">
-      <Td>{props.id}</Td>
+    <Tr>
       <Td>
         <ReadQuestion {...props} />
       </Td>
@@ -36,7 +35,7 @@ export default function QuestionTableRow(props) {
       {props.isAdmin && (
         <>
           <Td>
-            <EditQuestion {...props} questions={props.questions} />
+            <EditQuestion {...props} />
           </Td>
           <Td>
             <DeleteQuestion {...props} />

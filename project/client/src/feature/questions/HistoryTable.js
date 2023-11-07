@@ -8,7 +8,7 @@ export default function HistoryTable(props) {
   const token = localStorage.getItem("token");
 
   function getQuestion(id) {
-    let question = props.questions.find((q) => q.id === id);
+    let question = props.questions.find((q) => q.question_id === id);
     return question;
   }
 
@@ -16,7 +16,7 @@ export default function HistoryTable(props) {
     getQuestionAttempts(token)
       .then((res) => {
         if (res.data != null) {
-          setHistory(res.data);
+          setHistory(res.data.attempts);
         } else {
           setHistory([]);
         }
@@ -31,7 +31,6 @@ export default function HistoryTable(props) {
       <Table size="sm">
         <Thead>
           <Tr>
-            <Th>ID</Th>
             <Th>Title</Th>
             <Th>Description</Th>
             <Th>Category</Th>
@@ -42,6 +41,7 @@ export default function HistoryTable(props) {
           {props.questions == null ? (
             <></>
           ) : (
+            // history.length > 0 &&
             history.map((data) => (
               <Fragment key={data.question_id}>
                 <QuestionTableRow

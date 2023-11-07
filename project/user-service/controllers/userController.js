@@ -88,13 +88,13 @@ exports.getQuestionAttempts = async (req, res) => {
 
 exports.insertAttempt = async (req, res) => {
   const userId = req.user.id;
-  const { question_id } = req.body; 
+  const { questionId } = req.body;
 
   const { error } = await supabase
   .from("question_attempts")
   .insert([
     {
-      question_id: question_id, 
+      question_id: questionId, 
       user_id: userId
     }
   ])

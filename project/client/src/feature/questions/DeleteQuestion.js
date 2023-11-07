@@ -18,7 +18,7 @@ export default function DeleteQuestion(props) {
   const cancelRef = React.useRef();
 
   async function submit() {
-    await deleteQuestion(props._id);
+    await deleteQuestion(props.question_id);
     onClose();
     props.updateQuestionsList();
   }

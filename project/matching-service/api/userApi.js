@@ -1,9 +1,9 @@
 const axios = require("axios");
 
-const userApi = process.env.USER_API_URL || "http://34.121.234.55:5100/user";
+const userApi = process.env.USER_API_URL || "http://localhost:5100/user";
 
 const questionsApi = 
-  process.env.QUESTIONS_API_URL || "http://34.121.234.55:8888/questions"
+  process.env.QUESTIONS_API_URL || "http://localhost:8888/questions"
 
 const getQuestionAttempts = async (token) => {
   try {

@@ -23,12 +23,20 @@ services:
     environment:
       - CLIENT_URL=http://localhost:3000
       - MATCHING_URL=http://localhost:8080
+      - SUPABASE_URL=https://iwxacjmydxiforzrvurs.supabase.co
+      - SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3eGFjam15ZHhpZm9yenJ2dXJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NTAwMTksImV4cCI6MjAxMDQyNjAxOX0.KkiYYTJUNTD3K7OkHASV3_ZEv5NIFN-Farw9lT7QIfk
+
 
   user:
     build:
       context: ./user-service
     ports:
       - "5100:5100"
+    environment: 
+      - JWT_SECRET=WmpSVc7vwoUSN/SGtFd1PQO67csTZbX+MmwodyxRnwoJ+fZH750P7WNVYQbK1S7bD+oYikZRGQwvvU2UOj5vzg==
+      - SUPABASE_URL=https://iwxacjmydxiforzrvurs.supabase.co
+      - SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml3eGFjam15ZHhpZm9yenJ2dXJzIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTQ4NTAwMTksImV4cCI6MjAxMDQyNjAxOX0.KkiYYTJUNTD3K7OkHASV3_ZEv5NIFN-Farw9lT7QIfk
+
 
   matching:
     build:

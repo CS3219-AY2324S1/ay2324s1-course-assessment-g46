@@ -20,7 +20,7 @@ import {
 import { io } from "socket.io-client";
 
 const matchApi =
-  process.env.MATCHING_API_URL || "http://34.123.170.74:8080";
+  process.env.MATCHING_API_URL || "http://35.208.149.231:8080";
 
 let socket;
 let timeout;

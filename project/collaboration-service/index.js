@@ -2,7 +2,7 @@ const express = require("express");
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
 
-const clientUrl = process.env.CLIENT_URL || "http://34.123.170.74:3000";
+const clientUrl = process.env.CLIENT_URL || "http://35.208.149.231:3000";
 
 const app = express();
 const server = createServer(app);

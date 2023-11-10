@@ -24,7 +24,7 @@ import {
 
 export default function AddQuestion(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [id, setId] = useState(null);
+  const [id, setId] = useState(1);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState([]);
@@ -51,21 +51,24 @@ export default function AddQuestion(props) {
     }
 
     const categories = category.map((c) => c.value);
-    // const question = {
-    //   id: id,
-    //   title: title,
-    //   description: description,
-    //   category: categories,
-    //   complexity: complexity,
-    // };
-    try {
-      await addQuestion(id, title, description, categories, complexity);
-      onClose();
-      props.updateQuestionsList();
-    } catch (error) {
-      console.log(error);
-      setApiError(true);
-    }
+    let qn = {
+      id: id,
+      title: title,
+      description: description,
+      category: categories,
+      complexity: complexity,
+    };
+    props.updateQuestionsList(qn, false);
+    onClose();
+
+    // try {
+    //   await addQuestion(id, title, description, categories, complexity);
+    //   onClose();
+    //   props.updateQuestionsList();
+    // } catch (error) {
+    //   console.log(error);
+    //   setApiError(true);
+    // }
   }
 
   function validate() {
@@ -108,12 +111,15 @@ export default function AddQuestion(props) {
   }
 
   function resetForm() {
-    setId(-1);
     setTitle("");
     setDescription("");
     setCategory([]);
     setComplexity("Easy");
-    getLastQuestionId().then((id) => setId(id + 1));
+    if (props.questions.length > 0) {
+      let last = props.questions[props.questions.length - 1];
+      let nextId = last.id + 1;
+      setId(nextId);
+    }
   }
 
   return (

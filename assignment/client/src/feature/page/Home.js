@@ -6,21 +6,21 @@ import { Text, Flex } from "@chakra-ui/react";
 import { getQuestions } from "../../api/questionClient";
 
 export default function Home(props) {
-  const [questions, setQuestions] = useState([]);
+  // const [questions, setQuestions] = useState([]);
 
-  const updateQuestionsList = async () => {
-    try {
-      let data = await getQuestions();
-      setQuestions(data);
-    } catch (error) {
-      setQuestions([]);
-      console.log(error);
-    }
-  };
+  // const updateQuestionsList = async () => {
+  //   try {
+  //     let data = await getQuestions();
+  //     setQuestions(data);
+  //   } catch (error) {
+  //     setQuestions([]);
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    updateQuestionsList();
-  }, []);
+  // useEffect(() => {
+  //   updateQuestionsList();
+  // }, []);
 
   return (
     <>
@@ -28,13 +28,13 @@ export default function Home(props) {
         <Text as="b">Questions</Text>
         <Match />
         <AddQuestion
-          updateQuestionsList={updateQuestionsList}
-          questions={questions}
+          updateQuestionsList={props.updateQuestionsList}
+          questions={props.questions}
         />
       </Flex>
       <QuestionTable
-        questions={questions}
-        updateQuestionsList={updateQuestionsList}
+        questions={props.questions}
+        updateQuestionsList={props.updateQuestionsList}
         attemptQuestion={props.attemptQuestion}
       />
     </>

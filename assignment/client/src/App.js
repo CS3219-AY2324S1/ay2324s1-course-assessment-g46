@@ -9,15 +9,38 @@ import { Box, Flex } from "@chakra-ui/react";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [questionId, setQuestionId] = useState(-1);
+  const [questions, setQuestions] = useState([]);
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (token) {
+  //     setLoggedIn(true);
+  //   } else {
+  //     setLoggedIn(false);
+  //   }
+  // }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setLoggedIn(true);
+    const storedQns = localStorage.getItem("questions");
+    if (storedQns === null) {
+      setQuestions([]);
     } else {
-      setLoggedIn(false);
+      let qns = JSON.parse(storedQns);
+      setQuestions(qns);
     }
   }, []);
+
+  function updateQuestionsList(qn, del) {
+    let filtered = questions.filter((x) => x.id !== qn.id);
+    if (!del) {
+      filtered.push(qn);
+    }
+    filtered.sort((a, b) => a.id - b.id);
+    setQuestions(filtered);
+
+    const stringifiedQns = JSON.stringify(filtered);
+    localStorage.setItem("questions", stringifiedQns);
+  }
 
   function isHomePage() {
     return questionId === -1;
@@ -29,13 +52,17 @@ function App() {
         <>
           <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
           <Box flex="1">
-            <Home attemptQuestion={setQuestionId} />
+            <Home
+              attemptQuestion={setQuestionId}
+              questions={questions}
+              updateQuestionsList={updateQuestionsList}
+            />
           </Box>
         </>
       ) : (
         <>
           <Workbar goHome={() => setQuestionId(-1)} />
-          <Work questionId={questionId} />
+          <Work questionId={questionId} questions={questions} />
         </>
       )}
     </Flex>

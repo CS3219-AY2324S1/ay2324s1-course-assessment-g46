@@ -19,12 +19,12 @@ import {
 } from "@chakra-ui/react";
 
 export default function ReadQuestion(props) {
-  const { id, title, description, category, complexity, _id } = props;
+  const { id, title, description, category, complexity } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   function attemptQuestion() {
     onClose();
-    props.attemptQuestion(_id);
+    props.attemptQuestion(id);
   }
 
   function getComplexity() {

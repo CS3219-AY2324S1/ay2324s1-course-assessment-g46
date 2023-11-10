@@ -50,14 +50,15 @@ export default function EditQuestion(props) {
     }
     const categories = category.map((c) => c.value);
     const question = {
+      id: props.id,
       title: title,
       description: description,
       category: categories,
       complexity: complexity,
     };
-    await updateQuestion(props._id, question);
+    // await updateQuestion(props._id, question);
     onClose();
-    props.updateQuestionsList();
+    props.updateQuestionsList(question, false);
   }
 
   function validate() {

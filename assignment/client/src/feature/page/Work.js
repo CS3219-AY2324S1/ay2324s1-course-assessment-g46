@@ -7,18 +7,23 @@ import { getQuestion } from "../../api/questionClient";
 export default function Work(props) {
   const [question, setQuestion] = useState({});
 
+  // useEffect(() => {
+  //   if (props.questionId === -1) {
+  //     setQuestion({});
+  //   } else {
+  //     getQuestion(props.questionId)
+  //       .then((data) => {
+  //         setQuestion(data);
+  //       })
+  //       .catch((err) => {
+  //         console.error(err);
+  //       });
+  //   }
+  // }, [props.questionId]);
+
   useEffect(() => {
-    if (props.questionId === -1) {
-      setQuestion({});
-    } else {
-      getQuestion(props.questionId)
-        .then((data) => {
-          setQuestion(data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    }
+    let qn = props.questions.find((x) => x.id === props.questionId);
+    setQuestion(qn);
   }, [props.questionId]);
 
   return (

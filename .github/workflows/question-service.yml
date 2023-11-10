@@ -1,0 +1,26 @@
+name: Front-end Docker CI
+
+on:
+  push:
+    branches: [master, main]
+    paths: ["project/question-service/**"]
+  pull_request:
+    branches: [master, main]
+    paths: ["project/question-service/**"]
+
+env:
+  WORKING_DIRECTORY: ./project
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIRECTORY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker
+        run: |
+          echo ---Building and starting up docker---
+          docker-compose -f ./docker-compose.yml up -d --build question
+          echo ---Containers up---

@@ -3,10 +3,10 @@ name: Front-end Docker CI
 on:
   push:
     branches: [master, main]
-    paths: ["client/**"]
+    paths: ["user-service/**"]
   pull_request:
     branches: [master, main]
-    paths: ["client/**"]
+    paths: ["user-service/**"]
 
 env:
   WORKING_DIRECTORY: ./project
@@ -22,5 +22,5 @@ jobs:
       - name: Build Docker
         run: |
           echo ---Building and starting up docker---
-          docker-compose -f ./docker-compose.yml up -d --build client
+          docker-compose -f ./docker-compose.yml up -d --build user
           echo ---Containers up---

@@ -1,4 +1,4 @@
-name: Front-end Docker CI
+name: Collaboration Docker CI
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Front-end Docker CI
+name: Question Docker CI
 
 on:
   push:

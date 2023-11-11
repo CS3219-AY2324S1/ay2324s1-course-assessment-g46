@@ -21,14 +21,6 @@ export default function Navbar(props) {
         <Spacer />
         <Box>
           {props.loggedIn && <LoginOptions setLoggedIn={props.setLoggedIn} />}
-          {/* {props.loggedIn ? (
-            <LoginOptions setLoggedIn={props.setLoggedIn}/>
-          ) : (
-            <>
-              <Login setLoggedIn={props.setLoggedIn}/>
-              <Signup setLoggedIn={props.setLoggedIn}/>
-            </>
-          )} */}
         </Box>
       </Flex>
     </>

@@ -63,7 +63,7 @@ export const deleteAccount = async (token) => {
 
 export const getQuestionAttempts = async (token) => {
   try {
-    let { data } = await axios.get(`${userApi}/attempts/latest`, {
+    let { data } = await axios.get(`${userApi}/attempts`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

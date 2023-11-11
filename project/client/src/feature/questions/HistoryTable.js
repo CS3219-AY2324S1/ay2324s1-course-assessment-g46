@@ -31,7 +31,7 @@ export default function HistoryTable(props) {
       <Table size="sm">
         <Thead>
           <Tr>
-            <Th>Attempt number</Th>            
+            <Th>Attempt number</Th>
             <Th>Title</Th>
             <Th>Description</Th>
             <Th>Category</Th>

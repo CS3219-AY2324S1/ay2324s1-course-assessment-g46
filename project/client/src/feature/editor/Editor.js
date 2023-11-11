@@ -54,10 +54,12 @@ export default function Editor(props) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      let languageId = getId(language);
-      let submission = await postSubmission(languageId, codeContent);
-      props.setOutput(submission);
-      socket.emit("sendConsole", roomName, submission);
+      if (codeContent.length != 0) {
+        let languageId = getId(language);
+        let submission = await postSubmission(languageId, codeContent);
+        props.setOutput(submission);
+        socket.emit("sendConsole", roomName, submission);
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -142,7 +144,7 @@ export default function Editor(props) {
                 colorScheme="red"
                 variant="outline"
               >
-                The other collaborator has disconnected.
+                You’re working on the code alone.
               </Button>
             ) : null}
           </Flex>

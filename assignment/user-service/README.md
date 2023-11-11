@@ -14,6 +14,7 @@ Profile table:
 ```
 
 
+
 ## 2. Available API calls
 
 > All links start with `http://localhost:5100/user`

@@ -86,17 +86,6 @@ exports.getQuestionAttempts = async (req, res) => {
   return res.status(200).json({attempts: data})
 };
 
-exports.getLatestQuestionAttempts = async (req, res) => {
-  const userId = req.user.id;
-
-  const { data } = await supabase
-  .from("latest_attempts")
-  .select('*')
-  .eq("user_id", userId);
-
-  return res.status(200).json({attempts: data})
-};
-
 exports.insertAttempt = async (req, res) => {
   const userId = req.user.id;
   const { questionId } = req.body;

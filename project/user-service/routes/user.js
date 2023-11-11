@@ -21,6 +21,9 @@ router.get('/profile', userController.getProfile);
 // Get question attempts  
 router.get('/attempts', userController.getQuestionAttempts); 
 
+// Get latest question attempts  
+router.get('/attempts/latest', userController.getLatestQuestionAttempts); 
+
 // Insert question attempt
 router.post('/attempts', userController.insertAttempt); 
 

@@ -5,14 +5,14 @@ import {
   Button,
   Flex,
   Spinner,
-  Spacer, 
+  Spacer,
   AlertDialog,
   AlertDialogOverlay,
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogContent,
   AlertDialogFooter,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { Editor as MonacoEditor } from "@monaco-editor/react";
@@ -26,7 +26,7 @@ export default function Editor(props) {
   const [isDisconnected, setIsDisconnected] = useState(false);
   const [language, setLanguage] = useState("javascript");
   const [isLoading, setIsLoading] = useState(false);
-  const {isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const token = localStorage.getItem("token");
 
@@ -56,7 +56,6 @@ export default function Editor(props) {
     try {
       let languageId = getId(language);
       let submission = await postSubmission(languageId, codeContent);
-      console.log(submission);
       props.setOutput(submission);
       socket.emit("sendConsole", roomName, submission);
     } catch (e) {
@@ -86,7 +85,9 @@ export default function Editor(props) {
 
   async function completeQuestion() {
     const token = localStorage.getItem("token");
-    const { data, error } = await insertNewAttempt(token, {questionId: props.questionId});
+    const { data, error } = await insertNewAttempt(token, {
+      questionId: props.questionId,
+    });
     if (error != null) {
       console.log(data);
       console.log(error);
@@ -96,25 +97,21 @@ export default function Editor(props) {
 
   return (
     <>
-      <AlertDialog
-        isOpen={isOpen}
-        onClose={onClose}
-      >
+      <AlertDialog isOpen={isOpen} onClose={onClose}>
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
               Mark as complete
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              Are you sure you want to mark this question as complete? You cannot undo this.
+              Are you sure you want to mark this question as complete? You
+              cannot undo this.
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button onClick={onClose}>
-                Cancel
-              </Button>
-              <Button colorScheme='red' onClick={completeQuestion}>
+              <Button onClick={onClose}>Cancel</Button>
+              <Button colorScheme="red" onClick={completeQuestion}>
                 Mark as done
               </Button>
             </AlertDialogFooter>
@@ -137,7 +134,7 @@ export default function Editor(props) {
           <Button onClick={(e) => runCode(e)}>Run Code</Button>
 
           {isLoading && <Spinner />}
-          
+
           <Flex flex="1" justifyContent="center">
             {isDisconnected ? (
               <Button
@@ -151,10 +148,15 @@ export default function Editor(props) {
           </Flex>
 
           <Spacer />
-          <Button colorScheme="red" onClick={onOpen} >Mark as done</Button>
-
+          <Button colorScheme="red" onClick={onOpen}>
+            Mark as done
+          </Button>
         </HStack>
-        <MonacoEditor language={language} value={codeContent} onChange={update} />
+        <MonacoEditor
+          language={language}
+          value={codeContent}
+          onChange={update}
+        />
       </Stack>
     </>
   );

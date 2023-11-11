@@ -9,6 +9,7 @@ services:
     environment:
       - QUESTIONS_API_URL=http://question:8888/questions
       - USER_API_URL=http://user:5100/user
+      - CODE_EXECUTION_API_URL=https://judge0-ce.p.rapidapi.com
     depends_on:
       - question
       - user

@@ -3,17 +3,10 @@ import axios from "axios";
 const codeExecutionApi =
   process.env.CODE_EXECUTION_API_URL;
 
-export const postSubmission = async (
-  languageId,
-  sourceCode,
-  stdin,
-  expected_output
-) => {
+export const postSubmission = async (languageId, sourceCode) => {
   const code = {
     language_id: languageId,
     source_code: sourceCode,
-    stdin: stdin,
-    expected_output: expected_output,
   };
 
   let { data } = await axios.post(`${codeExecutionApi}/submissions/`, code, {

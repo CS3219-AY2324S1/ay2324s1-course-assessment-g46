@@ -28,7 +28,6 @@ let timeout;
 export default function Match(props) {
   const [isFindingMatch, setFindingMatch] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [category, setCategory] = useState("");
   const [complexity, setComplexity] = useState("Easy");
 
   let token = localStorage.getItem("token");
@@ -91,15 +90,6 @@ export default function Match(props) {
               </>
             ) : (
               <>
-                <FormControl>
-                  <FormLabel>Category</FormLabel>
-                  <Input
-                    placeholder="Last name"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                  />
-                </FormControl>
-
                 <FormControl>
                   <FormLabel>Complexity</FormLabel>
                   <Select

@@ -1,6 +1,7 @@
-version: "2"
+version: '2'
 
-x-logging: &default-logging
+x-logging:
+  &default-logging
   logging:
     driver: json-file
     options:
@@ -16,9 +17,6 @@ services:
     privileged: true
     <<: *default-logging
     restart: always
-    depends_on:
-      - db
-      - redis
 
   workers:
     image: judge0/judge0:1.13.0
@@ -28,9 +26,6 @@ services:
     privileged: true
     <<: *default-logging
     restart: always
-    depends_on:
-      - db
-      - redis
 
   db:
     image: postgres:13.0
@@ -42,12 +37,10 @@ services:
 
   redis:
     image: redis:6.0
-    command:
-      [
-        "bash",
-        "-c",
-        'docker-entrypoint.sh --appendonly yes --requirepass "$$REDIS_PASSWORD"',
-      ]
+    command: [
+      "bash", "-c",
+      'docker-entrypoint.sh --appendonly yes --requirepass "$$REDIS_PASSWORD"'
+    ]
     env_file: judge0.conf
     volumes:
       - redis-data:/data

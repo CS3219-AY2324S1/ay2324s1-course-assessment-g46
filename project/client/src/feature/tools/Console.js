@@ -1,11 +1,4 @@
-import {
-  Alert,
-  AlertDescription,
-  Box,
-  Divider,
-  HStack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Divider, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 
 export default function Console(props) {
@@ -32,24 +25,14 @@ export default function Console(props) {
             {time !== null && <Text color="gray">Runtime: {time} s</Text>}
           </HStack>
           {stderr !== null ? (
-            <Alert status="error">
-              <AlertDescription>{stderr}</AlertDescription>
-            </Alert>
+            <Box bg="red.100" borderRadius={10} p={3}>
+              <Text>{stderr}</Text>
+            </Box>
           ) : (
             <>
-              <Text paddingBottom={2}>Input</Text>
+              <Text paddingBottom={2}>Output</Text>
               <Box bg="gray.100" borderRadius={10} p={3}>
-                <pre>some input</pre>
-              </Box>
-              <br />
-              <Text paddingBottom={2}>Stdout</Text>
-              <Box bg="gray.100" borderRadius={10} p={3}>
-                <pre>{stdout === null ? " " : stdout}</pre>
-              </Box>
-              <br />
-              <Text paddingBottom={2}>Expected</Text>
-              <Box bg="gray.100" borderRadius={10} p={3}>
-                <pre>some expected output</pre>
+                <Text>{stdout === null ? " " : stdout}</Text>
               </Box>
             </>
           )}

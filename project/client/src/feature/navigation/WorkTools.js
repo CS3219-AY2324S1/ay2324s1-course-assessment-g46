@@ -54,8 +54,6 @@ export default function WorkTools(props) {
             setMessages={setMessages}
           />
         );
-      case "list":
-        return <QuestionList />;
       case "console":
         return <Console output={props.codeOutput} />;
       default:
@@ -74,7 +72,6 @@ export default function WorkTools(props) {
           icon={<MdChatBubbleOutline />}
           onClick={() => toggleTool("chat")}
         />
-        <IconButton icon={<MdList />} onClick={() => toggleTool("list")} />
         <IconButton
           icon={<MdPsychology />}
           onClick={() => toggleTool("console")}

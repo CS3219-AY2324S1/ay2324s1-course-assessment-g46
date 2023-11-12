@@ -42,6 +42,8 @@ async function getQuestionId(complexity, user1, user2) {
 
 io.on("connection", (socket) => {
   socket.on("findMatch", async (match) => {
+    console.log("Match received:");
+    console.log(matchingDict);
     complexity = match.complexity;
     if (matchingDict[complexity] == null || matchingDict[complexity].time <= new Date().getTime() - 30000 || matchingDict[complexity].token == match.token) {
       matchingDict[complexity] = match;
@@ -52,6 +54,8 @@ io.on("connection", (socket) => {
       io.to(matchingDict[complexity].socketId).emit("matchFound", message);
       io.to(match.socketId).emit("matchFound", message);
       matchingDict[complexity] = null;
+      console.log("Match successful:");
+      console.log(matchingDict);
     }
   });
 
@@ -59,6 +63,8 @@ io.on("connection", (socket) => {
     for (let property in matchingDict) {
       if (matchingDict[property]?.socketId == id) {
         matchingDict[property] = null;
+        console.log("Match cancelled:");
+        console.log(matchingDict);
       }
     }
   })

@@ -128,7 +128,12 @@ export default function AddQuestion(props) {
       <Button onClick={onOpen} colorScheme="twitter">
         Add Question
       </Button>
-      <Modal isOpen={isOpen} size={"full"} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        size={"full"}
+        onClose={onClose}
+        scrollBehavior={"inside"}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Question</ModalHeader>

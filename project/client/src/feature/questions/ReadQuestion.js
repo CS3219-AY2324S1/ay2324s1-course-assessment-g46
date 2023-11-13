@@ -50,21 +50,19 @@ export default function ReadQuestion(props) {
       >
         {title}
       </Text>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} scrollBehavior={"inside"}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>
-            {title}
-          </ModalHeader>
+          <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Stack spacing={4}>
               <Wrap spacing={4}>
-                {category == null ?
-                <></>
-                : category.map((c, i) => (
-                  <Tag key={i}>{c}</Tag>
-                ))}
+                {category == null ? (
+                  <></>
+                ) : (
+                  category.map((c, i) => <Tag key={i}>{c}</Tag>)
+                )}
               </Wrap>
               <Text color={getComplexity()}>{complexity}</Text>
               <Markdown>{description}</Markdown>

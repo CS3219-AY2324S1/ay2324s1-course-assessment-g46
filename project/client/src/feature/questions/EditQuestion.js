@@ -110,7 +110,12 @@ export default function EditQuestion(props) {
   return (
     <>
       <IconButton icon={<MdOutlineEdit />} onClick={onOpen} />
-      <Modal isOpen={isOpen} onClose={onClose} size={"full"}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={"full"}
+        scrollBehavior={"inside"}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Edit Question</ModalHeader>

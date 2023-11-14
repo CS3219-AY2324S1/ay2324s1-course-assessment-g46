@@ -27,6 +27,7 @@ Profile table:
 |  Update profile      |  `PUT`    | /profile | yes | full_name, goal                   |
 |  Delete account      |  `DELETE` | /profile |  yes |                                 |
 |  Get user attempts history  |  `GET`  | /attempts   | yes |                                  |
+|  Get user latest attempts history  |  `GET`  | /attempts/latest | yes |                                  |
 |  Insert a new user attempt  |  `POST`  | /attempts   | yes | question_id                      |
 
 

@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  client:
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    environment:
+      - QUESTIONS_API_URL=http://question:8888/questions
+      - USER_API_URL=http://user:5100/user
+      - CODE_EXECUTION_API_URL=https://judge0-ce.p.rapidapi.com
+    depends_on:
+      - question
+      - user
+      - matching
+      - collaboration
+
+  question:
+    build:
+      context: ./question-service
+    ports:
+      - "8888:8888"
+    environment:
+      - CLIENT_URL=http://localhost:3000
+      - MATCHING_URL=http://localhost:8080
+
+  user:
+    build:
+      context: ./user-service
+    ports:
+      - "5100:5100"
+
+  matching:
+    build:
+      context: ./matching-service
+    ports:
+      - "8080:8080"
+    environment:
+      - CLIENT_URL=http://localhost:3000
+      - QUESTIONS_API_URL=http://question:8888/questions
+
+  collaboration:
+    build:
+      context: ./collaboration-service
+    ports:
+      - "8081:8081"
+    environment:
+      - CLIENT_URL=http://localhost:3000

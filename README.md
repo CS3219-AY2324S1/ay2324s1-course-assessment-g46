@@ -47,7 +47,7 @@ JWT_SECRET=
 
 #### Question service (`project/question-service`)
 
-- Create a `.env` file in the root directory of the `assignment/question-service` folder
+- Create a `.env` file in the root directory of the `project/question-service` folder
 - Copy the contents of the question-service-env file from into the `.env` file
 - Your file should look like this:
 
@@ -59,7 +59,7 @@ JWT_SECRET=
 
 #### User service
 
-- Create a `.env` file in the root directory of the `assignment/user-service` folder
+- Create a `.env` file in the root directory of the `project/user-service` folder
 - Copy the contents of the user-service-env file from into the `.env` file
 - Your file should look like this:
 
